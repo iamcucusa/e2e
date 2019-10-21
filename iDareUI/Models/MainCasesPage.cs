@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace WebTestingTestApp.idare
+namespace iDareUI.Models
 {
     public class MainCasesPage
     {

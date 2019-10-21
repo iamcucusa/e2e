@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using iDareUI.Common;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -6,12 +7,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace WebTestingTestApp.idare
+namespace iDareUI.Models
 {
     public class LoginPage
     {
         private readonly RemoteWebDriver driver;
-        private const string PageUri = @"https://idare-sp13demo-ui.azurewebsites.net";
         public LoginPage(RemoteWebDriver driver)
         {
             this.driver = driver;     
@@ -19,7 +19,7 @@ namespace WebTestingTestApp.idare
         public LoginPage NavigateTo()
         {
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl(PageUri);
+            driver.Navigate().GoToUrl(Constants.PageUri);
             return new LoginPage(driver);
         }
         

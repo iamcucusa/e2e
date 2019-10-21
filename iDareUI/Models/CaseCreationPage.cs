@@ -1,11 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using WebTestingTestApp.idare;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace iDareUI
+namespace iDareUI.Models
 {
     public class CaseCreationPage
     {
