@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace iDareUI
+namespace iDareUI.Common
 {
     public class TestingEnvironment:IDisposable
     {

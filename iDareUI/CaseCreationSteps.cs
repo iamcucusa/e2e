@@ -1,12 +1,6 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
-using System;
-using System.IO;
-using System.Reflection;
-using System.Threading;
+﻿using iDareUI.Common;
+using iDareUI.Models;
 using TechTalk.SpecFlow;
-using WebTestingTestApp.idare;
 using Xunit;
 
 namespace iDareUI

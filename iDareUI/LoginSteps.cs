@@ -1,4 +1,6 @@
 ﻿using iDareUI;
+using iDareUI.Common;
+using iDareUI.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
@@ -9,7 +11,7 @@ using System.Threading;
 using TechTalk.SpecFlow;
 using Xunit;
 
-namespace WebTestingTestApp.idare
+namespace iDareUI
 {
     [Binding]
     public class LoginSteps
@@ -66,8 +68,8 @@ namespace WebTestingTestApp.idare
         public void GivenIAmLoggedInAsTeacher()
         {
             this.GivenIAmInTheLoginScreen();
-            this.GivenIEnterTheUsername("teacher");
-            this.GivenIEnterThePassword("whatever");
+            this.GivenIEnterTheUsername(Constants.TeacherUserName);
+            this.GivenIEnterThePassword(Constants.TeacherPassword);
             this.WhenILogin();
         }
 
