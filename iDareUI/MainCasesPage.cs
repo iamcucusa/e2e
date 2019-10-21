@@ -20,10 +20,9 @@ namespace WebTestingTestApp.idare
         private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
         private IWebElement newCaseButton => driver.FindElement(By.CssSelector("button.mat-icon-button"));
         public string UserRole => userLabel.Text;
-        public CaseCreationPage NewCase()
+        public void NewCase()
         {
             newCaseButton.Click();
-            return new CaseCreationPage(driver);
         }
     }
 }

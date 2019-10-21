@@ -18,6 +18,7 @@ namespace WebTestingTestApp.idare
         public LoginSteps(TestingEnvironment environment)
         {
             this.environment = environment;
+            this.loginPage = new LoginPage(environment.Driver);
         }
 
 
@@ -28,19 +29,19 @@ namespace WebTestingTestApp.idare
         public void GivenIAmInTheLoginScreen()
         {
             this.environment.Driver.Manage().Window.Maximize();
-            loginPage= LoginPage.NavigateTo(this.environment.Driver);         
+            this.loginPage.NavigateTo();
         }
 
         [Given(@"I enter the username (.*)")]
         public void GivenIEnterTheUsername(string userName)
         {
-            loginPage.EnterUserName = userName;
+            loginPage.UserName = userName;
         }
 
         [Given(@"I enter the password (.*)")]
         public void GivenIEnterThePassword(string password)
         {
-            loginPage.EnterPassword = password;
+            loginPage.Password = password;
         }
 
         [When(@"I login")]
@@ -52,16 +53,23 @@ namespace WebTestingTestApp.idare
         [Then(@"I should see the Cases screen for (.*)")]
         public void ThenIShouldSeeTheCasesScreenfor(string userName)
         {
-            Thread.Sleep(3000);
-
             Assert.Equal(userName, mainCasesPage.UserRole.ToLower());
         }
 
-        [Then(@"I should an error message")]
-        public void ThenIShouldAnErrorMessage()
+        [Then(@"I should see an error message")]
+        public void ThenIShouldSeeAnErrorMessage()
         {
-            Thread.Sleep(1500);
             Assert.Equal("Authentication failed: Token invalid.", loginPage.ErrorMessageText);
         }
+
+        [Given(@"I am logged in as teacher")]
+        public void GivenIAmLoggedInAsTeacher()
+        {
+            this.GivenIAmInTheLoginScreen();
+            this.GivenIEnterTheUsername("teacher");
+            this.GivenIEnterThePassword("whatever");
+            this.WhenILogin();
+        }
+
     }
 }

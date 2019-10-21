@@ -23,6 +23,6 @@ Scenario: Invalid user login
 		And I enter the username customer
 		And I enter the password Whatever
 	When I login
-	Then I should an error message
+	Then I should see an error message
 
 

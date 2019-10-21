@@ -18,32 +18,20 @@ namespace iDareUI
         public CaseCreationSteps(TestingEnvironment environment)
         {
             this.environment = environment;
+            this.mainCasesPage = new MainCasesPage(environment.Driver);
+            this.caseCreationPage = new CaseCreationPage(environment.Driver);
         }
-
-        private LoginPage loginPage;
         private MainCasesPage mainCasesPage;
         private CaseCreationPage caseCreationPage;
-
-        [Given(@"I am logged in as teacher")]
-        public void GivenIAmLoggedInAsTeacher()
-        {
-            this.environment.Driver.Manage().Window.Maximize();
-            loginPage = LoginPage.NavigateTo(this.environment.Driver);
-
-            loginPage.EnterUserName = "teacher";
-            loginPage.EnterPassword = "password";
-            mainCasesPage = loginPage.LoginApplication();
-        }
         
         [Given(@"I enter to create a new case")]
         public void GivenIEnterToCreateANewCase()
         {
-            Thread.Sleep(3000);
-            caseCreationPage = mainCasesPage.NewCase();
+            mainCasesPage.NewCase();
         }
         
         [When(@"I enter (.*) as Rexis ID")]
-        public void WhenIFillTheFields(string value)
+        public void WhenIEnterAsRexisID(string value)
         {
             caseCreationPage.SetRexisId(value);
 
@@ -71,17 +59,11 @@ namespace iDareUI
         {
             caseCreationPage.SetCustomer("");
         }
-
-        [When(@"I leave an empty field")]
-        public void WhenILeaveAnEmptyField()
-        {
-            caseCreationPage.ClearCustomer();
-        }
         
         [Then(@"the Save button is disabled")]
         public void ThenTheSaveButtonIsDisabled()
         {
-            Assert.False(caseCreationPage.SaveButton.Enabled);  
+            Assert.False(caseCreationPage.SaveButton.Enabled, "The Save button is enabled");  
         }
     }
 }

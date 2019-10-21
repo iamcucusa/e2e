@@ -16,7 +16,7 @@ namespace WebTestingTestApp.idare
         {
             this.driver = driver;     
         }
-        public static LoginPage NavigateTo(RemoteWebDriver driver)
+        public LoginPage NavigateTo()
         {
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(PageUri);
@@ -29,8 +29,14 @@ namespace WebTestingTestApp.idare
         private IWebElement errorMessage => driver.FindElement(By.XPath("//span[contains(.,' Authentication failed: Token invalid.')]"));
      
 
-        public string EnterUserName { set { userName.SendKeys(value); } }
-        public string EnterPassword
+        public string UserName
+        {
+            set
+            {
+                userName.SendKeys(value);
+            }
+        }
+        public string Password
         {
             set
             {
