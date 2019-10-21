@@ -7,7 +7,7 @@ namespace iDareUI.Common
     public class Constants
     {
         private const string pageUri = @"https://idare-sp13demo-ui.azurewebsites.net";
-        public string PageUri
+        public static string PageUri
         {
             get
             {
