@@ -1,0 +1,8 @@
+.vs/slnx.sqlite
+.vs/
+**/bin
+obj
+publish
+node_modules
+npm-debug.log
+*.feature.cs

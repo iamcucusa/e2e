@@ -1,0 +1,87 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using TechTalk.SpecFlow;
+using WebTestingTestApp.idare;
+using Xunit;
+
+namespace iDareUI
+{
+    [Binding]
+    public class CaseCreationSteps
+    {
+        private TestingEnvironment environment;
+        public CaseCreationSteps(TestingEnvironment environment)
+        {
+            this.environment = environment;
+        }
+
+        private LoginPage loginPage;
+        private MainCasesPage mainCasesPage;
+        private CaseCreationPage caseCreationPage;
+
+        [Given(@"I am logged in as teacher")]
+        public void GivenIAmLoggedInAsTeacher()
+        {
+            this.environment.Driver.Manage().Window.Maximize();
+            loginPage = LoginPage.NavigateTo(this.environment.Driver);
+
+            loginPage.EnterUserName = "teacher";
+            loginPage.EnterPassword = "password";
+            mainCasesPage = loginPage.LoginApplication();
+        }
+        
+        [Given(@"I enter to create a new case")]
+        public void GivenIEnterToCreateANewCase()
+        {
+            Thread.Sleep(3000);
+            caseCreationPage = mainCasesPage.NewCase();
+        }
+        
+        [When(@"I enter (.*) as Rexis ID")]
+        public void WhenIFillTheFields(string value)
+        {
+            caseCreationPage.SetRexisId(value);
+
+        }
+        [When(@"I enter (.*) as Serial number")]
+        public void WhenIEnterAsSerialNumber(string value)
+        {
+            caseCreationPage.SetSerialNo(value);
+        }
+
+        [When(@"I enter (.*) as Software Version")]
+        public void WhenIEnterAsSoftwareVersion(string value)
+        {
+            caseCreationPage.SetSwVersion(value);
+        }
+
+        [When(@"I enter (.*) as Country")]
+        public void WhenIEnterAsCountry(string value)
+        {
+            caseCreationPage.SetCountry(value);
+        }
+
+        [When(@"I leave the Customer field empty")]
+        public void WhenILeaveTheCustomerFieldEmpty()
+        {
+            caseCreationPage.SetCustomer("");
+        }
+
+        [When(@"I leave an empty field")]
+        public void WhenILeaveAnEmptyField()
+        {
+            caseCreationPage.ClearCustomer();
+        }
+        
+        [Then(@"the Save button is disabled")]
+        public void ThenTheSaveButtonIsDisabled()
+        {
+            Assert.False(caseCreationPage.SaveButton.Enabled);  
+        }
+    }
+}
