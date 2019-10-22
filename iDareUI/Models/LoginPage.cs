@@ -12,15 +12,21 @@ namespace iDareUI.Models
     public class LoginPage
     {
         private readonly RemoteWebDriver driver;
-        public LoginPage(RemoteWebDriver driver)
+        private readonly ILog log;
+
+        public LoginPage(RemoteWebDriver driver, ILog log)
         {
-            this.driver = driver;     
+            this.driver = driver;
+            this.log = log;
         }
-        public LoginPage NavigateTo()
+        public void NavigateTo()
         {
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl(Constants.PageUri);
-            return new LoginPage(driver);
+
+            var targetUrl = Constants.PageUri;
+            this.log.Info($"Navigating to {targetUrl}");
+
+            driver.Navigate().GoToUrl(targetUrl);
         }
         
         private IWebElement userName => driver.FindElements(By.XPath("//input[@id='undefinedInput']"))[0];

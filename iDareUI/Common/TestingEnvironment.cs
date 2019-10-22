@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Xunit.Abstractions;
 
 namespace iDareUI.Common
 {
@@ -25,6 +26,12 @@ namespace iDareUI.Common
             }
         }
 
+        public TestingEnvironment(ITestOutputHelper helper)
+        {
+            this.Log = new Log(helper);
+        }
+
+        public ILog Log;
 
         public void Dispose()
         {

@@ -12,7 +12,7 @@ namespace iDareUI.Common
             get
             {
                 var environmentUrl = Environment.GetEnvironmentVariable("testUrl", EnvironmentVariableTarget.Process);
-                if(environmentUrl.Length != 0)
+                if(environmentUrl != null && environmentUrl.Length != 0)
                 {
                     return environmentUrl;
                 }

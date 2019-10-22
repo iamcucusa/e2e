@@ -20,7 +20,7 @@ namespace iDareUI
         public LoginSteps(TestingEnvironment environment)
         {
             this.environment = environment;
-            this.loginPage = new LoginPage(environment.Driver);
+            this.loginPage = new LoginPage(environment.Driver, environment.Log);
         }
 
 
