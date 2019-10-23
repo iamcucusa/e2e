@@ -33,9 +33,5 @@ namespace iDareUI.Models
         {
             newCaseButton.Click();
         }
-
-        //IWebElement caseBox = environment.Driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-rexis.mat-column-rexis.ng-star-inserted"))[0];
-        //string caseBoxText = caseBox.Text;
-
     }
 }

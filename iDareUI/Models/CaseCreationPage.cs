@@ -26,14 +26,14 @@ namespace iDareUI.Models
         public void SetCustomer(string value) { Customer.SendKeys(value); }
         public void SetCountry(string value) { Country.SendKeys(value); }
 
-        public string SetUnicRexisId()
+        public string SetUniqueRexisId()
         {
             Guid guid = Guid.NewGuid();
             string unicId = guid.ToString();
-            sendKeys(RexisId, unicId);
+            SendKeysCharByChar(RexisId, unicId);
             return unicId;
         }
-        protected void sendKeys(IWebElement element, string keys)
+        protected void SendKeysCharByChar(IWebElement element, string keys)
         {
             for (int i = 0; i < keys.Length; i++)
             {

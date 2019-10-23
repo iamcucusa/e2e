@@ -9,7 +9,7 @@ namespace iDareUI
     public class CaseCreationSteps
     {
         private TestingEnvironment environment;
-        private string unicID;
+        private string uniqueID;
 
         public CaseCreationSteps(TestingEnvironment environment)
         {
@@ -32,10 +32,10 @@ namespace iDareUI
             mainCasesPage.NewCase();
         }
 
-        [When(@"I enter a Rexis ID with a unic ID")]
-        public void WhenIEnterARexisIDWithAUnicID()
+        [When(@"I enter a Rexis ID with a unique ID")]
+        public void WhenIEnterARexisIDWithAUniqueID()
         {
-            unicID = caseCreationPage.SetUnicRexisId();
+            uniqueID = caseCreationPage.SetUniqueRexisId();
         }
 
         [When(@"I enter (.*) as Rexis ID")]
@@ -94,10 +94,10 @@ namespace iDareUI
             Assert.Contains("1 -", mainCasesPage.RangeLabelText);
         }
 
-        [Then(@"the case with the unic ID as Rexis ID is on the top of the list")]
-        public void ThenTheCaseWithTheUnicIdAsRexisIDIsOnTheTopOfTheList()
+        [Then(@"the case with the unique ID as Rexis ID is on the top of the list")]
+        public void ThenTheCaseWithTheUniqueIdAsRexisIDIsOnTheTopOfTheList()
         {
-            Assert.Equal(unicID, mainCasesPage.firstIdRowText);
+            Assert.Equal(uniqueID, mainCasesPage.firstIdRowText);
         }
 
     }
