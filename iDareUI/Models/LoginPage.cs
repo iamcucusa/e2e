@@ -1,11 +1,6 @@
 ﻿using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace iDareUI.Models
 {

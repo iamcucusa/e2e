@@ -1,13 +1,5 @@
-﻿using iDareUI;
-using iDareUI.Common;
+﻿using iDareUI.Common;
 using iDareUI.Models;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
-using System;
-using System.IO;
-using System.Reflection;
-using System.Threading;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -70,6 +62,14 @@ namespace iDareUI
             this.GivenIAmInTheLoginScreen();
             this.GivenIEnterTheUsername(Constants.TeacherUserName);
             this.GivenIEnterThePassword(Constants.TeacherPassword);
+            this.WhenILogin();
+        }
+        [Given(@"I am logged in as investigator")]
+        public void GivenIAmLoggedInAsInvestigator()
+        {
+            this.GivenIAmInTheLoginScreen();
+            this.GivenIEnterTheUsername(Constants.InvestigatorName);
+            this.GivenIEnterThePassword(Constants.InvestigatorPassword);
             this.WhenILogin();
         }
 

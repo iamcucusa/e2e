@@ -24,6 +24,10 @@ namespace iDareUI.Common
         public const string TeacherUserName = "teacher";
         public const string TeacherPassword = "whatever";
 
+        public const string InvestigatorName = "investigator";
+        public const string InvestigatorPassword = "whatever";
+
+
 
     }
 }
