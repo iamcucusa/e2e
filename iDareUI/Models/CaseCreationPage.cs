@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using System;
 
 namespace iDareUI.Models
 {
@@ -24,6 +25,21 @@ namespace iDareUI.Models
         public void SetSwVersion(string value) { SwVersion.SendKeys(value); }
         public void SetCustomer(string value) { Customer.SendKeys(value); }
         public void SetCountry(string value) { Country.SendKeys(value); }
+
+        public string SetUnicRexisId()
+        {
+            Guid guid = Guid.NewGuid();
+            string unicId = guid.ToString();
+            sendKeys(RexisId, unicId);
+            return unicId;
+        }
+        protected void sendKeys(IWebElement element, string keys)
+        {
+            for (int i = 0; i < keys.Length; i++)
+            {
+                element.SendKeys(Char.ToString(keys[i]));
+            }
+        }
 
         public void ClearRexisId() { RexisId.Clear(); }
         public void ClearSerialNo() { SerialNo.Clear(); }
