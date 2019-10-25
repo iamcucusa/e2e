@@ -27,7 +27,5 @@ namespace iDareUI.Common
         public const string InvestigatorName = "investigator";
         public const string InvestigatorPassword = "whatever";
 
-
-
     }
 }

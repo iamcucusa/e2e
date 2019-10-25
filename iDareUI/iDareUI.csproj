@@ -27,6 +27,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CaseCreation.feature</DependentUpon>
     </Compile>
+    <Compile Update="CasesOverview.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CasesOverview.feature</DependentUpon>
+    </Compile>
     <Compile Update="Login.feature.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -38,6 +43,10 @@
     <SpecFlowFeatureFiles Update="CaseCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CaseCreation.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="CasesOverview.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CasesOverview.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Login.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

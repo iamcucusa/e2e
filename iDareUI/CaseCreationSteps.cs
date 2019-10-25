@@ -9,6 +9,9 @@ namespace iDareUI
     public class CaseCreationSteps
     {
         private TestingEnvironment environment;
+        private MainCasesPage mainCasesPage;
+        private CaseCreationPage caseCreationPage;
+
         private string uniqueID;
 
         public CaseCreationSteps(TestingEnvironment environment)
@@ -17,8 +20,6 @@ namespace iDareUI
             this.mainCasesPage = new MainCasesPage(environment.Driver);
             this.caseCreationPage = new CaseCreationPage(environment.Driver);
         }
-        private MainCasesPage mainCasesPage;
-        private CaseCreationPage caseCreationPage;
 
         [Given(@"I navigate to the next case page")]
         public void GivenINavigateToTheNextCasePage()
