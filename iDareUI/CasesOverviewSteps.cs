@@ -42,17 +42,5 @@ namespace iDareUI
             Assert.True(orderedCreationDateTime.SequenceEqual(obtainedCreationDateTime),
                 $"The cases are not correctly ordered by their creation date/time. \nExpected:\n{string.Join(",\n", orderedCreationDateTime)}, \nActual:\n{string.Join(",\n", obtainedCreationDateTime)}");
         }
-        
-        [Then(@"the Case ID value corresponds to the Rexis ID")]
-        public void ThenTheCaseIDValueCorrespondsToTheRexisID()
-        {
-
-        }
-        
-        [Then(@"the automatically generated Case ID is not displayed")]
-        public void ThenTheAutomaticallyGeneratedCaseIDIsNotDisplayed()
-        {
-
-        }
     }
 }
