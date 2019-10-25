@@ -53,7 +53,7 @@ namespace iDareUI
         [Then(@"I should see an error message")]
         public void ThenIShouldSeeAnErrorMessage()
         {
-            Assert.Equal("Authentication failed: Token invalid.", loginPage.ErrorMessageText);
+            Assert.True(loginPage.ErrorMessageText != null, "The error message 'Authentication failed: Token invalid.' didn't appear");
         }
 
         [Given(@"I am logged in as teacher")]
