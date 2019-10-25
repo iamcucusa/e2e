@@ -1,7 +1,7 @@
 ﻿Feature: CasesOverview
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to keep the cases organized
+	As a user
+	I want to be shown the cases correctly sorted and with the correct information
 
 @mytag
 Scenario: Cases overview: correct columns
