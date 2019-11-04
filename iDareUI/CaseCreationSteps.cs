@@ -1,5 +1,6 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
+using System.Threading;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -50,11 +51,6 @@ namespace iDareUI
             caseCreationPage.SetSerialNo(value);
         }
 
-        [When(@"I enter (.*) as Software Version")]
-        public void WhenIEnterAsSoftwareVersion(string value)
-        {
-            caseCreationPage.SetSwVersion(value);
-        }
         [When(@"I enter (.*) as Customer")]
         public void WhenIEnterAsCustomer(string value)
         {
@@ -86,19 +82,22 @@ namespace iDareUI
         [Then(@"the Save button is disabled")]
         public void ThenTheSaveButtonIsDisabled()
         {
-            Assert.False(caseCreationPage.SaveButton.Enabled, "The Save button is enabled");  
+            Assert.False(caseCreationPage.SaveButton.Enabled, "The Save button is enabled");
         }
 
         [Then(@"the first page of the cases overview is shown")]
         public void ThenTheFirstPageOfTheCasesOverviewIsShown()
         {
-            Assert.Contains("1 -", mainCasesPage.RangeLabelText);
+            
+            mainCasesPage.WaitUntilRangeLabelChanges();
+            Assert.StartsWith("1 -", mainCasesPage.RangeLabelText);
         }
 
         [Then(@"the case with the unique ID as Rexis ID is on the top of the list")]
         public void ThenTheCaseWithTheUniqueIdAsRexisIDIsOnTheTopOfTheList()
         {
-            Assert.Equal(uniqueID, mainCasesPage.firstIdRowText);
+            Thread.Sleep(1000);
+            Assert.Contains(uniqueID, mainCasesPage.firstIdRowText);
         }
 
     }

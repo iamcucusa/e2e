@@ -17,8 +17,8 @@ namespace iDareUI.Models
 
         private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
         private IWebElement newCaseButton => driver.FindElement(By.CssSelector("button.mat-icon-button"));
-        private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
-        private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-rexis.mat-column-rexis.ng-star-inserted"))[0];
+        private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));       
+        private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
 
         public IEnumerable<string> GetGridHeaderNames()
@@ -43,7 +43,8 @@ namespace iDareUI.Models
         public IEnumerable<DateTime> GetSortedDates()
         {
             var sortedDates = this.GetCreationDateTime();
-            return sortedDates.OrderBy(element => element.Date).ToList();
+            sortedDates.OrderByDescending(element => element.Year).ThenByDescending(element => element.Month).ThenByDescending(element => element.Day).ThenByDescending(element => element.Hour).ThenByDescending(element => element.Minute).ThenByDescending(element => element.Second).ToArray();
+            return sortedDates;
         }
 
         public IEnumerable<string> GetCreationTimeText()
@@ -79,6 +80,22 @@ namespace iDareUI.Models
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement nextPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("span.prv-sidebar__title")));
             casesButton.Click();
+        }
+
+        public void WaitUntilRangeLabelChanges()
+        {
+            var n = 1;
+            while (n==1)
+            {
+                if (RangeLabelText.StartsWith("1 -")==false)
+                {
+                    n = 1;
+                }
+                else
+                {
+                    n = 0;
+                }
+            }
         }
     }
 }
