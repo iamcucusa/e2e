@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using iDareUI.Common;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -17,8 +18,8 @@ namespace iDareUI.Models
 
         private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
         private IWebElement newCaseButton => driver.FindElement(By.CssSelector("button.mat-icon-button"));
-        private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
-        private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-rexis.mat-column-rexis.ng-star-inserted"))[0];
+        private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));       
+        private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
 
         public IEnumerable<string> GetGridHeaderNames()
@@ -43,7 +44,8 @@ namespace iDareUI.Models
         public IEnumerable<DateTime> GetSortedDates()
         {
             var sortedDates = this.GetCreationDateTime();
-            return sortedDates.OrderBy(element => element.Date).ToList();
+            sortedDates.OrderByDescending(element => element.Year).ThenByDescending(element => element.Month).ThenByDescending(element => element.Day).ThenByDescending(element => element.Hour).ThenByDescending(element => element.Minute).ThenByDescending(element => element.Second).ToArray();
+            return sortedDates;
         }
 
         public IEnumerable<string> GetCreationTimeText()
@@ -61,6 +63,7 @@ namespace iDareUI.Models
 
         public string UserRole => userLabel.Text;
         public string RangeLabelText => rangeLabel.Text;
+
         public string firstIdRowText => firstIdRow.Text;
 
 
@@ -80,5 +83,17 @@ namespace iDareUI.Models
             IWebElement nextPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("span.prv-sidebar__title")));
             casesButton.Click();
         }
+
+
+
+        internal void WaitUntilRangeLabelChanges()
+        {
+            FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+        }
+
+
+
+
+
     }
 }

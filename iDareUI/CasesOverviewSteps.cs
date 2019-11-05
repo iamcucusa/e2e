@@ -28,7 +28,7 @@ namespace iDareUI
         [Then(@"the cases grid with the correct columns is displayed")]
         public void ThenTheCasesGridWithTheCorrectColumnsIsDisplayed()
         {
-            string[] casesGridColumns = new string[] { " Case ", " System ", " Serial ", " Version ", " Creation ", " Customer ", " Country ", " Creator ", " Issues " };
+            string[] casesGridColumns = new string[] { "Case ID", "System", "Serial No.", "SW Version", "Created", "Customer", "Country", "Created by", "Issues" };
             var obtainColumns = mainCasesPage.GetGridHeaderNames();
             Assert.True(casesGridColumns.SequenceEqual(obtainColumns),
                 $"The grid headers are not the expected ones. \nExpected: {string.Join(", ", casesGridColumns)}, \nActual: {string.Join(", ", obtainColumns)}");
