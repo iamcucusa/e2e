@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using iDareUI.Common;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -62,6 +63,7 @@ namespace iDareUI.Models
 
         public string UserRole => userLabel.Text;
         public string RangeLabelText => rangeLabel.Text;
+
         public string firstIdRowText => firstIdRow.Text;
 
 
@@ -82,20 +84,16 @@ namespace iDareUI.Models
             casesButton.Click();
         }
 
-        public void WaitUntilRangeLabelChanges()
+
+
+        internal void WaitUntilRangeLabelChanges()
         {
-            var n = 1;
-            while (n==1)
-            {
-                if (RangeLabelText.StartsWith("1 -")==false)
-                {
-                    n = 1;
-                }
-                else
-                {
-                    n = 0;
-                }
-            }
+            FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
+
+
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
+using System;
 using System.Threading;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -96,8 +97,7 @@ namespace iDareUI
         [Then(@"the case with the unique ID as Rexis ID is on the top of the list")]
         public void ThenTheCaseWithTheUniqueIdAsRexisIDIsOnTheTopOfTheList()
         {
-            Thread.Sleep(1000);
-            Assert.Contains(uniqueID, mainCasesPage.firstIdRowText);
+            FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
 
     }
