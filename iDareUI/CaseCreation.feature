@@ -7,10 +7,10 @@
 Scenario: User does not enter mandatory fields when creating a new case
 	Given I am logged in as teacher
 		And I enter to create a new case
-	When I enter ABCD1234 as Rexis ID
+	When I enter Customer as Customer
 		And I enter A1234 as Serial number
 		And I enter Spain as Country
-		But I leave the Customer field empty
+		But I leave the ID field empty
 	Then the Save button is disabled
 	
 Scenario: New cases are placed on the top of the first page of the cases overview
