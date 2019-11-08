@@ -64,10 +64,10 @@ namespace iDareUI
             caseCreationPage.SetCountry(value);
         }
 
-        [When(@"I leave the Customer field empty")]
-        public void WhenILeaveTheCustomerFieldEmpty()
+        [When(@"I leave the ID field empty")]
+        public void WhenILeaveTheIDFieldEmpty()
         {
-            caseCreationPage.SetCustomer("");
+            caseCreationPage.SetRexisId("");
         }
         [When(@"I press the Save button")]
         public void WhenIPressTheSaveButton()

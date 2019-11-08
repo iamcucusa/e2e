@@ -16,8 +16,8 @@ namespace iDareUI.Models
         private IWebElement SerialNo => driver.FindElement(By.Id("mat-input-2"));
         private IWebElement Customer => driver.FindElement(By.Id("mat-input-3"));
         private IWebElement Country => driver.FindElement(By.Id("mat-input-4"));
-        private IWebElement CancelButton => driver.FindElement(By.XPath("//*[contains(text(), 'Cancel')]"));
-        public IWebElement SaveButton => driver.FindElement(By.XPath("//*[contains(text(), 'Save')]"));
+        private IWebElement CancelButton => driver.FindElements(By.CssSelector("button.mat-button"))[0];
+        public IWebElement SaveButton => driver.FindElements(By.CssSelector("button.mat-button"))[1];
 
         public void SetRexisId(string value) { RexisId.SendKeys(value); }
         public void SetSerialNo(string value) { SerialNo.SendKeys(value); }
