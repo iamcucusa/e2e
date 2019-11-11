@@ -1,5 +1,6 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
+using System;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -29,7 +30,21 @@ namespace iDareUI
         [Given(@"I enter the username (.*)")]
         public void GivenIEnterTheUsername(string userName)
         {
-            loginPage.UserName = userName;
+            string errorMessage = "The URL specified could not be found";
+            FlowUtilities.WaitUntil(
+                () =>
+                {
+                    try
+                    {
+                        loginPage.UserName = userName;
+                        return true;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        environment.Log.Error(errorMessage);
+                        return false;
+                    }
+                }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100), errorMessage);             
         }
 
         [Given(@"I enter the password (.*)")]

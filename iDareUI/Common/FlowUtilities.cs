@@ -8,7 +8,7 @@ namespace iDareUI.Common
 {
     public static class FlowUtilities
     {
-        public static void WaitUntil(Func<bool> a, TimeSpan timeout, TimeSpan period)
+        public static void WaitUntil(Func<bool> a, TimeSpan timeout, TimeSpan period, string errorMessage = "")
         {
             Stopwatch watch = Stopwatch.StartNew();
             while (watch.Elapsed < timeout)
@@ -21,7 +21,7 @@ namespace iDareUI.Common
             }
             if (!a())
             {
-                throw new TimeoutException();
+                throw new TimeoutException(errorMessage);
             }
         }
     }
