@@ -1,6 +1,8 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
+using OpenQA.Selenium;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -33,14 +35,30 @@ namespace iDareUI
             Assert.True(casesGridColumns.SequenceEqual(obtainColumns),
                 $"The grid headers are not the expected ones. \nExpected: {string.Join(", ", casesGridColumns)}, \nActual: {string.Join(", ", obtainColumns)}");
         }
-        
+
         [Then(@"cases are sorted by creation time")]
         public void ThenCasesAreSortedByCreationTime()
         {
-            var obtainedCreationDateTime = mainCasesPage.GetCreationDateTime();
-            var orderedCreationDateTime = mainCasesPage.GetSortedDates();
-            Assert.True(orderedCreationDateTime.SequenceEqual(obtainedCreationDateTime),
-                $"The cases are not correctly ordered by their creation date/time. \nExpected:\n{string.Join(",\n", orderedCreationDateTime)}, \nActual:\n{string.Join(",\n", obtainedCreationDateTime)}");
+            IEnumerable<DateTime> obtainedCreationDateTime = null;
+            IEnumerable<DateTime> orderedCreationDateTime = null;
+
+            FlowUtilities.WaitUntil(
+                () =>
+                {
+                    try
+                    {
+                        obtainedCreationDateTime = mainCasesPage.GetCreationDateTime();
+                        orderedCreationDateTime = mainCasesPage.GetSortedDates();
+
+                        return orderedCreationDateTime.SequenceEqual(obtainedCreationDateTime);
+                    }
+                    catch(StaleElementReferenceException ex)
+                    {
+                        environment.Log.Error("Error getting data: " + ex.Message);
+                        return false;
+                    }
+
+                }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
         }
     }
 }
