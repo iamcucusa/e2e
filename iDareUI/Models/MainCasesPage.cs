@@ -43,9 +43,7 @@ namespace iDareUI.Models
 
         public IEnumerable<DateTime> GetSortedDates()
         {
-            var sortedDates = this.GetCreationDateTime();
-            sortedDates.OrderByDescending(element => element.Year).ThenByDescending(element => element.Month).ThenByDescending(element => element.Day).ThenByDescending(element => element.Hour).ThenByDescending(element => element.Minute).ThenByDescending(element => element.Second).ToArray();
-            return sortedDates;
+            return this.GetCreationDateTime().OrderByDescending(element => element.Ticks);
         }
 
         public IEnumerable<string> GetCreationTimeText()
@@ -57,7 +55,7 @@ namespace iDareUI.Models
         public IList<IWebElement> GetCreationTimeElements()
         {
             IList<IWebElement> allCreationTimeElements = 
-                driver.FindElements(By.CssSelector("mat-cell.cdk-column-creation-time.mat-column-creation-time.ng-star-inserted"));
+                driver.FindElements(By.CssSelector("mat-cell.cdk-column-creation-time.mat-column-creation-time.ng-star-inserted")).ToList();
             return allCreationTimeElements;
         }
 
