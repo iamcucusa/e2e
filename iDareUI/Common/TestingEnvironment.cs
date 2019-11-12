@@ -4,10 +4,11 @@ using System;
 using System.IO;
 using System.Reflection;
 using Xunit.Abstractions;
+using static iDareUI.Common.FlowUtilities;
 
 namespace iDareUI.Common
 {
-    public class TestingEnvironment:IDisposable
+   public class TestingEnvironment:IDisposable
     {
         private RemoteWebDriver driver = null;
 
@@ -17,6 +18,8 @@ namespace iDareUI.Common
             {
                 if (this.driver == null)
                 {
+                    DisposeDriverService.TestRunStartTime = DateTime.Now;
+                    DisposeDriverService.KillChromeDriver();
                     this.driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                     this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                 }
