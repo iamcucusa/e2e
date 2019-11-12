@@ -10,8 +10,8 @@ namespace iDareUI
     [Binding]
     public sealed class KillChromeDriver
     {
-        [BeforeScenario]
-        public void BeforeScenario()
+        [BeforeTestRun]
+        public static void BeforeTestRun()
         {
             DisposeDriverService.KillChromeDriver(DateTime.Now);
         }
