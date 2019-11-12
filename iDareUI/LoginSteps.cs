@@ -29,7 +29,7 @@ namespace iDareUI
         [Given(@"I enter the username (.*)")]
         public void GivenIEnterTheUsername(string userName)
         {
-            loginPage.UserName = userName;
+            loginPage.UserName = userName;           
         }
 
         [Given(@"I enter the password (.*)")]
