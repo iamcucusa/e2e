@@ -22,22 +22,5 @@ namespace iDareUI.Common
                 throw new TimeoutException();
             }
         }
-
-        public static class DisposeDriverService
-        {
-            public static DateTime? TestRunStartTime { get; set; }
-            public static void KillChromeDriver()
-            {
-                Process[] chromeDriverProcesses = Process.GetProcessesByName("chromedriver");
-               
-                foreach (var chromeDriverProcess in chromeDriverProcesses)
-                {  
-                    if (chromeDriverProcess.StartTime < TestRunStartTime)
-                    {
-                        chromeDriverProcess.Kill();
-                    }
-                } 
-            }
-        }
     }
 }

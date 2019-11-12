@@ -11,22 +11,18 @@ namespace iDareUI.Common
    public class TestingEnvironment:IDisposable
     {
         private RemoteWebDriver driver = null;
-
         public RemoteWebDriver Driver
         {
             get
             {
                 if (this.driver == null)
                 {
-                    DisposeDriverService.TestRunStartTime = DateTime.Now;
-                    DisposeDriverService.KillChromeDriver();
                     this.driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                     this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                 }
                 return driver;
             }
         }
-
         public TestingEnvironment(ITestOutputHelper helper)
         {
             this.Log = new Log(helper);
