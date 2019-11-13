@@ -32,7 +32,6 @@ steps:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
       **\IDareUI.dll
-      **\*test*.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
