@@ -4,13 +4,13 @@ using System;
 using System.IO;
 using System.Reflection;
 using Xunit.Abstractions;
+using static iDareUI.Common.FlowUtilities;
 
 namespace iDareUI.Common
 {
-    public class TestingEnvironment:IDisposable
+   public class TestingEnvironment:IDisposable
     {
         private RemoteWebDriver driver = null;
-
         public RemoteWebDriver Driver
         {
             get
@@ -23,7 +23,6 @@ namespace iDareUI.Common
                 return driver;
             }
         }
-
         public TestingEnvironment(ITestOutputHelper helper)
         {
             this.Log = new Log(helper);

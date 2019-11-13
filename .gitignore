@@ -6,3 +6,4 @@ publish
 node_modules
 npm-debug.log
 *.feature.cs
+**/*.csproj.user
