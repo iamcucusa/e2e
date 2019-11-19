@@ -48,7 +48,7 @@ namespace iDareUI
                     {
                         return false;
                     }
-                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+                }, TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(100));
 
             mainCasesPage.PressDetailsButton();
             Assert.True(casesDetailsPage.closeCaseDetailsButton.Enabled, "The case details page was not opened.");
