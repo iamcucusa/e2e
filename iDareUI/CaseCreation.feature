@@ -21,6 +21,7 @@ Scenario: New cases are placed on the top of the first page of the cases overvie
 		And I enter A1234 as Serial number
 		And I enter Customer as Customer
 		And I enter Spain as Country
+		And I enter the option 2 of the dropdown as Timezone
 		And I press the Save button
 	Then the first page of the cases overview is shown
 		And the case with the unique ID as Rexis ID is on the top of the list
