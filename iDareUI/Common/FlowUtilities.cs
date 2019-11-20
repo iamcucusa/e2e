@@ -22,5 +22,23 @@ namespace iDareUI.Common
                 throw new TimeoutException(errorMessage);
             }
         }
+
+        public static bool CheckOut (Func<bool> a, TimeSpan timeout, TimeSpan period, string errorMessage = "")
+        {
+            Stopwatch watch = Stopwatch.StartNew();
+            while (watch.Elapsed < timeout)
+            {
+                if (a())
+                {
+                    return true;
+                }
+                Thread.Sleep(period);
+            }
+            if (!a())
+            {
+                return false;
+            }
+            return false;
+        }
     }
 }
