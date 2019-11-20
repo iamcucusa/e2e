@@ -4,6 +4,7 @@ using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -93,6 +94,25 @@ namespace iDareUI.Models
                     SendKeys.SendWait("{ENTER}");
                 }
             }
+        }
+
+        public void SelectOptionInTimezoneDropdown(int p0)
+        {
+            timezoneElement.Click();
+            FlowUtilities.WaitUntil(() =>
+            {
+                var optionsLoaded = GetTimezoneOptions().Count >= p0 - 1;
+
+                if (!optionsLoaded)
+                {
+                    timezoneElement.Click();
+                }
+
+                return optionsLoaded;
+            }, TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
+
+            IWebElement timezoneOption = GetTimezoneOptions().ToArray()[p0 - 1];
+            timezoneOption.Click();
         }
     }
 }

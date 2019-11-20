@@ -69,24 +69,8 @@ namespace iDareUI
         [When(@"I enter the option (.*) of the dropdown as Timezone")]
         public void WhenIEnterTheOptionOfTheDropdownAsTimezone(int p0)
         {
-            caseCreationPage.timezoneElement.Click();
-
-            FlowUtilities.WaitUntil(() =>
-            {
-                var optionsLoaded = caseCreationPage.GetTimezoneOptions().Count >= p0 - 1;
-
-                if (!optionsLoaded)
-                {
-                    IWebElement timezoneElement = caseCreationPage.timezoneElement;
-                    timezoneElement.Click();
-                }
-
-                return optionsLoaded;
-            },
-                TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
-
-            IWebElement timezoneOption = caseCreationPage.GetTimezoneOptions().ToArray()[p0 - 1];
-            timezoneOption.Click();
+            
+            caseCreationPage.SelectOptionInTimezoneDropdown(p0);
         }
 
         [When(@"I leave the ID field empty")]
