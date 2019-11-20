@@ -52,11 +52,7 @@ namespace iDareUI.Models
         public void PressSaveButton() { SaveButton.Click(); }
         public void PressUploadFileButton() { uploadFileButton.Click(); }
 
-        public string GetPRDirectory(string zipFileName)
-        {
-            string fileName = Path.GetDirectoryName(this.GetType().Assembly.Location) + "\\TestData\\ProblemReport\\" + zipFileName;
-            return fileName;
-        }
+
 
         public void UploadDummyProblemReport(string filePath)
         {

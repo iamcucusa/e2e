@@ -86,7 +86,7 @@ namespace iDareUI
 
                 return optionsLoaded;
             },
-                TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(100));
+                TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
 
             IWebElement timezoneOption = timezoneOptions.ToArray()[p0 - 1];
             timezoneOption.Click();
@@ -101,7 +101,7 @@ namespace iDareUI
         public void WhenIUploadAProblemReportWithName(string fileName)
         {
             caseCreationPage.PressUploadFileButton();
-            string filePath = caseCreationPage.GetPRDirectory(fileName);
+            string filePath = GetTestData.GetPRDirectory(fileName);
             caseCreationPage.UploadDummyProblemReport(filePath);
             FlowUtilities.WaitUntil(
             () => (caseCreationPage.uploadedFile.Text.Contains(fileName)),
