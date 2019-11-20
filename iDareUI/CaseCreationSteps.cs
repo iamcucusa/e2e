@@ -82,7 +82,7 @@ namespace iDareUI
         public void WhenIUploadAProblemReportWithName(string fileName)
         {
             caseCreationPage.PressUploadFileButton();
-            string filePath = GetTestData.GetPRDirectory(fileName);
+            string filePath = DataLocation.GetProblemReportDirectory(fileName);
             caseCreationPage.UploadDummyProblemReport(filePath);
             FlowUtilities.WaitUntil(
             () => (caseCreationPage.uploadedFile.Text.Contains(fileName)),
