@@ -85,6 +85,7 @@ namespace iDareUI.Models
                 var setFocus = WindowsApi.SetForegroundWindow(dialogHWnd);
                 if (setFocus)
                 {
+                    Thread.Sleep(500);
                     SendKeys.SendWait(filePath);
                     SendKeys.SendWait("{ENTER}");
                 }

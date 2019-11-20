@@ -4,6 +4,8 @@ using System;
 using TechTalk.SpecFlow;
 using Xunit;
 using OpenQA.Selenium;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace iDareUI
 {
@@ -69,7 +71,24 @@ namespace iDareUI
         {
             IWebElement timezoneElement = environment.Driver.FindElements(By.CssSelector("div.mat-select-value"))[2];
             timezoneElement.Click();
-            IWebElement timezoneOption = environment.Driver.FindElements(By.CssSelector("span.mat-option-text"))[p0 - 1];
+
+            IReadOnlyCollection<IWebElement> timezoneOptions = null;
+            FlowUtilities.WaitUntil(() =>
+            {
+                timezoneOptions = environment.Driver.FindElements(By.CssSelector("span.mat-option-text"));
+                var optionsLoaded = timezoneOptions.Count >= p0 - 1;
+
+                if (!optionsLoaded)
+                {
+                    IWebElement timezoneElement = environment.Driver.FindElements(By.CssSelector("div.mat-select-value"))[2];
+                    timezoneElement.Click();
+                }
+
+                return optionsLoaded;
+            },
+                TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(100));
+
+            IWebElement timezoneOption = timezoneOptions.ToArray()[p0 - 1];
             timezoneOption.Click();
         }
 

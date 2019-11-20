@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using iDareUI.Common;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace iDareUI.Models
     public class CaseDetailsPage
     {
         private RemoteWebDriver driver;
+        private TestingEnvironment testingEnvironment;
         public CaseDetailsPage(RemoteWebDriver driver)
         {
             this.driver = driver;
@@ -33,6 +35,7 @@ namespace iDareUI.Models
 
         public void PressCloseCaseDetailsButton()
         {
+            FlowUtilities.WaitUntil(() => closeCaseDetailsButton.Enabled, TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(100));
             closeCaseDetailsButton.Click();
         }
     }
