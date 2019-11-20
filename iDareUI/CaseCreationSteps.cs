@@ -69,18 +69,15 @@ namespace iDareUI
         [When(@"I enter the option (.*) of the dropdown as Timezone")]
         public void WhenIEnterTheOptionOfTheDropdownAsTimezone(int p0)
         {
-            IWebElement timezoneElement = environment.Driver.FindElements(By.CssSelector("div.mat-select-value"))[2];
-            timezoneElement.Click();
+            caseCreationPage.timezoneElement.Click();
 
-            IReadOnlyCollection<IWebElement> timezoneOptions = null;
             FlowUtilities.WaitUntil(() =>
             {
-                timezoneOptions = environment.Driver.FindElements(By.CssSelector("span.mat-option-text"));
-                var optionsLoaded = timezoneOptions.Count >= p0 - 1;
+                var optionsLoaded = caseCreationPage.GetTimezoneOptions().Count >= p0 - 1;
 
                 if (!optionsLoaded)
                 {
-                    IWebElement timezoneElement = environment.Driver.FindElements(By.CssSelector("div.mat-select-value"))[2];
+                    IWebElement timezoneElement = caseCreationPage.timezoneElement;
                     timezoneElement.Click();
                 }
 
@@ -88,7 +85,7 @@ namespace iDareUI
             },
                 TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
 
-            IWebElement timezoneOption = timezoneOptions.ToArray()[p0 - 1];
+            IWebElement timezoneOption = caseCreationPage.GetTimezoneOptions().ToArray()[p0 - 1];
             timezoneOption.Click();
         }
 

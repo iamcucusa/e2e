@@ -4,14 +4,12 @@ using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace iDareUI.Models
 {
     public class CaseDetailsPage
     {
         private RemoteWebDriver driver;
-        private TestingEnvironment testingEnvironment;
         public CaseDetailsPage(RemoteWebDriver driver)
         {
             this.driver = driver;

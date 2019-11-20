@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -25,6 +26,12 @@ namespace iDareUI.Models
         public IWebElement SaveButton => driver.FindElements(By.CssSelector("button.mat-button"))[2];
         public IWebElement uploadFileButton => driver.FindElement(By.CssSelector("#mat-dialog-0 > prv-case > div > mat-dialog-content > prv-file-select > div > div.file-select-add > button"));
         public IWebElement uploadedFile => driver.FindElement(By.CssSelector("div.file-to-upload-name"));
+        public IWebElement timezoneElement => driver.FindElements(By.CssSelector("div.mat-select-value"))[2];
+        public IList<IWebElement> GetTimezoneOptions()
+        {
+            IList<IWebElement> timezoneOptions = driver.FindElements(By.CssSelector("span.mat-option-text"));
+            return timezoneOptions;
+        }
 
         public void SetRexisId(string value)
         {
