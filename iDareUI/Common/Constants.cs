@@ -6,7 +6,7 @@ namespace iDareUI.Common
 {
     public class Constants
     {
-        private const string pageUri = @"https://idare-spdemo-ui.azurewebsites.net/";
+        private const string pageUri = @"https://idare-demo-ui.azurewebsites.net/";
         public static string PageUri
         {
             get
@@ -27,5 +27,6 @@ namespace iDareUI.Common
         public const string InvestigatorName = "investigator";
         public const string InvestigatorPassword = "whatever";
 
+        public const string ProblemReportOnlySummary = "ProblemReport_OnlySummary.zip";
     }
 }

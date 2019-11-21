@@ -18,10 +18,11 @@ namespace iDareUI.Models
 
         private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
         private IWebElement newCaseButton => driver.FindElement(By.CssSelector("button.mat-icon-button"));
-        private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));       
+        private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
-
+        private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
+        private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IEnumerable<string> GetGridHeaderNames()
         {
             var headers = this.GetGridHeaderElements();
@@ -54,16 +55,15 @@ namespace iDareUI.Models
 
         public IList<IWebElement> GetCreationTimeElements()
         {
-            IList<IWebElement> allCreationTimeElements = 
+            IList<IWebElement> allCreationTimeElements =
                 driver.FindElements(By.CssSelector("mat-cell.cdk-column-creation-time.mat-column-creation-time.ng-star-inserted")).ToList();
             return allCreationTimeElements;
         }
 
         public string UserRole => userLabel.Text;
         public string RangeLabelText => rangeLabel.Text;
-
         public string firstIdRowText => firstIdRow.Text;
-
+        public string firstCaseSWVersionText => firstCaseSWVersion.Text;
 
         public void PressNextPageButton()
         {
@@ -82,16 +82,14 @@ namespace iDareUI.Models
             casesButton.Click();
         }
 
-
+        public void PressDetailsButton()
+        {
+            detailsButton.Click();
+        }
 
         internal void WaitUntilRangeLabelChanges()
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
-
-
-
-
-
     }
 }

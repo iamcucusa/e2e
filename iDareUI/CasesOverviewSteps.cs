@@ -14,19 +14,46 @@ namespace iDareUI
     {
         private TestingEnvironment environment;
         private MainCasesPage mainCasesPage;
+        private CaseDetailsPage casesDetailsPage;
 
         public CasesOverviewSteps(TestingEnvironment environment)
         {
             this.environment = environment;
             this.mainCasesPage = new MainCasesPage(environment.Driver);
+            this.casesDetailsPage = new CaseDetailsPage(environment.Driver);
         }
-        
+
         [When(@"I go to the Cases overview screen")]
         public void WhenIGoToTheCasesOverviewScreen()
         {
             mainCasesPage.PressCasesButton();
         }
-        
+        [When(@"I enter to the details of a case")]
+        public void WhenIEnterToTheDetailsOfACase()
+        {
+            FlowUtilities.WaitUntil(
+                () => (mainCasesPage.firstIdRowText.Contains("CAS-0123")), TimeSpan.FromSeconds(20), TimeSpan.FromMilliseconds(100),
+                "The created case is not located in the first position of the Cases Overview grid");
+
+            FlowUtilities.WaitUntil(
+                () =>
+                {
+                    try
+                    {
+                        mainCasesPage.PressDetailsButton();
+                        casesDetailsPage.PressCloseCaseDetailsButton();
+                        return mainCasesPage.firstCaseSWVersionText.Contains("01.");
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }, TimeSpan.FromSeconds(20), TimeSpan.FromMilliseconds(1000));
+
+            mainCasesPage.PressDetailsButton();
+            Assert.True(casesDetailsPage.closeCaseDetailsButton.Enabled, "The case details page was not opened.");
+        }
+
         [Then(@"the cases grid with the correct columns is displayed")]
         public void ThenTheCasesGridWithTheCorrectColumnsIsDisplayed()
         {
@@ -52,7 +79,7 @@ namespace iDareUI
 
                         return orderedCreationDateTime.SequenceEqual(obtainedCreationDateTime);
                     }
-                    catch(StaleElementReferenceException ex)
+                    catch (StaleElementReferenceException ex)
                     {
                         environment.Log.Error("Error getting data: " + ex.Message);
                         return false;

@@ -1,9 +1,11 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
 using System;
-using System.Threading;
 using TechTalk.SpecFlow;
 using Xunit;
+using OpenQA.Selenium;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace iDareUI
 {
@@ -64,10 +66,27 @@ namespace iDareUI
             caseCreationPage.SetCountry(value);
         }
 
+        [When(@"I enter the option (.*) of the dropdown as Timezone")]
+        public void WhenIEnterTheOptionOfTheDropdownAsTimezone(int p0)
+        {
+            
+            caseCreationPage.SelectOptionInTimezoneDropdown(p0);
+        }
+
         [When(@"I leave the ID field empty")]
         public void WhenILeaveTheIDFieldEmpty()
         {
             caseCreationPage.SetRexisId("");
+        }
+        [When(@"I upload a Problem Report with name (.*)")]
+        public void WhenIUploadAProblemReportWithName(string fileName)
+        {
+            caseCreationPage.PressUploadFileButton();
+            string filePath = DataLocation.GetProblemReportDirectory(fileName);
+            caseCreationPage.UploadDummyProblemReport(filePath);
+            FlowUtilities.WaitUntil(
+            () => (caseCreationPage.uploadedFile.Text.Contains(fileName)),
+            TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
         }
         [When(@"I press the Save button")]
         public void WhenIPressTheSaveButton()
@@ -89,7 +108,7 @@ namespace iDareUI
         [Then(@"the first page of the cases overview is shown")]
         public void ThenTheFirstPageOfTheCasesOverviewIsShown()
         {
-            
+
             mainCasesPage.WaitUntilRangeLabelChanges();
             Assert.StartsWith("1 -", mainCasesPage.RangeLabelText);
         }
@@ -100,5 +119,17 @@ namespace iDareUI
             FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
 
+        [When(@"I create a new Case")]
+        public void WhenICreateANewCase()
+        {
+            this.GivenIEnterToCreateANewCase();
+            this.WhenIEnterAsRexisID("CAS-0123");
+            this.WhenIEnterAsSerialNumber("12345");
+            this.WhenIEnterAsCountry("Spain");
+            this.WhenIEnterAsCustomer("Customer");
+            this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
+            this.WhenIUploadAProblemReportWithName(Constants.ProblemReportOnlySummary);
+            this.WhenIPressTheSaveButton();
+        }
     }
 }
