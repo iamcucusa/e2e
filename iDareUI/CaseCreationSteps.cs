@@ -128,8 +128,22 @@ namespace iDareUI
             this.WhenIEnterAsCountry("Spain");
             this.WhenIEnterAsCustomer("Customer");
             this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
-            this.WhenIUploadAProblemReportWithName(Constants.ProblemReportOnlySummary);
+            //this.WhenIUploadAProblemReportWithName(Constants.ProblemReportOnlySummary);
             this.WhenIPressTheSaveButton();
+        }
+
+        [Given(@"I count the cases created")]
+        public void ICountTheCasesCreated()
+        {
+            //mainCasesPage.CheckTenCases();
+            FlowUtilities.WaitUntil(() =>
+            {
+                    if (!(mainCasesPage.ReadLabel() > 11))
+                    {
+                        this.WhenICreateANewCase();
+                    }
+                return mainCasesPage.ReadLabel() > 11;
+            }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
     }
 }

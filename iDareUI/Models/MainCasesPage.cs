@@ -23,6 +23,8 @@ namespace iDareUI.Models
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
         private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
+        public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
+
         public IEnumerable<string> GetGridHeaderNames()
         {
             var headers = this.GetGridHeaderElements();
@@ -91,5 +93,29 @@ namespace iDareUI.Models
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
+
+        public int ReadLabel()
+        {
+            FlowUtilities.CheckOut(
+                () =>
+                {
+                    string b = driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-paginator/div/div/div[2]/div")).Text;
+
+                    int start = b.LastIndexOf(" ");
+                    int end = b.Length - start;
+
+                    string c = b.Substring(start, end);
+
+                    int x = Int32.Parse(c);
+                    return x > 11;
+                },TimeSpan.FromSeconds(2), TimeSpan.FromMilliseconds(50));
+            string b = driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-paginator/div/div/div[2]/div")).Text;
+            return Int32.Parse(b.Substring(b.LastIndexOf(" "), b.Length - b.LastIndexOf(" ")));
+        }
+
+        //1. Coger la label
+        //2. Quedarme con los dos ultimos numeros y en otro step los creo
+        //Coger el caso optimista es suponer que hay 1 caso, en vez de que de error que el catch sea recoger el false. :D
     }
+    
 }

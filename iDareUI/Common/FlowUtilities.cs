@@ -23,7 +23,7 @@ namespace iDareUI.Common
             }
         }
 
-        public static bool CheckOut (Func<bool> a, TimeSpan timeout, TimeSpan period, string errorMessage = "")
+        public static bool CheckOut (Func<bool> a, TimeSpan timeout, TimeSpan period)
         {
             Stopwatch watch = Stopwatch.StartNew();
             while (watch.Elapsed < timeout)
