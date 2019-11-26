@@ -96,7 +96,7 @@ namespace iDareUI.Models
 
         public int ReadLabel()
         {
-            FlowUtilities.CheckOut(
+            FlowUtilities.WaitUntilWithoutException(
                 () =>
                 {
                     string b = driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-paginator/div/div/div[2]/div")).Text;

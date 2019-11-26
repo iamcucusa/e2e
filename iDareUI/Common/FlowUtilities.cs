@@ -6,24 +6,7 @@ namespace iDareUI.Common
 {
     public static class FlowUtilities
     {
-        public static void WaitUntil(Func<bool> a, TimeSpan timeout, TimeSpan period, string errorMessage = "")
-        {
-            Stopwatch watch = Stopwatch.StartNew();
-            while (watch.Elapsed < timeout)
-            {
-                if (a())
-                {
-                    return;
-                }
-                Thread.Sleep(period);
-            }
-            if (!a())
-            {
-                throw new TimeoutException(errorMessage);
-            }
-        }
-
-        public static bool CheckOut (Func<bool> a, TimeSpan timeout, TimeSpan period)
+        public static bool WaitUntil(Func<bool> a, TimeSpan timeout, TimeSpan period, string errorMessage = "", bool throwException=true)
         {
             Stopwatch watch = Stopwatch.StartNew();
             while (watch.Elapsed < timeout)
@@ -34,11 +17,16 @@ namespace iDareUI.Common
                 }
                 Thread.Sleep(period);
             }
-            if (!a())
+            if (!a() && throwException)
             {
-                return false;
+                throw new TimeoutException(errorMessage);
             }
             return false;
         }
+        public static bool WaitUntilWithoutException(Func<bool> a, TimeSpan timeout, TimeSpan period)
+        {
+            return WaitUntil(a, timeout, period, "", false);
+        }
+
     }
 }
