@@ -131,23 +131,28 @@ namespace iDareUI
             this.WhenIPressTheSaveButton();
         }
 
-        [Given(@"I count the cases created")]
-        public void ICountTheCasesCreated()
+        [Given(@"there are at least (.*) cases created")]
+        public void ThereAreAtLeastCasesCreated(int cases)
         {
             FlowUtilities.WaitUntil(() =>
             {
-                if (!(mainCasesPage.ReadLabel() > 10))
+                if (!(mainCasesPage.ReadLabel() > cases))
                 {
-                    this.GivenIEnterToCreateANewCase();
-                    this.WhenIEnterAsRexisID("CAS-0123");
-                    this.WhenIEnterAsSerialNumber("12345");
-                    this.WhenIEnterAsCountry("Spain");
-                    this.WhenIEnterAsCustomer("Customer");
-                    this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
-                    this.WhenIPressTheSaveButton();
+                    this.GivenICreateANewCaseWithoutProblemReport();
                 }
-                return mainCasesPage.ReadLabel() > 10;
+                return mainCasesPage.ReadLabel() > cases;
             }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+        }
+        [Given(@"I create a new case without problem report")]
+        public void GivenICreateANewCaseWithoutProblemReport()
+        {
+            this.GivenIEnterToCreateANewCase();
+            this.WhenIEnterAsRexisID("CAS-0123");
+            this.WhenIEnterAsSerialNumber("12345");
+            this.WhenIEnterAsCountry("Spain");
+            this.WhenIEnterAsCustomer("Customer");
+            this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
+            this.WhenIPressTheSaveButton();
         }
     }
 }
