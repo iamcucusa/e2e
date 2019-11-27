@@ -19,10 +19,10 @@ namespace iDareUI.Models
             this.driver = driver;
         }
 
-        private IWebElement RexisId => driver.FindElement(By.Id("mat-input-1"));
-        private IWebElement SerialNo => driver.FindElement(By.Id("mat-input-2"));
-        private IWebElement Customer => driver.FindElement(By.Id("mat-input-3"));
-        private IWebElement Country => driver.FindElement(By.Id("mat-input-4"));
+        private IWebElement RexisId => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[1]/mat-form-field[1]/div/div[1]/div/input"));
+        private IWebElement SerialNo => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[1]/mat-form-field[3]/div/div[1]/div/input"));
+        private IWebElement Customer => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[2]/mat-form-field[1]/div/div[1]/div/input"));
+        private IWebElement Country => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[2]/mat-form-field[2]/div/div[1]/div/input"));
         private IWebElement CancelButton => driver.FindElements(By.CssSelector("button.mat-button"))[0];
         public IWebElement SaveButton => driver.FindElements(By.CssSelector("button.mat-button"))[2];
         public IWebElement uploadFileButton => driver.FindElement(By.CssSelector("#mat-dialog-0 > prv-case > div > mat-dialog-content > prv-file-select > div > div.file-select-add > button"));
@@ -59,9 +59,6 @@ namespace iDareUI.Models
         public void PressCancelButton() { CancelButton.Click(); }
         public void PressSaveButton() { SaveButton.Click(); }
         public void PressUploadFileButton() { uploadFileButton.Click(); }
-
-
-
         public void UploadDummyProblemReport(string filePath)
         {
             if (!File.Exists(filePath))

@@ -69,7 +69,6 @@ namespace iDareUI
         [When(@"I enter the option (.*) of the dropdown as Timezone")]
         public void WhenIEnterTheOptionOfTheDropdownAsTimezone(int p0)
         {
-            
             caseCreationPage.SelectOptionInTimezoneDropdown(p0);
         }
 
@@ -129,6 +128,30 @@ namespace iDareUI
             this.WhenIEnterAsCustomer("Customer");
             this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
             this.WhenIUploadAProblemReportWithName(Constants.ProblemReportOnlySummary);
+            this.WhenIPressTheSaveButton();
+        }
+
+        [Given(@"there are at least (.*) cases created")]
+        public void ThereAreAtLeastCasesCreated(int cases)
+        {
+            FlowUtilities.WaitUntil(() =>
+            {
+                if (!(mainCasesPage.ReadLabel() > cases))
+                {
+                    this.GivenICreateANewCaseWithoutProblemReport();
+                }
+                return mainCasesPage.ReadLabel() > cases;
+            }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+        }
+        [Given(@"I create a new case without problem report")]
+        public void GivenICreateANewCaseWithoutProblemReport()
+        {
+            this.GivenIEnterToCreateANewCase();
+            this.WhenIEnterAsRexisID("CAS-0123");
+            this.WhenIEnterAsSerialNumber("12345");
+            this.WhenIEnterAsCountry("Spain");
+            this.WhenIEnterAsCustomer("Customer");
+            this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
             this.WhenIPressTheSaveButton();
         }
     }
