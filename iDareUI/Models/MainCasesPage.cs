@@ -107,7 +107,7 @@ namespace iDareUI.Models
                         return false;
                     }
                     string c = b.Substring(start);
-                    int x = Int32.Parse(c);
+                    x = Int32.Parse(c);
                     return x > 0;
                 },TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(25));
             return x;

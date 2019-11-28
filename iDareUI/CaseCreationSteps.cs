@@ -147,7 +147,7 @@ namespace iDareUI
         public void GivenICreateANewCaseWithoutProblemReport()
         {
             this.GivenIEnterToCreateANewCase();
-            this.WhenIEnterAsRexisID("CAS-0123");
+            this.WhenIEnterARexisIDWithAUniqueID();
             this.WhenIEnterAsSerialNumber("12345");
             this.WhenIEnterAsCountry("Spain");
             this.WhenIEnterAsCustomer("Customer");
