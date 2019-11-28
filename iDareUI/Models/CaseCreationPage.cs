@@ -19,18 +19,18 @@ namespace iDareUI.Models
             this.driver = driver;
         }
 
-        private IWebElement RexisId => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[1]/mat-form-field[1]/div/div[1]/div/input"));
-        private IWebElement SerialNo => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[1]/mat-form-field[3]/div/div[1]/div/input"));
-        private IWebElement Customer => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[2]/mat-form-field[1]/div/div[1]/div/input"));
-        private IWebElement Country => driver.FindElement(By.XPath("/html/body/div[3]/div[2]/div/mat-dialog-container/prv-case/div/mat-dialog-content/div/form/div/div[2]/mat-form-field[2]/div/div[1]/div/input"));
-        private IWebElement CancelButton => driver.FindElements(By.CssSelector("button.mat-button"))[0];
-        public IWebElement SaveButton => driver.FindElements(By.CssSelector("button.mat-button"))[2];
-        public IWebElement uploadFileButton => driver.FindElement(By.CssSelector("#mat-dialog-0 > prv-case > div > mat-dialog-content > prv-file-select > div > div.file-select-add > button"));
-        public IWebElement uploadedFile => driver.FindElement(By.CssSelector("div.file-to-upload-name"));
-        public IWebElement timezoneElement => driver.FindElements(By.CssSelector("div.mat-select-value"))[2];
+        private IWebElement RexisId => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCaseIDInput']"));
+        private IWebElement SerialNo => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentSerialNoInput']"));
+        private IWebElement Customer => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCustomerInput']"));
+        private IWebElement Country => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCountryInput']"));
+        private IWebElement CancelButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCancelButton']"));
+        public IWebElement SaveButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentSaveButton']"));
+        public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileSelectComponentAddFileButton']"));
+        public IWebElement uploadedFile => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileSelectComponentUploadName']"));
+        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneSelection']"));
         public IList<IWebElement> GetTimezoneOptions()
         {
-            IList<IWebElement> timezoneOptions = driver.FindElements(By.CssSelector("span.mat-option-text"));
+            IList<IWebElement> timezoneOptions = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneOption']"));
             return timezoneOptions;
         }
 
