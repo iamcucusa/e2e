@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
+    <PackageReference Include="EO.Pdf" Version="19.2.91" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />

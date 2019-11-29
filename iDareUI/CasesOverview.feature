@@ -15,7 +15,7 @@ Scenario: Cases overview: cases sorted by creation time
 	Then cases are sorted by creation time
 
 	Scenario: Search a valid Serial number which is existing in the list
-	Given Cases are present with different entries
-	And I type in the search bar a valid Serial number
-	When I press the search icon
+	Given I am logged in as investigator
+	Given I create cases with different Serial No
+	And I search a valid Serial number
 	Then only the cases with that serial number are displayed

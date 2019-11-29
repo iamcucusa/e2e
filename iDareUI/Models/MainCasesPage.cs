@@ -1,9 +1,11 @@
-﻿using iDareUI.Common;
+﻿using EO.Internal;
+using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace iDareUI.Models
@@ -19,11 +21,21 @@ namespace iDareUI.Models
         private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
         private IWebElement newCaseButton => driver.FindElement(By.CssSelector("button.mat-icon-button"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
-        private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
+        public IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
         private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
+        public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
+
+        public int GetCaseCreationLabelIdx(string value)
+        {
+            string[] caseCreationLabels = new string[] { "Case ID", "Serial No", "Country", "Customer" };
+            List<string> caseCreationLabelsList = new List<string>();
+            caseCreationLabelsList = caseCreationLabels.ToList();
+            int idx = caseCreationLabelsList.IndexOf(value);
+            return idx;
+        }
 
         public IEnumerable<string> GetGridHeaderNames()
         {
@@ -36,7 +48,16 @@ namespace iDareUI.Models
             IList<IWebElement> allHeaders = driver.FindElements(By.CssSelector("button.mat-sort-header-button"));
             return allHeaders;
         }
-
+        public IList<IWebElement> GetRowsElements()
+        {
+            IList<IWebElement> rows = driver.FindElements(By.CssSelector("mat-row.ng-star-inserted"));
+            return rows;
+        }
+        public IEnumerable<string> GetRowsElementsText()
+        {
+            var column = this.GetRowsElements();
+            return column.Select(element => element.Text);
+        }
 
         public IEnumerable<DateTime> GetCreationDateTime()
         {
