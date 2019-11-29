@@ -102,7 +102,7 @@ namespace iDareUI
             string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
             int idx = mainCasesPage.GetCaseCreationLabelIdx(value);
             Guid guid = Guid.NewGuid();
-            string uniqueID = guid.ToString();
+            uniqueID = guid.ToString();
             caseCreationValues[idx] = uniqueID;
             this.ICreateACase(caseCreationValues);
             this.ICreateACase(caseCreationValues);
@@ -127,8 +127,8 @@ namespace iDareUI
         {
             IWebElement searchFilter = environment.Driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/prv-table-search/form/mat-form-field/div/div[1]/div/input"));
             searchFilter.Click();
-            searchFilter.SendKeys(uniqueID);
-            FlowUtilities.WaitUntil(() => searchFilter.Text.Contains(uniqueID), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(25));
+            searchFilter.SendKeys(this.uniqueID);
+            //FlowUtilities.WaitUntil(() => searchFilter.Text.Contains(uniqueID), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(25));
             IWebElement searchButton = environment.Driver.FindElements(By.CssSelector("button.mat-icon-button"))[1]; //TENGO QUE BUSCAR CUAL ES
             searchButton.Click();
         }
@@ -139,7 +139,7 @@ namespace iDareUI
         {
 
             var obtainRows = mainCasesPage.GetRowsElementsText();
-            FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+            //FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
 
             Assert.True(obtainRows.All(row => row.Contains(uniqueID)), "The searching filter is not working");
 
