@@ -27,6 +27,8 @@ namespace iDareUI.Models
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
         public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
+        private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/prv-table-search/form/mat-form-field/div/div[1]/div/input"));
+        private IWebElement searchButton => driver.FindElements(By.CssSelector("button.mat-icon-button"))[1];
 
         public int GetCaseCreationLabelIdx(string value)
         {
@@ -108,6 +110,13 @@ namespace iDareUI.Models
         public void PressDetailsButton()
         {
             detailsButton.Click();
+        }
+
+        public void SearchFilterCases(string value)
+        {
+            searchFilter.Click();
+            searchFilter.SendKeys(value);
+            searchButton.Click();
         }
 
         internal void WaitUntilRangeLabelChanges()

@@ -125,25 +125,16 @@ namespace iDareUI
         [Given(@"I search a valid Serial number")]
         public void GivenISearchAValidSerialNumber()
         {
-            IWebElement searchFilter = environment.Driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/prv-table-search/form/mat-form-field/div/div[1]/div/input"));
-            searchFilter.Click();
-            searchFilter.SendKeys(this.uniqueID);
-            //FlowUtilities.WaitUntil(() => searchFilter.Text.Contains(uniqueID), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(25));
-            IWebElement searchButton = environment.Driver.FindElements(By.CssSelector("button.mat-icon-button"))[1]; //TENGO QUE BUSCAR CUAL ES
-            searchButton.Click();
+            mainCasesPage.SearchFilterCases(uniqueID);
         }
-
 
         [Then(@"only the cases with that serial number are displayed")]
         public void ThenOnlyTheCasesWithThatSerialNumberAreDisplayed()
         {
-
             var obtainRows = mainCasesPage.GetRowsElementsText();
-            //FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
-
+            bool result = obtainRows.All(row => row.Contains(uniqueID));
+            FlowUtilities.WaitUntil(() => result, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
             Assert.True(obtainRows.All(row => row.Contains(uniqueID)), "The searching filter is not working");
-
         }
-
     }
 }
