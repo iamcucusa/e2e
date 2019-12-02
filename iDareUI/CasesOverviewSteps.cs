@@ -107,7 +107,7 @@ namespace iDareUI
             this.ICreateACase(caseCreationValues);
             this.ICreateACase(caseCreationValues);
             this.ICreateACase(caseCreationValues);
-
+            
         }
 
         [Given(@"ICreateACase")]
@@ -126,6 +126,7 @@ namespace iDareUI
         public void GivenISearchAValidSerialNumber()
         {
             mainCasesPage.SearchFilterCases(uniqueID);
+            mainCasesPage.PressSearchButton();
         }
 
         [Then(@"only the cases with that serial number are displayed")]
