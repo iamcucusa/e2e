@@ -104,14 +104,14 @@ namespace iDareUI
             Guid guid = Guid.NewGuid();
             uniqueID = guid.ToString();
             caseCreationValues[idx] = uniqueID;
-            this.ICreateACase(caseCreationValues);
-            this.ICreateACase(caseCreationValues);
-            this.ICreateACase(caseCreationValues);
-            
+            this.ICreateACase(caseCreationValues, uniqueID);
+            this.ICreateACase(caseCreationValues, uniqueID);
+            this.ICreateACase(caseCreationValues, uniqueID);
+            mainCasesPage.WaitUntilCasesAreCreated(uniqueID);
         }
 
         [Given(@"ICreateACase")]
-        public void ICreateACase(string [] value)
+        public void ICreateACase(string [] value, string waitingID)
         {
             caseCreationSteps.GivenIEnterToCreateANewCase();
             caseCreationSteps.WhenIEnterAsRexisID(value[0]);
@@ -136,6 +136,9 @@ namespace iDareUI
             bool result = obtainRows.All(row => row.Contains(uniqueID));
             FlowUtilities.WaitUntil(() => result, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
             Assert.True(obtainRows.All(row => row.Contains(uniqueID)), "The searching filter is not working");
+
+
+
         }
     }
 }

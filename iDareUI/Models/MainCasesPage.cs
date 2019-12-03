@@ -114,13 +114,6 @@ namespace iDareUI.Models
 
         public void SearchFilterCases(string value)
         {
-            FlowUtilities.WaitUntil(
-                () =>
-                {
-                    IWebElement firstRow = driver.FindElements(By.CssSelector("mat-row.ng-star-inserted"))[2];
-                    string firstRowText = firstRow.Text;
-                    return firstRowText.Contains(value);
-                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
             searchFilter.Click();
             searchFilter.SendKeys(value);
         }
@@ -132,6 +125,16 @@ namespace iDareUI.Models
         internal void WaitUntilRangeLabelChanges()
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+        }
+        internal void WaitUntilCasesAreCreated(string value)
+        {
+            FlowUtilities.WaitUntil(
+                () =>
+                {
+                    var obtainRows = GetRowsElementsText();
+                    int numberCases = obtainRows.Count(row => row.Contains(value));
+                    return numberCases == 3;
+                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
 
         public int ReadLabel()
