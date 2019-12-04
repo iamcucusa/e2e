@@ -17,10 +17,16 @@ namespace iDareUI
         private TestingEnvironment environment;
         private MainCasesPage mainCasesPage;
         private CaseDetailsPage casesDetailsPage;
-        public CaseCreationSteps caseCreationSteps;
+        private CaseCreationSteps caseCreationSteps;
         private CaseCreationPage caseCreationPage;
-        private string uniqueID;
-
+        private Case caseCreatedForSearch;
+        public enum CaseSearchProperty
+        {
+            CaseId,
+            SerialNumber,
+            Customer,
+            Country
+        }
 
         public CasesOverviewSteps(TestingEnvironment environment)
         {
@@ -96,49 +102,57 @@ namespace iDareUI
                 }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
         }
 
-        [Given(@"I create cases with different (.*)")]
-        public void GivenICreateCasesWithDifferent(string value)
+        [Given(@"I create two duplicate cases and a different case")]
+        public void GivenICreateTwoDuplicateCasesAndADifferentCase()
         {
-            string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
-            int idx = mainCasesPage.GetCaseCreationLabelIdx(value);
-            Guid guid = Guid.NewGuid();
-            uniqueID = guid.ToString();
-            caseCreationValues[idx] = uniqueID;
-            this.ICreateACase(caseCreationValues, uniqueID);
-            this.ICreateACase(caseCreationValues, uniqueID);
-            this.ICreateACase(caseCreationValues, uniqueID);
-            mainCasesPage.WaitUntilCasesAreCreated(uniqueID);
+            caseCreatedForSearch = Case.GetRandomCase();
+            this.CreateCase(caseCreatedForSearch);
+            this.CreateCase(caseCreatedForSearch);
+            var myCase2 = Case.GetRandomCase();
+            this.CreateCase(myCase2);
+            mainCasesPage.WaitUntilCasesAreCreated(myCase2.CaseID);
         }
 
-        [Given(@"ICreateACase")]
-        public void ICreateACase(string [] value, string waitingID)
+        private void CreateCase(Case c)
         {
             caseCreationSteps.GivenIEnterToCreateANewCase();
-            caseCreationSteps.WhenIEnterAsRexisID(value[0]);
-            caseCreationSteps.WhenIEnterAsSerialNumber(value[1]);
-            caseCreationSteps.WhenIEnterAsCountry(value[2]);
-            caseCreationSteps.WhenIEnterAsCustomer(value[3]);
+            caseCreationSteps.WhenIEnterAsRexisID(c.CaseID);
+            caseCreationSteps.WhenIEnterAsSerialNumber(c.SerialNo);
+            caseCreationSteps.WhenIEnterAsCountry(c.Country);
+            caseCreationSteps.WhenIEnterAsCustomer(c.Customer);
             caseCreationSteps.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
             caseCreationSteps.WhenIPressTheSaveButton();
         }
 
-        [Given(@"I search a valid Serial number")]
-        public void GivenISearchAValidSerialNumber()
+
+        [When(@"I search by (.*) of the duplicate cases")]
+        public void WhenISearchByOfTheDuplicateCases(CaseSearchProperty property)
         {
-            mainCasesPage.SearchFilterCases(uniqueID);
+            switch (property)
+            {
+                case CaseSearchProperty.CaseId:
+                    throw new NotImplementedException();
+                case CaseSearchProperty.Country:
+                    throw new NotImplementedException();
+                case CaseSearchProperty.Customer:
+                    throw new NotImplementedException();
+                case CaseSearchProperty.SerialNumber:
+                    mainCasesPage.SearchFilterCases(caseCreatedForSearch.SerialNo);
+                    break;
+                default:
+                    throw new InvalidOperationException("The search property is wrong.");
+            }
+            
             mainCasesPage.PressSearchButton();
         }
 
-        [Then(@"only the cases with that serial number are displayed")]
-        public void ThenOnlyTheCasesWithThatSerialNumberAreDisplayed()
+        [Then(@"only the two cases I created are displayed")]
+        public void ThenOnlyTheTwoCasesICreatedAreDisplayed()
         {
-            var obtainRows = mainCasesPage.GetRowsElementsText();
-            bool result = obtainRows.All(row => row.Contains(uniqueID));
-            FlowUtilities.WaitUntil(() => result, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
-            Assert.True(obtainRows.All(row => row.Contains(uniqueID)), "The searching filter is not working");
-
-
-
+            var ret = mainCasesPage.GetRowsElementsCases();
+            string SNo = caseCreatedForSearch.SerialNo;
+            Assert.True(ret.All(myCase => myCase.SerialNo.Contains(SNo)), "The searching filter is not working");
+            Assert.Equal(2, ret.Count());
         }
     }
 }

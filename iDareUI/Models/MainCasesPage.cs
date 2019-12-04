@@ -55,10 +55,27 @@ namespace iDareUI.Models
             IList<IWebElement> rows = driver.FindElements(By.CssSelector("mat-row.ng-star-inserted"));
             return rows;
         }
-        public IEnumerable<string> GetRowsElementsText()
+        public IEnumerable<Case> GetRowsElementsCases()
         {
-            var column = this.GetRowsElements();
-            return column.Select(element => element.Text);
+            var ret = new List<Case>();
+            var rows = this.GetRowsElements();
+
+            foreach (var row in rows)
+            {
+                IWebElement rowCaseID = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"));
+                IWebElement rowSerialNo = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-serial-no.mat-column-serial-no.ng-star-inserted"));
+                IWebElement rowCustomer = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-customer.mat-column-customer.ng-star-inserted"));
+                IWebElement rowCountry = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-country.mat-column-country.ng-star-inserted"));
+
+                var myCase = new Case();
+                myCase.CaseID = rowCaseID.Text;
+                myCase.SerialNo = rowSerialNo.Text;
+                myCase.Customer = rowCustomer.Text;
+                myCase.Country = rowCountry.Text;
+
+             ret.Add(myCase);
+            }
+            return ret;
         }
 
         public IEnumerable<DateTime> GetCreationDateTime()
@@ -126,15 +143,21 @@ namespace iDareUI.Models
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
-        internal void WaitUntilCasesAreCreated(string value)
+        internal void WaitUntilCasesAreCreated(string caseId)
         {
             FlowUtilities.WaitUntil(
                 () =>
                 {
-                    var obtainRows = GetRowsElementsText();
-                    int numberCases = obtainRows.Count(row => row.Contains(value));
-                    return numberCases == 3;
-                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+                    try
+                    {
+                        var ret = GetRowsElementsCases();
+                        return ret.Any(myCase => myCase.CaseID.Contains(caseId));
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(25));
         }
 
         public int ReadLabel()

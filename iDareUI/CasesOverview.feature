@@ -16,6 +16,6 @@ Scenario: Cases overview: cases sorted by creation time
 
 	Scenario: Search a valid Serial number which is existing in the list
 	Given I am logged in as investigator
-	Given I create cases with different Serial No
-	And I search a valid Serial number
-	Then only the cases with that serial number are displayed
+	And I create two duplicate cases and a different case
+	When I search by SerialNumber of the duplicate cases
+	Then only the two cases I created are displayed
