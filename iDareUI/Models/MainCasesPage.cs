@@ -30,15 +30,6 @@ namespace iDareUI.Models
         private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/prv-table-search/form/mat-form-field/div/div[1]/div/input"));
         private IWebElement searchButton => driver.FindElements(By.CssSelector("button.mat-icon-button"))[1];
 
-        public int GetCaseCreationLabelIdx(string value)
-        {
-            string[] caseCreationLabels = new string[] { "Case ID", "Serial No", "Country", "Customer" };
-            List<string> caseCreationLabelsList = new List<string>();
-            caseCreationLabelsList = caseCreationLabels.ToList();
-            int idx = caseCreationLabelsList.IndexOf(value);
-            return idx;
-        }
-
         public IEnumerable<string> GetGridHeaderNames()
         {
             var headers = this.GetGridHeaderElements();
@@ -73,7 +64,7 @@ namespace iDareUI.Models
                 myCase.Customer = rowCustomer.Text;
                 myCase.Country = rowCountry.Text;
 
-             ret.Add(myCase);
+                ret.Add(myCase);
             }
             return ret;
         }
