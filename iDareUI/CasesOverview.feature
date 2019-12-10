@@ -14,3 +14,8 @@ Scenario: Cases overview: cases sorted by creation time
 	When I go to the Cases overview screen
 	Then cases are sorted by creation time
 
+	Scenario: Search a valid Serial number which is existing in the list
+	Given I am logged in as investigator
+	And I create two duplicate cases and a different case
+	When I search by SerialNumber of the duplicate cases
+	Then only the two cases I created are displayed

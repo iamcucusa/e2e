@@ -1,11 +1,13 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace iDareUI
 {
@@ -15,12 +17,24 @@ namespace iDareUI
         private TestingEnvironment environment;
         private MainCasesPage mainCasesPage;
         private CaseDetailsPage casesDetailsPage;
+        private CaseCreationSteps caseCreationSteps;
+        private CaseCreationPage caseCreationPage;
+        private Case caseCreatedForSearch;
+        public enum CaseSearchProperty
+        {
+            CaseId,
+            SerialNumber,
+            Customer,
+            Country
+        }
 
         public CasesOverviewSteps(TestingEnvironment environment)
         {
             this.environment = environment;
             this.mainCasesPage = new MainCasesPage(environment.Driver);
             this.casesDetailsPage = new CaseDetailsPage(environment.Driver);
+            this.caseCreationPage = new CaseCreationPage(environment.Driver);
+            this.caseCreationSteps = new CaseCreationSteps(environment);
         }
 
         [When(@"I go to the Cases overview screen")]
@@ -86,6 +100,59 @@ namespace iDareUI
                     }
 
                 }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+        }
+
+        [Given(@"I create two duplicate cases and a different case")]
+        public void GivenICreateTwoDuplicateCasesAndADifferentCase()
+        {
+            caseCreatedForSearch = Case.GetRandomCase();
+            this.CreateCase(caseCreatedForSearch);
+            this.CreateCase(caseCreatedForSearch);
+            var myCase2 = Case.GetRandomCase();
+            this.CreateCase(myCase2);
+            mainCasesPage.WaitUntilCasesAreCreated(myCase2.CaseID);
+        }
+
+        private void CreateCase(Case c)
+        {
+            caseCreationSteps.GivenIEnterToCreateANewCase();
+            caseCreationSteps.WhenIEnterAsRexisID(c.CaseID);
+            caseCreationSteps.WhenIEnterAsSerialNumber(c.SerialNo);
+            caseCreationSteps.WhenIEnterAsCountry(c.Country);
+            caseCreationSteps.WhenIEnterAsCustomer(c.Customer);
+            caseCreationSteps.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
+            caseCreationSteps.WhenIPressTheSaveButton();
+        }
+
+
+        [When(@"I search by (.*) of the duplicate cases")]
+        public void WhenISearchByOfTheDuplicateCases(CaseSearchProperty property)
+        {
+            switch (property)
+            {
+                case CaseSearchProperty.CaseId:
+                    throw new NotImplementedException();
+                case CaseSearchProperty.Country:
+                    throw new NotImplementedException();
+                case CaseSearchProperty.Customer:
+                    throw new NotImplementedException();
+                case CaseSearchProperty.SerialNumber:
+                    mainCasesPage.SearchFilterCases(caseCreatedForSearch.SerialNo);
+                    break;
+                default:
+                    throw new InvalidOperationException("The search property is wrong.");
+            }
+            
+            mainCasesPage.PressSearchButton();
+        }
+
+        [Then(@"only the two cases I created are displayed")]
+        public void ThenOnlyTheTwoCasesICreatedAreDisplayed()
+        {
+            var ret = mainCasesPage.GetRowsElementsCases();
+            string SNo = caseCreatedForSearch.SerialNo;
+            Assert.True(ret.All(myCase => myCase.SerialNo.Contains(SNo)), "The searching filter is not working");
+            Assert.Equal(2, ret.Count());
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using iDareUI.Common;
+﻿using EO.Internal;
+using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace iDareUI.Models
@@ -24,6 +26,9 @@ namespace iDareUI.Models
         private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
+        public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
+        private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/prv-table-search/form/mat-form-field/div/div[1]/div/input"));
+        private IWebElement searchButton => driver.FindElements(By.CssSelector("button.mat-icon-button"))[1];
 
         public IEnumerable<string> GetGridHeaderNames()
         {
@@ -36,7 +41,33 @@ namespace iDareUI.Models
             IList<IWebElement> allHeaders = driver.FindElements(By.CssSelector("button.mat-sort-header-button"));
             return allHeaders;
         }
+        public IList<IWebElement> GetRowsElements()
+        {
+            IList<IWebElement> rows = driver.FindElements(By.CssSelector("mat-row.ng-star-inserted"));
+            return rows;
+        }
+        public IEnumerable<Case> GetRowsElementsCases()
+        {
+            var ret = new List<Case>();
+            var rows = this.GetRowsElements();
 
+            foreach (var row in rows)
+            {
+                IWebElement rowCaseID = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"));
+                IWebElement rowSerialNo = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-serial-no.mat-column-serial-no.ng-star-inserted"));
+                IWebElement rowCustomer = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-customer.mat-column-customer.ng-star-inserted"));
+                IWebElement rowCountry = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-country.mat-column-country.ng-star-inserted"));
+
+                var myCase = new Case();
+                myCase.CaseID = rowCaseID.Text;
+                myCase.SerialNo = rowSerialNo.Text;
+                myCase.Customer = rowCustomer.Text;
+                myCase.Country = rowCountry.Text;
+
+                ret.Add(myCase);
+            }
+            return ret;
+        }
 
         public IEnumerable<DateTime> GetCreationDateTime()
         {
@@ -89,9 +120,35 @@ namespace iDareUI.Models
             detailsButton.Click();
         }
 
+        public void SearchFilterCases(string value)
+        {
+            searchFilter.Click();
+            searchFilter.SendKeys(value);
+        }
+        public void PressSearchButton()
+        {
+            searchButton.Click();
+        }
+
         internal void WaitUntilRangeLabelChanges()
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+        }
+        internal void WaitUntilCasesAreCreated(string caseId)
+        {
+            FlowUtilities.WaitUntil(
+                () =>
+                {
+                    try
+                    {
+                        var ret = GetRowsElementsCases();
+                        return ret.Any(myCase => myCase.CaseID.Contains(caseId));
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(25));
         }
 
         public int ReadLabel()
