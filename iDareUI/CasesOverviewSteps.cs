@@ -131,11 +131,14 @@ namespace iDareUI
             switch (property)
             {
                 case CaseSearchProperty.CaseId:
-                    throw new NotImplementedException();
+                    mainCasesPage.SearchFilterCases(caseCreatedForSearch.CaseID);
+                    break;
                 case CaseSearchProperty.Country:
-                    throw new NotImplementedException();
+                    mainCasesPage.SearchFilterCases(caseCreatedForSearch.Country);
+                    break;
                 case CaseSearchProperty.Customer:
-                    throw new NotImplementedException();
+                    mainCasesPage.SearchFilterCases(caseCreatedForSearch.Customer);
+                    break;
                 case CaseSearchProperty.SerialNumber:
                     mainCasesPage.SearchFilterCases(caseCreatedForSearch.SerialNo);
                     break;
@@ -146,12 +149,37 @@ namespace iDareUI
             mainCasesPage.PressSearchButton();
         }
 
-        [Then(@"only the two cases I created are displayed")]
-        public void ThenOnlyTheTwoCasesICreatedAreDisplayed()
+
+        [Then(@"the only two cases with the same (.*) I created are displayed")]
+        public void ThenTheOnlyTwoCasesWithTheSameICreatedAreDisplayed(CaseSearchProperty property)
         {
             var ret = mainCasesPage.GetRowsElementsCases();
-            string SNo = caseCreatedForSearch.SerialNo;
-            Assert.True(ret.All(myCase => myCase.SerialNo.Contains(SNo)), "The searching filter is not working");
+            string caseProperty = null;
+            bool value = false;
+
+            switch (property)
+            {
+                case CaseSearchProperty.CaseId:
+                    caseProperty = caseCreatedForSearch.CaseID;
+                    value = ret.All(myCase => myCase.CaseID.Contains(caseProperty));
+                    break;
+                case CaseSearchProperty.Country:
+                    caseProperty = caseCreatedForSearch.Country;
+                    value = ret.All(myCase => myCase.Country.Contains(caseProperty));
+                    break;
+                case CaseSearchProperty.Customer:
+                    caseProperty = caseCreatedForSearch.Customer;
+                    value = ret.All(myCase => myCase.Customer.Contains(caseProperty));
+                    break;
+                case CaseSearchProperty.SerialNumber:
+                    caseProperty = caseCreatedForSearch.SerialNo;
+                    value = ret.All(myCase => myCase.SerialNo.Contains(caseProperty));
+                    break;
+                default:
+                    throw new InvalidOperationException("The search property is wrong.");
+            }
+            
+            Assert.True(value, "The searching filter is not working");
             Assert.Equal(2, ret.Count());
         }
     }
