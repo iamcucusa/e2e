@@ -1,5 +1,4 @@
-﻿using EO.Internal;
-using iDareUI.Common;
+﻿using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
@@ -19,7 +18,7 @@ namespace iDareUI.Models
         }
 
         private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
-        private IWebElement newCaseButton => driver.FindElement(By.CssSelector("button.mat-icon-button"));
+        private IWebElement newCaseButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/button[2]"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
