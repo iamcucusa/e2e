@@ -168,7 +168,7 @@ namespace iDareUI
         [Then(@"the status gets updated")]
         public void ThenTheStatusGetsUpdated()
         {
-            mainCasesPage.WaitUntilProgressBarShowsUpdatedStatus();
+            mainCasesPage.WaitUntilProgressBarShowsUpdatedStatus(2000);
         }
 
     }

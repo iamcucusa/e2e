@@ -177,12 +177,12 @@ namespace iDareUI.Models
                 }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
         }
 
-        public void WaitUntilProgressBarShowsUpdatedStatus()
+        public void WaitUntilProgressBarShowsUpdatedStatus(int maxWaitSeconds)
         {
             FlowUtilities.WaitUntil(() =>
                 {
                     return driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseUploadFileSuccess']")) != null;
-                }, TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(100));
+                }, TimeSpan.FromSeconds(maxWaitSeconds), TimeSpan.FromMilliseconds(100));
         }
     }
 }

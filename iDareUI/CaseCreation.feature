@@ -29,7 +29,7 @@ Scenario: Uploaded files have their status shown in real time
 			And I enter Spain as Country
 			And I enter a Rexis ID with a unique ID
 			And I enter the option 1 of the dropdown as Timezone
-			And I upload a Problem Report with name ProblemReport_OnlySummary.zip
+			And I upload a Problem Report with name RealDataSmall.zip
 			And I press the Save button
 		Then I should see the progress of the upload
 			And the status gets updated
