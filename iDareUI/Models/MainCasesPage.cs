@@ -168,5 +168,21 @@ namespace iDareUI.Models
                 },TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(25));
             return x;
         }
+
+        public void WaitUntilProgressBarIsShown()
+        {
+            FlowUtilities.WaitUntil(() =>
+                {
+                    return driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']")) != null;
+                }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+        }
+
+        public void WaitUntilProgressBarShowsUpdatedStatus()
+        {
+            FlowUtilities.WaitUntil(() =>
+                {
+                    return driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseUploadFileSuccess']")) != null;
+                }, TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(100));
+        }
     }
 }

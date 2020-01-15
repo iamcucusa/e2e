@@ -25,8 +25,9 @@ namespace iDareUI.Models
         private IWebElement Country => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCountryInput']"));
         private IWebElement CancelButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCancelButton']"));
         public IWebElement SaveButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentSaveButton']"));
-        public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileSelectComponentAddFileButton']"));
-        public IWebElement uploadedFile => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileSelectComponentUploadName']"));
+        public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
+        //public IWebElement uploadedFile => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFileToUpload1Name']"));
+        public IWebElement caseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
         public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneSelection']"));
         public IList<IWebElement> GetTimezoneOptions()
         {

@@ -6,6 +6,9 @@ using Xunit;
 using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 
 namespace iDareUI
 {
@@ -83,8 +86,9 @@ namespace iDareUI
             caseCreationPage.PressUploadFileButton();
             string filePath = DataLocation.GetProblemReportDirectory(fileName);
             caseCreationPage.UploadDummyProblemReport(filePath);
+
             FlowUtilities.WaitUntil(
-            () => (caseCreationPage.uploadedFile.Text.Contains(fileName)),
+                () => (caseCreationPage.caseFilesToUploadList.Text.Contains(fileName)),
             TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
         }
         [When(@"I press the Save button")]
@@ -154,5 +158,18 @@ namespace iDareUI
             this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
             this.WhenIPressTheSaveButton();
         }
+
+        [Then(@"I should see the progress of the upload")]
+        public void ThenIShouldSeeTheProgressOfTheUpload()
+        {
+            mainCasesPage.WaitUntilProgressBarIsShown();
+        }
+
+        [Then(@"the status gets updated")]
+        public void ThenTheStatusGetsUpdated()
+        {
+            mainCasesPage.WaitUntilProgressBarShowsUpdatedStatus();
+        }
+
     }
 }
