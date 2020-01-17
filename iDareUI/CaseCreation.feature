@@ -21,7 +21,7 @@ Scenario: New cases are placed on the top of the first page of the cases overvie
 	Then the first page of the cases overview is shown
 		And the case with the unique ID as Rexis ID is on the top of the list
 
-Scenario: Uploaded files have their status shown in real time
+Scenario: Uploaded files have their status shown in real time successful
 		Given I am logged in as teacher
 			And I enter to create a new case
 		When I enter Customer as Customer
@@ -32,4 +32,17 @@ Scenario: Uploaded files have their status shown in real time
 			And I upload a Problem Report with name RealDataSmall.zip
 			And I press the Save button
 		Then I should see the progress of the upload
-			And the status gets updated
+			And the status gets updated as successful
+
+Scenario: Uploaded files have their status shown in real time error
+		Given I am logged in as teacher
+			And I enter to create a new case
+		When I enter Customer as Customer
+			And I enter A1234 as Serial number
+			And I enter Spain as Country
+			And I enter a Rexis ID with a unique ID
+			And I enter the option 1 of the dropdown as Timezone
+			And I upload a Problem Report with name RealDataSmallFail.zip
+			And I press the Save button
+		Then I should see the progress of the upload
+			And the status gets updated as error
