@@ -3,12 +3,6 @@ using iDareUI.Models;
 using System;
 using TechTalk.SpecFlow;
 using Xunit;
-using OpenQA.Selenium;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 
 namespace iDareUI
 {
