@@ -31,7 +31,7 @@ Scenario: Uploaded files have their status shown in real time successful
 			And I enter the option 1 of the dropdown as Timezone
 			And I upload a Problem Report with name RealDataSmall.zip
 			And I press the Save button
-		Then I should see the progress of the upload
+		Then I should see the progress of the 1 uploads
 			And the status gets updated as successful
 
 Scenario: Uploaded files have their status shown in real time error
@@ -44,5 +44,28 @@ Scenario: Uploaded files have their status shown in real time error
 			And I enter the option 1 of the dropdown as Timezone
 			And I upload a Problem Report with name RealDataSmallFail.zip
 			And I press the Save button
-		Then I should see the progress of the upload
+		Then I should see the progress of the 1 uploads
 			And the status gets updated as error
+
+Scenario: Multiple files are uploaded to a more than one case showing the correct status bars
+		Given I am logged in as teacher
+			And I enter to create a new case
+		When I enter Customer as Customer
+			And I enter A1234 as Serial number
+			And I enter Spain as Country
+			And I enter a Rexis ID with a unique ID
+			And I enter the option 1 of the dropdown as Timezone
+			And I upload a Problem Report with name RealDataSmall.zip
+			And I upload a Problem Report with name RealDataSmall2.zip
+			And I press the Save button
+		Then I should see the progress of the 2 uploads
+		Given I enter to create a new case
+		When I enter Customer1 as Customer
+			And I enter A12345 as Serial number
+			And I enter SWitzerland as Country
+			And I enter a Rexis ID with a unique ID
+			And I enter the option 2 of the dropdown as Timezone
+			And I upload a Problem Report with name RealDataSmall.zip
+			And I upload a Problem Report with name RealDataSmall2.zip
+			And I press the Save button
+		Then I should see the progress of the 4 uploads

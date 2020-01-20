@@ -89,7 +89,7 @@ namespace iDareUI
 
             FlowUtilities.WaitUntil(
                 () => (caseCreationPage.caseFilesToUploadList.Text.Contains(fileName)),
-            TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+            TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
         [When(@"I press the Save button")]
         public void WhenIPressTheSaveButton()
@@ -159,10 +159,10 @@ namespace iDareUI
             this.WhenIPressTheSaveButton();
         }
 
-        [Then(@"I should see the progress of the upload")]
-        public void ThenIShouldSeeTheProgressOfTheUpload()
+        [Then(@"I should see the progress of the (.*) uploads")]
+        public void ThenIShouldSeeTheProgressOfTheUpload(int numberOfUploads)
         {
-            mainCasesPage.WaitUntilProgressBarIsShown();
+            mainCasesPage.WaitUntilProgressBarIsShown(numberOfUploads);
         }
         [Then(@"the status gets updated as successful")]
         public void ThenTheStatusGetsUpdatedAsSuccessful()

@@ -69,7 +69,7 @@ namespace iDareUI.Models
 
             FlowUtilities.WaitUntil(
                 () => (WindowsApi.FindWindow(null, "Abrir") != IntPtr.Zero || WindowsApi.FindWindow(null, "Open") != IntPtr.Zero),
-                TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+                TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
             if (WindowsApi.FindWindow(null, "Abrir") != IntPtr.Zero)
             {
                 var dialogHWnd = WindowsApi.FindWindow(null, "Abrir");
