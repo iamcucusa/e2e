@@ -60,17 +60,17 @@ namespace iDareUI
         public void GivenIAmLoggedInAsTeacher()
         {
             this.GivenIAmInTheLoginScreen();
-            this.GivenIEnterTheUsername(Constants.TeacherUserName);
-            this.GivenIEnterThePassword(Constants.TeacherPassword);
-            this.WhenILogin();
+            //this.GivenIEnterTheUsername(Constants.TeacherUserName);
+            //this.GivenIEnterThePassword(Constants.TeacherPassword);
+            //this.WhenILogin();
         }
         [Given(@"I am logged in as investigator")]
         public void GivenIAmLoggedInAsInvestigator()
         {
             this.GivenIAmInTheLoginScreen();
-            this.GivenIEnterTheUsername(Constants.InvestigatorName);
-            this.GivenIEnterThePassword(Constants.InvestigatorPassword);
-            this.WhenILogin();
+           // this.GivenIEnterTheUsername(Constants.InvestigatorName);
+            //this.GivenIEnterThePassword(Constants.InvestigatorPassword);
+           // this.WhenILogin();
         }
 
     }

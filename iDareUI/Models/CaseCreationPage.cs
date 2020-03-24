@@ -28,7 +28,7 @@ namespace iDareUI.Models
         public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
         //public IWebElement uploadedFile => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFileToUpload1Name']"));
         public IWebElement caseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
-        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneSelection']"));
+        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']"));
         public IList<IWebElement> GetTimezoneOptions()
         {
             IList<IWebElement> timezoneOptions = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneOption']"));
@@ -97,6 +97,7 @@ namespace iDareUI.Models
         public void SelectOptionInTimezoneDropdown(int p0)
         {
             timezoneElement.Click();
+            timezoneElement.SendKeys("U");
             FlowUtilities.WaitUntil(() =>
             {
                 var optionsLoaded = GetTimezoneOptions().Count >= p0 - 1;
