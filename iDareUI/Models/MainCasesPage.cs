@@ -18,7 +18,7 @@ namespace iDareUI.Models
             this.driver = driver;
         }
 
-        private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
+        private IWebElement userLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='HeadlineComponentName']")); 
         private IWebElement newCaseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentAddCaseButton']"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
@@ -132,7 +132,7 @@ namespace iDareUI.Models
             searchFilter.Click();
             searchFilter.SendKeys(value);
         }
-        public void PressSearchButton()
+        public void PressEnterToFilter()
         {
             searchFilter.SendKeys(Keys.Enter);
         }

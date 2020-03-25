@@ -5,7 +5,7 @@
 
 @mytag
 Scenario: User does not enter mandatory fields when creating a new case
-	Given I am logged in as teacher
+		Given I am in the Overview screen
 		And I enter to create a new case
 	When I enter Customer as Customer
 		And I enter A1234 as Serial number
@@ -14,7 +14,7 @@ Scenario: User does not enter mandatory fields when creating a new case
 	Then the Save button is disabled
 	
 Scenario: New cases are placed on the top of the first page of the cases overview
-		Given I am logged in as investigator
+		Given I am in the Overview screen
 		Given there are at least 10 cases created
 		And I navigate to the next case page 
 		And I create a new case without problem report
@@ -22,7 +22,7 @@ Scenario: New cases are placed on the top of the first page of the cases overvie
 		And the case with the unique ID as Rexis ID is on the top of the list
 
 Scenario: Uploaded files have their status shown in real time successful
-		Given I am logged in as teacher
+		Given I am in the Overview screen
 			And I enter to create a new case
 		When I enter Customer as Customer
 			And I enter A1234 as Serial number
@@ -35,7 +35,7 @@ Scenario: Uploaded files have their status shown in real time successful
 			And the status gets updated as successful
 
 Scenario: Uploaded files have their status shown in real time error
-		Given I am logged in as teacher
+		Given I am in the Overview screen
 			And I enter to create a new case
 		When I enter Customer as Customer
 			And I enter A1234 as Serial number
@@ -48,7 +48,7 @@ Scenario: Uploaded files have their status shown in real time error
 			And the status gets updated as error
 
 Scenario: Multiple files are uploaded to a more than one case showing the correct status bars
-		Given I am logged in as teacher
+		Given I am in the Overview screen
 			And I enter to create a new case
 		When I enter Customer as Customer
 			And I enter A1234 as Serial number

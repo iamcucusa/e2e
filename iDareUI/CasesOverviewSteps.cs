@@ -146,7 +146,7 @@ namespace iDareUI
                     throw new InvalidOperationException("The search property is wrong.");
             }
             
-            mainCasesPage.PressSearchButton();
+            mainCasesPage.PressEnterToFilter();
         }
 
 
@@ -157,7 +157,6 @@ namespace iDareUI
                 () => (mainCasesPage.SelectCases(caseCreatedForSearch, property)), TimeSpan.FromSeconds(2000), TimeSpan.FromMilliseconds(25));
 
             Assert.True(mainCasesPage.SelectCases(caseCreatedForSearch, property), "The searching filter is not working");
-            //Assert.Equal(2, ret.Count());
         }
     }
 }
