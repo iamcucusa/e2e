@@ -5,7 +5,7 @@
 
 @mytag
 Scenario: Information in Instrument Information section is shown
-	Given I am logged in as teacher
+	Given I am in the Overview screen
 	When I create a new Case
 		And I enter to the details of a case
 	Then the Instrument Information should be shown under the Intrument Information section

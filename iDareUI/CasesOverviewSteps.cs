@@ -71,7 +71,7 @@ namespace iDareUI
         [Then(@"the cases grid with the correct columns is displayed")]
         public void ThenTheCasesGridWithTheCorrectColumnsIsDisplayed()
         {
-            string[] casesGridColumns = new string[] { "Case ID", "System", "Serial No.", "SW Version", "Created", "Customer", "Country", "Created by", "Issues" };
+            string[] casesGridColumns = new string[] { "Case ID", "System", "Serial No.", "SW Version", "Created (UTC)", "Customer", "Country", "Created by", "Issues" };
             var obtainColumns = mainCasesPage.GetGridHeaderNames();
             Assert.True(casesGridColumns.SequenceEqual(obtainColumns),
                 $"The grid headers are not the expected ones. \nExpected: {string.Join(", ", casesGridColumns)}, \nActual: {string.Join(", ", obtainColumns)}");
@@ -146,41 +146,17 @@ namespace iDareUI
                     throw new InvalidOperationException("The search property is wrong.");
             }
             
-            mainCasesPage.PressSearchButton();
+            mainCasesPage.PressEnterToFilter();
         }
 
 
         [Then(@"the only two cases with the same (.*) I created are displayed")]
         public void ThenTheOnlyTwoCasesWithTheSameICreatedAreDisplayed(CaseSearchProperty property)
         {
-            var ret = mainCasesPage.GetRowsElementsCases();
-            string caseProperty = null;
-            bool value = false;
+            FlowUtilities.WaitUntil(
+                () => (mainCasesPage.SelectCases(caseCreatedForSearch, property)), TimeSpan.FromSeconds(2000), TimeSpan.FromMilliseconds(25));
 
-            switch (property)
-            {
-                case CaseSearchProperty.CaseId:
-                    caseProperty = caseCreatedForSearch.CaseID;
-                    value = ret.All(myCase => myCase.CaseID.Contains(caseProperty));
-                    break;
-                case CaseSearchProperty.Country:
-                    caseProperty = caseCreatedForSearch.Country;
-                    value = ret.All(myCase => myCase.Country.Contains(caseProperty));
-                    break;
-                case CaseSearchProperty.Customer:
-                    caseProperty = caseCreatedForSearch.Customer;
-                    value = ret.All(myCase => myCase.Customer.Contains(caseProperty));
-                    break;
-                case CaseSearchProperty.SerialNumber:
-                    caseProperty = caseCreatedForSearch.SerialNo;
-                    value = ret.All(myCase => myCase.SerialNo.Contains(caseProperty));
-                    break;
-                default:
-                    throw new InvalidOperationException("The search property is wrong.");
-            }
-            
-            Assert.True(value, "The searching filter is not working");
-            Assert.Equal(2, ret.Count());
+            Assert.True(mainCasesPage.SelectCases(caseCreatedForSearch, property), "The searching filter is not working");
         }
     }
 }

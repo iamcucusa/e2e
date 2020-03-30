@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using static iDareUI.CasesOverviewSteps;
 
 namespace iDareUI.Models
 {
@@ -17,16 +18,18 @@ namespace iDareUI.Models
             this.driver = driver;
         }
 
-        private IWebElement userLabel => driver.FindElement(By.CssSelector(".prv-headline--role"));
-        private IWebElement newCaseButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/button[2]"));
+        private IWebElement userLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IDareUserInfoUserName']")); 
+        private IWebElement newCaseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentAddCaseButton']"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
         private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
+        private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-case-detected-issue/div/div[1]/div/mat-form-field/div/div[1]/div/input"));
+
         public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
-        private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[1]/div/prv-table-search/form/mat-form-field/div/div[1]/div/input"));
+
         private IWebElement searchButton => driver.FindElements(By.CssSelector("button.mat-icon-button"))[1];
 
         public IEnumerable<string> GetGridHeaderNames()
@@ -42,7 +45,7 @@ namespace iDareUI.Models
         }
         public IList<IWebElement> GetRowsElements()
         {
-            IList<IWebElement> rows = driver.FindElements(By.CssSelector("mat-row.ng-star-inserted"));
+            IList<IWebElement> rows = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseRow']"));
             return rows;
         }
         public IEnumerable<Case> GetRowsElementsCases()
@@ -52,10 +55,10 @@ namespace iDareUI.Models
 
             foreach (var row in rows)
             {
-                IWebElement rowCaseID = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"));
-                IWebElement rowSerialNo = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-serial-no.mat-column-serial-no.ng-star-inserted"));
-                IWebElement rowCustomer = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-customer.mat-column-customer.ng-star-inserted"));
-                IWebElement rowCountry = row.FindElement(By.CssSelector("mat-cell.mat-cell.cdk-column-country.mat-column-country.ng-star-inserted"));
+                IWebElement rowCaseID = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseIDValue']"));
+                 IWebElement rowSerialNo = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentSerialNumberValue']")); 
+                IWebElement rowCustomer = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCustomerValue']"));
+                IWebElement rowCountry = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCountryValue']"));
 
                 var myCase = new Case();
                 myCase.CaseID = rowCaseID.Text;
@@ -66,6 +69,12 @@ namespace iDareUI.Models
                 ret.Add(myCase);
             }
             return ret;
+        }
+
+        public IList<IWebElement> GetRowsIds()
+        {
+            IList<IWebElement> caseIds = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseIDValue']"));
+            return caseIds;
         }
 
         public IEnumerable<DateTime> GetCreationDateTime()
@@ -103,6 +112,12 @@ namespace iDareUI.Models
             IWebElement nextPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button")));
             nextPageClickableButton.Click();
         }
+        public void PressPreviousPageButton()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebElement previousPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base")));
+            previousPageClickableButton.Click();
+        }
         public void NewCase()
         {
             newCaseButton.Click();
@@ -124,9 +139,9 @@ namespace iDareUI.Models
             searchFilter.Click();
             searchFilter.SendKeys(value);
         }
-        public void PressSearchButton()
+        public void PressEnterToFilter()
         {
-            searchButton.Click();
+            searchFilter.SendKeys(Keys.Enter);
         }
 
         internal void WaitUntilRangeLabelChanges()
@@ -140,33 +155,94 @@ namespace iDareUI.Models
                 {
                     try
                     {
-                        var ret = GetRowsElementsCases();
-                        return ret.Any(myCase => myCase.CaseID.Contains(caseId));
+                        var ret = GetRowsIds();
+                        return ret.Any(id => id.Text.Contains(caseId));
                     }
                     catch
                     {
                         return false;
                     }
-                }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(25));
+                }, TimeSpan.FromSeconds(2000), TimeSpan.FromMilliseconds(25));
         }
 
-        public int ReadLabel()
+        public bool SelectCases(Case caseCreatedForSearch, Enum property)
         {
-            int x = -1;
+            var ret = GetRowsElementsCases();
+            string caseProperty = null;
+            bool value = false;
+
+            switch (property)
+            {
+                case CaseSearchProperty.CaseId:
+                    caseProperty = caseCreatedForSearch.CaseID;
+                    value = ret.All(myCase => myCase.CaseID.Contains(caseProperty));
+                    break;
+                case CaseSearchProperty.Country:
+                    caseProperty = caseCreatedForSearch.Country;
+                    value = ret.All(myCase => myCase.Country.Contains(caseProperty));
+                    break;
+                case CaseSearchProperty.Customer:
+                    caseProperty = caseCreatedForSearch.Customer;
+                    value = ret.All(myCase => myCase.Customer.Contains(caseProperty));
+                    break;
+                case CaseSearchProperty.SerialNumber:
+                    caseProperty = caseCreatedForSearch.SerialNo;
+                    value = ret.All(myCase => myCase.SerialNo.Contains(caseProperty));
+                    break;
+                default:
+                    throw new InvalidOperationException("The search property is wrong.");
+            }
+            return value;
+        }
+
+        public int ReadPageLabel()
+        {
+            int numberOfCases = -1;
             FlowUtilities.WaitUntilWithoutException(
                 () =>
                 {
-                    string b = driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-paginator/div/div/div[2]/div")).Text;
-                    int start = b.LastIndexOf(" ");
+                    IWebElement componentPaginator = driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentPaginator']"));
+                    IWebElement inside1 = componentPaginator.FindElement(By.CssSelector("div.mat-paginator-range-label"));
+                    string rangeLabel = inside1.Text;
+
+                    int start = rangeLabel.LastIndexOf(" ");
                     if (start < 0)
                     {
                         return false;
                     }
-                    string c = b.Substring(start);
-                    x = Int32.Parse(c);
-                    return x > 0;
+                    string labelCut = rangeLabel.Substring(start);
+                    numberOfCases = Int32.Parse(labelCut);
+                    return numberOfCases > 0;
                 },TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(25));
-            return x;
+            return numberOfCases;
+        }
+
+        public void WaitUntilProgressBarIsShown(int numberOfUploads)
+        {
+            for (int i = 0; i < numberOfUploads; i++)
+            {
+                FlowUtilities.WaitUntil(() =>
+                {
+                    return driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']")).Count == numberOfUploads;
+                }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+            }
+            
+        }
+
+        public void WaitUntilProgressBarShowsUpdatedStatusSuccess(int maxWaitSeconds)
+        {
+            FlowUtilities.WaitUntil(() =>
+                {
+                    return driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseUploadFileSuccess']")) != null;
+                }, TimeSpan.FromSeconds(maxWaitSeconds), TimeSpan.FromMilliseconds(100));
+        }
+
+        public void WaitUntilProgressBarShowsUpdatedStatusError(int maxWaitSeconds)
+        {
+            FlowUtilities.WaitUntil(() =>
+            {
+                return driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseUploadFileError']")) != null;
+            }, TimeSpan.FromSeconds(maxWaitSeconds), TimeSpan.FromMilliseconds(100));
         }
     }
 }

@@ -25,9 +25,9 @@ namespace iDareUI.Models
         private IWebElement Country => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCountryInput']"));
         private IWebElement CancelButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCancelButton']"));
         public IWebElement SaveButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentSaveButton']"));
-        public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileSelectComponentAddFileButton']"));
-        public IWebElement uploadedFile => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileSelectComponentUploadName']"));
-        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneSelection']"));
+        public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
+        public IWebElement caseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
+        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']"));
         public IList<IWebElement> GetTimezoneOptions()
         {
             IList<IWebElement> timezoneOptions = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneOption']"));
@@ -59,43 +59,39 @@ namespace iDareUI.Models
         public void PressCancelButton() { CancelButton.Click(); }
         public void PressSaveButton() { SaveButton.Click(); }
         public void PressUploadFileButton() { uploadFileButton.Click(); }
-        public void UploadDummyProblemReport(string filePath)
+        public List<string> GetFileNameList(string fileName)
         {
-            if (!File.Exists(filePath))
+            List<string> fileNameList = new List<string>();
+            if (!fileName.Contains(','))
             {
-                throw new Exception("Could not find the path: " + filePath);
-            }
-
-            FlowUtilities.WaitUntil(
-                () => (WindowsApi.FindWindow(null, "Abrir") != IntPtr.Zero || WindowsApi.FindWindow(null, "Open") != IntPtr.Zero),
-                TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
-            if (WindowsApi.FindWindow(null, "Abrir") != IntPtr.Zero)
-            {
-                var dialogHWnd = WindowsApi.FindWindow(null, "Abrir");
-                var setFocus = WindowsApi.SetForegroundWindow(dialogHWnd);
-                if (setFocus)
-                {
-                    Thread.Sleep(500);
-                    SendKeys.SendWait(filePath);
-                    SendKeys.SendWait("{ENTER}");
-                }
+                fileNameList.Add(fileName);
+                return fileNameList;
             }
             else
             {
-                var dialogHWnd = WindowsApi.FindWindow(null, "Open");
-                var setFocus = WindowsApi.SetForegroundWindow(dialogHWnd);
-                if (setFocus)
-                {
-                    Thread.Sleep(500);
-                    SendKeys.SendWait(filePath);
-                    SendKeys.SendWait("{ENTER}");
-                }
+                fileNameList = new List<string>(fileName.Split(" , "));
+                return fileNameList;
             }
+        }
+        public void SimulateFileUploading(string filePath)
+        {
+            IWebElement inputFile = driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadInput']"));
+            inputFile.SendKeys(filePath);
+        }
+
+        public void WaitForTheFilesToUpload(string fileName)
+        {
+            FlowUtilities.WaitUntil(() =>
+            {
+                IWebElement caseFileUploaded = driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
+                return caseFileUploaded.Text.Contains(fileName);
+            }, TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
         }
 
         public void SelectOptionInTimezoneDropdown(int p0)
         {
             timezoneElement.Click();
+            timezoneElement.SendKeys("U");
             FlowUtilities.WaitUntil(() =>
             {
                 var optionsLoaded = GetTimezoneOptions().Count >= p0 - 1;

@@ -42,7 +42,7 @@ namespace iDareUI.Models
         private IWebElement userName => driver.FindElements(By.XPath("//input[@id='undefinedInput']"))[0];
         private IWebElement password => driver.FindElements(By.XPath("//input[@id='undefinedInput']"))[1];
         private IWebElement loginButton => driver.FindElement(By.XPath("//button[@type='submit']"));
-        private IWebElement errorMessage => driver.FindElement(By.XPath("//span[contains(.,' Authentication failed: Token invalid.')]"));
+        private IWebElement errorMessage => driver.FindElement(By.XPath("//span[contains(.,' Authentication failed: Wrong credentials.')]"));
      
 
         public string UserName
