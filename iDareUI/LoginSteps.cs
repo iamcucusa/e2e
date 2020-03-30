@@ -1,5 +1,6 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
+using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -9,12 +10,12 @@ namespace iDareUI
     public class LoginSteps
     {
         private TestingEnvironment environment;
-        private MainCasesPage mainCasesPage;
+        private CaseMainPage mainCasesPage;
         public LoginSteps(TestingEnvironment environment)
         {
             this.environment = environment;
             this.loginPage = new LoginPage(environment.Driver, environment.Log);
-            this.mainCasesPage = new MainCasesPage(environment.Driver);
+            this.mainCasesPage = new CaseMainPage(environment.Driver);
         }
 
 

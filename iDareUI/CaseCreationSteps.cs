@@ -1,7 +1,7 @@
 ﻿using iDareUI.Common;
-using iDareUI.Models;
 using System;
 using System.Collections.Generic;
+using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -11,7 +11,7 @@ namespace iDareUI
     public class CaseCreationSteps
     {
         private TestingEnvironment environment;
-        private MainCasesPage mainCasesPage;
+        private CaseMainPage mainCasesPage;
         private CaseCreationPage caseCreationPage;
 
         private string uniqueID;
@@ -19,7 +19,7 @@ namespace iDareUI
         public CaseCreationSteps(TestingEnvironment environment)
         {
             this.environment = environment;
-            this.mainCasesPage = new MainCasesPage(environment.Driver);
+            this.mainCasesPage = new CaseMainPage(environment.Driver);
             this.caseCreationPage = new CaseCreationPage(environment.Driver);
         }
 

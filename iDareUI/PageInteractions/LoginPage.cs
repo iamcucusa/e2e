@@ -1,9 +1,9 @@
-﻿using iDareUI.Common;
+﻿using System;
+using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using System;
 
-namespace iDareUI.Models
+namespace iDareUI.PageInteractions
 {
     public class LoginPage
     {
@@ -60,10 +60,10 @@ namespace iDareUI.Models
             }
         }
 
-        public MainCasesPage LoginApplication()
+        public CaseMainPage LoginApplication()
         {
             loginButton.Click();
-            return new MainCasesPage(driver);
+            return new CaseMainPage(driver);
         }
 
         public string ErrorMessageText => errorMessage.Text;

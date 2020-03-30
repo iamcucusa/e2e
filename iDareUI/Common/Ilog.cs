@@ -1,5 +1,3 @@
-using System;
-
 namespace iDareUI.Common
 {
     public interface ILog

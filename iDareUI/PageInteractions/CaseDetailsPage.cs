@@ -1,11 +1,11 @@
-﻿using iDareUI.Common;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using iDareUI.Common;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 
-namespace iDareUI.Models
+namespace iDareUI.PageInteractions
 {
     public class CaseDetailsPage
     {

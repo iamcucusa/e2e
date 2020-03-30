@@ -6,7 +6,7 @@ namespace iDareUI.Common
 {
     internal class Log : ILog
     {
-        private ITestOutputHelper helper;
+        private readonly ITestOutputHelper helper;
 
         public Log(ITestOutputHelper helper)
         {

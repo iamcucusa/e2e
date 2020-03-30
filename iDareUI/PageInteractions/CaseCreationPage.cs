@@ -1,19 +1,15 @@
-﻿using iDareUI.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Windows.Forms;
 
-namespace iDareUI.Models
+namespace iDareUI.PageInteractions
 {
     public class CaseCreationPage
     {
-        private RemoteWebDriver driver;
-        public TestingEnvironment environment;
+        private readonly RemoteWebDriver driver;
         public CaseCreationPage(RemoteWebDriver driver)
         {
             this.driver = driver;
@@ -36,7 +32,7 @@ namespace iDareUI.Models
 
         public void SetRexisId(string value)
         {
-            SendKeysCharByChar(RexisId, value);
+            InteractionUtilities.SendKeysCharByChar(RexisId, value);
         }
         public void SetSerialNo(string value) { SerialNo.SendKeys(value); }
         public void SetCustomer(string value) { Customer.SendKeys(value); }
@@ -46,16 +42,10 @@ namespace iDareUI.Models
         {
             Guid guid = Guid.NewGuid();
             string unicId = guid.ToString();
-            SendKeysCharByChar(RexisId, unicId);
+            InteractionUtilities.SendKeysCharByChar(RexisId, unicId);
             return unicId;
         }
-        protected void SendKeysCharByChar(IWebElement element, string keys)
-        {
-            for (int i = 0; i < keys.Length; i++)
-            {
-                element.SendKeys(Char.ToString(keys[i]));
-            }
-        }
+        
         public void PressCancelButton() { CancelButton.Click(); }
         public void PressSaveButton() { SaveButton.Click(); }
         public void PressUploadFileButton() { uploadFileButton.Click(); }
@@ -88,13 +78,13 @@ namespace iDareUI.Models
             }, TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
         }
 
-        public void SelectOptionInTimezoneDropdown(int p0)
+        public void SelectOptionInTimezoneDropdown(int optionIndex)
         {
             timezoneElement.Click();
             timezoneElement.SendKeys("U");
             FlowUtilities.WaitUntil(() =>
             {
-                var optionsLoaded = GetTimezoneOptions().Count >= p0 - 1;
+                var optionsLoaded = GetTimezoneOptions().Count >= optionIndex - 1;
 
                 if (!optionsLoaded)
                 {
@@ -104,7 +94,7 @@ namespace iDareUI.Models
                 return optionsLoaded;
             }, TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
 
-            IWebElement timezoneOption = GetTimezoneOptions().ToArray()[p0 - 1];
+            IWebElement timezoneOption = GetTimezoneOptions().ToArray()[optionIndex - 1];
             timezoneOption.Click();
         }
     }

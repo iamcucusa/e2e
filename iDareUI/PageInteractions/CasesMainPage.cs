@@ -1,19 +1,19 @@
-﻿using iDareUI.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using iDareUI.Common;
+using iDareUI.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using static iDareUI.CasesOverviewSteps;
 
-namespace iDareUI.Models
+namespace iDareUI.PageInteractions
 {
-    public class MainCasesPage
+    public class CaseMainPage
     {
         private RemoteWebDriver driver;
-        public MainCasesPage(RemoteWebDriver driver)
+        public CaseMainPage(RemoteWebDriver driver)
         {
             this.driver = driver;
         }

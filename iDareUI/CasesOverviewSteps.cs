@@ -1,13 +1,12 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
 using Xunit;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace iDareUI
 {
@@ -15,7 +14,7 @@ namespace iDareUI
     public class CasesOverviewSteps
     {
         private TestingEnvironment environment;
-        private MainCasesPage mainCasesPage;
+        private CaseMainPage mainCasesPage;
         private CaseDetailsPage casesDetailsPage;
         private CaseCreationSteps caseCreationSteps;
         private CaseCreationPage caseCreationPage;
@@ -31,7 +30,7 @@ namespace iDareUI
         public CasesOverviewSteps(TestingEnvironment environment)
         {
             this.environment = environment;
-            this.mainCasesPage = new MainCasesPage(environment.Driver);
+            this.mainCasesPage = new CaseMainPage(environment.Driver);
             this.casesDetailsPage = new CaseDetailsPage(environment.Driver);
             this.caseCreationPage = new CaseCreationPage(environment.Driver);
             this.caseCreationSteps = new CaseCreationSteps(environment);
