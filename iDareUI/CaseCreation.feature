@@ -15,7 +15,7 @@ Scenario: User does not enter mandatory fields when creating a new case
 	
 Scenario: New cases are placed on the top of the first page of the cases overview
 		Given I am in the Overview screen
-		Given there are at least 10 cases created
+		Given there are at least 20 cases created
 		And I navigate to the next case page 
 		And I create a new case without problem report
 	Then the first page of the cases overview is shown
@@ -55,8 +55,7 @@ Scenario: Multiple files are uploaded to a more than one case showing the correc
 			And I enter Spain as Country
 			And I enter a Rexis ID with a unique ID
 			And I enter the option 1 of the dropdown as Timezone
-			And I upload a Problem Report with name RealDataSmall.zip
-			And I upload a Problem Report with name RealDataSmall2.zip
+			And I upload more than one Problem Report with name RealDataSmall.zip , RealDataSmall2.zip
 			And I press the Save button
 		Then I should see the progress of the 2 uploads
 		Given I enter to create a new case
@@ -65,7 +64,6 @@ Scenario: Multiple files are uploaded to a more than one case showing the correc
 			And I enter SWitzerland as Country
 			And I enter a Rexis ID with a unique ID
 			And I enter the option 2 of the dropdown as Timezone
-			And I upload a Problem Report with name RealDataSmall.zip
-			And I upload a Problem Report with name RealDataSmall2.zip
+			And I upload more than one Problem Report with name RealDataSmall.zip , RealDataSmall2.zip
 			And I press the Save button
 		Then I should see the progress of the 4 uploads

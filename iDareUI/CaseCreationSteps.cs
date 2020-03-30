@@ -1,6 +1,7 @@
 ﻿using iDareUI.Common;
 using iDareUI.Models;
 using System;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -77,14 +78,22 @@ namespace iDareUI
         [When(@"I upload a Problem Report with name (.*)")]
         public void WhenIUploadAProblemReportWithName(string fileName)
         {
-            caseCreationPage.PressUploadFileButton();
             string filePath = DataLocation.GetProblemReportDirectory(fileName);
-            caseCreationPage.UploadDummyProblemReport(filePath);
-
-            FlowUtilities.WaitUntil(
-                () => (caseCreationPage.caseFilesToUploadList.Text.Contains(fileName)),
-            TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+            caseCreationPage.SimulateFileUploading(filePath);
+            caseCreationPage.WaitForTheFilesToUpload(fileName);
         }
+        [When(@"I upload more than one Problem Report with name (.*)")]
+        public void WhenIUploadMoreThanOneProblemReportWithNameRealDataSmall_ZipRealDataSmall_Zip(string fileName)
+        {
+            List<string> fileNameList = caseCreationPage.GetFileNameList(fileName);
+            string filePath = DataLocation.GetProblemReportsDirectory(fileNameList);
+            string firstFile = fileNameList[0];
+            caseCreationPage.SimulateFileUploading(filePath);
+            caseCreationPage.WaitForTheFilesToUpload(firstFile);
+        }
+
+
+
         [When(@"I press the Save button")]
         public void WhenIPressTheSaveButton()
         {
@@ -105,7 +114,7 @@ namespace iDareUI
         [Then(@"the first page of the cases overview is shown")]
         public void ThenTheFirstPageOfTheCasesOverviewIsShown()
         {
-
+            mainCasesPage.PressPreviousPageButton();
             mainCasesPage.WaitUntilRangeLabelChanges();
             Assert.StartsWith("1 -", mainCasesPage.RangeLabelText);
         }
@@ -134,11 +143,11 @@ namespace iDareUI
         {
             FlowUtilities.WaitUntil(() =>
             {
-                if (!(mainCasesPage.ReadLabel() > cases))
+                if (!(mainCasesPage.ReadPageLabel() > cases))
                 {
                     this.GivenICreateANewCaseWithoutProblemReport();
                 }
-                return mainCasesPage.ReadLabel() > cases;
+                return mainCasesPage.ReadPageLabel() > cases;
             }, TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
         [Given(@"I create a new case without problem report")]

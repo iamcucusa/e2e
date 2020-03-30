@@ -18,7 +18,7 @@ namespace iDareUI.Models
             this.driver = driver;
         }
 
-        private IWebElement userLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='HeadlineComponentName']")); 
+        private IWebElement userLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IDareUserInfoUserName']")); 
         private IWebElement newCaseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentAddCaseButton']"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
@@ -26,8 +26,9 @@ namespace iDareUI.Models
         private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
-        public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
         private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-case-detected-issue/div/div[1]/div/mat-form-field/div/div[1]/div/input"));
+
+        public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
 
         private IWebElement searchButton => driver.FindElements(By.CssSelector("button.mat-icon-button"))[1];
 
@@ -111,6 +112,12 @@ namespace iDareUI.Models
             IWebElement nextPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button")));
             nextPageClickableButton.Click();
         }
+        public void PressPreviousPageButton()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebElement previousPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base")));
+            previousPageClickableButton.Click();
+        }
         public void NewCase()
         {
             newCaseButton.Click();
@@ -185,28 +192,29 @@ namespace iDareUI.Models
                 default:
                     throw new InvalidOperationException("The search property is wrong.");
             }
-
             return value;
-
         }
 
-        public int ReadLabel()
+        public int ReadPageLabel()
         {
-            int x = -1;
+            int numberOfCases = -1;
             FlowUtilities.WaitUntilWithoutException(
                 () =>
                 {
-                    string b = driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-case-detected-issue/div/div[2]/div")).Text;
-                    int start = b.LastIndexOf(" ");
+                    IWebElement componentPaginator = driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentPaginator']"));
+                    IWebElement inside1 = componentPaginator.FindElement(By.CssSelector("div.mat-paginator-range-label"));
+                    string rangeLabel = inside1.Text;
+
+                    int start = rangeLabel.LastIndexOf(" ");
                     if (start < 0)
                     {
                         return false;
                     }
-                    string c = b.Substring(start);
-                    x = Int32.Parse(c);
-                    return x > 0;
+                    string labelCut = rangeLabel.Substring(start);
+                    numberOfCases = Int32.Parse(labelCut);
+                    return numberOfCases > 0;
                 },TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(25));
-            return x;
+            return numberOfCases;
         }
 
         public void WaitUntilProgressBarIsShown(int numberOfUploads)
