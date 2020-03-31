@@ -22,8 +22,8 @@ namespace iDareUI.PageInteractions
         private IWebElement newCaseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentAddCaseButton']"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
-        private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
-        private IWebElement detailsButton => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[11]/button"));
+        private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0]; 
+        private IWebElement detailsButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='DetectedIssuesContainerViewButton']"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
         private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-case-detected-issue/div/div[1]/div/mat-form-field/div/div[1]/div/input"));
