@@ -22,11 +22,13 @@ namespace iDareUI.PageInteractions
         private IWebElement Country => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCountryInput']"));
         private IWebElement CancelButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCancelButton']"));
         private IWebElement CloseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCloseButton']"));
+        private IWebElement CaseFilesUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
+        private IWebElement FileUploadInput => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadInput']"));
         public IWebElement SaveButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentSaveButton']"));
-        public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
-        public IWebElement caseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
-        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']")); 
-        public IWebElement caseCreationDialog => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDialog']")); 
+        public IWebElement UploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
+        public IWebElement CaseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
+        public IWebElement TimezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']")); 
+        public IWebElement CaseCreationDialog => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDialog']")); 
         public IList<IWebElement> GetTimezoneOptions()
         {
             IList<IWebElement> timezoneOptions = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneOption']"));
@@ -51,51 +53,52 @@ namespace iDareUI.PageInteractions
         
         public void PressCancelButton() { CancelButton.Click(); }
         public void PressSaveButton() { SaveButton.Click(); }
-        public void PressUploadFileButton() { uploadFileButton.Click(); }
-        public List<string> GetFileNameList(string fileName)
+        public void PressUploadFileButton() { UploadFileButton.Click(); }
+        public List<string> GetFileNameList(string fileNameDelimited)
         {
             List<string> fileNameList = new List<string>();
-            if (!fileName.Contains(','))
+            if (!fileNameDelimited.Contains(','))
             {
-                fileNameList.Add(fileName);
+                fileNameList.Add(fileNameDelimited);
                 return fileNameList;
             }
             else
             {
-                fileNameList = new List<string>(fileName.Split(" , "));
-                return fileNameList;
+                var fileNames = fileNameDelimited.Split(",", StringSplitOptions.RemoveEmptyEntries);
+                for (var index = 0; index < fileNames.Length; index++)
+                {
+                    fileNames[index] = fileNames[index].Trim();
+                }
+
+                return fileNames.ToList();
             }
         }
         public void SimulateFileUploading(string filePath)
         {
-            IWebElement inputFile = driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadInput']"));
+            IWebElement inputFile = this.FileUploadInput;
             inputFile.SendKeys(filePath);
         }
-
-        public void WaitForTheFilesToUpload(string fileName)
+        public void AssertFileUploadListFileIsDisplayed(string fileName)
         {
             var response = FlowUtilities.WaitUntil(() =>
             {
-                IWebElement caseFileUploaded =
-                    driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
+                IWebElement caseFileUploaded = this.CaseFilesToUploadList;
                 return caseFileUploaded.Text.Contains(fileName);
             }, TimeSpan.FromSeconds(60), TimeSpan.FromMilliseconds(100));
             
             Assert.True(response.Success, response.ToString());
-            
         }
-
         public void SelectOptionInTimezoneDropdown(int optionIndex)
         {
-            timezoneElement.Click();
-            timezoneElement.SendKeys("U");
+            TimezoneElement.Click();
+            TimezoneElement.SendKeys("U");
             var response = FlowUtilities.WaitUntil(() =>
             {
                 var optionsLoaded = GetTimezoneOptions().Count >= optionIndex - 1;
 
                 if (!optionsLoaded)
                 {
-                    timezoneElement.Click();
+                    TimezoneElement.Click();
                 }
 
                 return optionsLoaded;

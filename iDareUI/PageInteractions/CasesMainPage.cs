@@ -240,7 +240,29 @@ namespace iDareUI.PageInteractions
                     TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
             }
         }
+        public void AssertThatAllProgressBarsAreRemoved()
+        {
+            var response = FlowUtilities.WaitUntil(() =>
+                {
+                    IEnumerable<IWebElement> progressBars;
+                    try
+                    {
+                        progressBars = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']"));
+                    }
+                    catch (Exception e)
+                    {
+                        return true;
+                    }
 
+                    if (progressBars.ToList().Any())
+                        return false;
+
+                    return true;
+                },
+                TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(100));
+
+            Assert.True(response.TimedOut);
+        }
         public void WaitUntilProgressBarShowsUpdatedStatusSuccess(int maxWaitSeconds)
         {
             FlowUtilities.WaitUntil(() =>

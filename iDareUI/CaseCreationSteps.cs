@@ -33,7 +33,7 @@ namespace iDareUI
         public void GivenIEnterToCreateANewCase()
         {
             mainCasesPage.NewCase();
-            Assert.True(caseCreationPage.caseCreationDialog.Displayed, "The dialog to create a new case was not displayed");
+            Assert.True(caseCreationPage.CaseCreationDialog.Displayed, "The dialog to create a new case was not displayed");
         }
 
         [When(@"I enter a Rexis ID with a unique ID")]
@@ -79,18 +79,21 @@ namespace iDareUI
         [When(@"I upload a Problem Report with name (.*)")]
         public void WhenIUploadAProblemReportWithName(string fileName)
         {
-            string filePath = DataLocation.GetProblemReportDirectory(fileName);
+            string filePath = DataLocation.GetProblemReportFilePath(fileName);
             caseCreationPage.SimulateFileUploading(filePath);
-            caseCreationPage.WaitForTheFilesToUpload(fileName);
+            caseCreationPage.AssertFileUploadListFileIsDisplayed(fileName);
         }
         [When(@"I upload more than one Problem Report with name (.*)")]
-        public void WhenIUploadMoreThanOneProblemReportWithNameRealDataSmall_ZipRealDataSmall_Zip(string fileName)
+        public void WhenIUploadMoreThanOneProblemReportWithName(string fileNameDelimited)
         {
-            List<string> fileNameList = caseCreationPage.GetFileNameList(fileName);
+            List<string> fileNameList = caseCreationPage.GetFileNameList(fileNameDelimited);
             string filePath = DataLocation.GetProblemReportsDirectory(fileNameList);
-            string firstFile = fileNameList[0];
             caseCreationPage.SimulateFileUploading(filePath);
-            caseCreationPage.WaitForTheFilesToUpload(firstFile);
+
+            foreach (string fileName in fileNameDelimited.Split(','))
+            {
+                caseCreationPage.AssertFileUploadListFileIsDisplayed(fileName);
+            }
         }
 
 
@@ -170,6 +173,11 @@ namespace iDareUI
         public void ThenIShouldSeeTheProgressOfTheUpload(int numberOfUploads)
         {
             mainCasesPage.WaitUntilProgressBarIsShown(numberOfUploads);
+        }
+        [Then(@"The progress of the uploads should disappear")]
+        public void ThenTheProgressOfTheUploadsShouldDisappear()
+        {
+            mainCasesPage.AssertThatAllProgressBarsAreRemoved();
         }
 
         [Then(@"I should not see any upload progress bars")]

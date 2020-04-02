@@ -20,8 +20,8 @@ namespace iDareUI
             this.environment = environment;
             this.caseDetailsPage = new CaseDetailsPage(environment.Driver);
         }
-        [Then(@"the Instrument Information should be shown under the Intrument Information section")]
-        public void ThenTheInstrumentInformationShouldBeShownUnderTheIntrumentInformationSection()
+        [Then(@"the Instrument Information should be shown under the Instrument Information section")]
+        public void ThenTheInstrumentInformationShouldBeShownUnderTheInstrumentInformationSection()
         {
             string[] expectedInstrumentInformationTitles = new string[] { "Lab name", "Lab address", "Instrument type", "Instrument serial number", "Software version", "Instrument time zone" };
             string[] expectedInstrumentInformationData = new string[] { "Customer", "Spain", "-", "12345", "01.03.08.1011", "(UTC-11:00) Coordinated Universal Time-11" };

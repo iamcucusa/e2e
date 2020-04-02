@@ -6,28 +6,28 @@ namespace iDareUI.Common
 {
     public static class DataLocation
     {
-        public static string GetProblemReportsDirectory(List<string> zipFileName)
+        public static string GetProblemReportsDirectory(List<string> fileNamesList)
         {
 
-            string fileName = GetProblemReportDirectory(zipFileName[0]);
-            zipFileName.RemoveAt(0);
+            string fileNameConcat = GetProblemReportFilePath(fileNamesList[0]);
+            fileNamesList.RemoveAt(0);
 
-            foreach (string name in zipFileName)
+            foreach (string name in fileNamesList)
             {
-                string nextFileName = GetProblemReportDirectory(name);
-                fileName = fileName + "\r\n" + nextFileName;
+                string nextFileName = GetProblemReportFilePath(name);
+                fileNameConcat = fileNameConcat + "\r\n" + nextFileName;
             }
-            return fileName;
+            return fileNameConcat;
         }
 
-        public static string GetProblemReportDirectory(string zipFileName)
+        public static string GetProblemReportFilePath(string fileName)
         {
-            string fileName = Path.GetDirectoryName(typeof(DataLocation).Assembly.Location) + "\\TestData\\ProblemReport\\" + zipFileName;
-            if (!File.Exists(fileName))
+            string filePath = Path.GetDirectoryName(typeof(DataLocation).Assembly.Location) + "\\TestData\\ProblemReport\\" + fileName;
+            if (!File.Exists(filePath))
             {
-                throw new Exception("Could not find the path: " + fileName);
+                throw new FileNotFoundException("Could not find the path: " + filePath);
             }
-            return fileName;
+            return filePath;
         }
     }
 }
