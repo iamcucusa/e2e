@@ -167,7 +167,7 @@ namespace iDareUI.PageInteractions
                 }, TimeSpan.FromSeconds(2000), TimeSpan.FromMilliseconds(25));
         }
 
-        public bool SelectCases(Case caseCreatedForSearch, Enum property)
+        public bool SelectCases(Case caseCreatedForSearch, CaseSearchProperty property)
         {
             var ret = GetRowsElementsCases();
             string caseProperty = null;

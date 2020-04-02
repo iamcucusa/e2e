@@ -33,7 +33,7 @@ namespace iDareUI
         public void GivenIEnterToCreateANewCase()
         {
             mainCasesPage.NewCase();
-            Assert.True(caseCreationPage.caseCreationDialog.Displayed, "The dialog to create a new case is displayed");
+            Assert.True(caseCreationPage.caseCreationDialog.Displayed, "The dialog to create a new case was not displayed");
         }
 
         [When(@"I enter a Rexis ID with a unique ID")]
