@@ -33,6 +33,7 @@ namespace iDareUI
         public void GivenIEnterToCreateANewCase()
         {
             mainCasesPage.NewCase();
+            Assert.True(caseCreationPage.caseCreationDialog.Displayed, "The dialog to create a new case is displayed");
         }
 
         [When(@"I enter a Rexis ID with a unique ID")]
@@ -122,7 +123,10 @@ namespace iDareUI
         [Then(@"the case with the unique ID as Rexis ID is on the top of the list")]
         public void ThenTheCaseWithTheUniqueIdAsRexisIDIsOnTheTopOfTheList()
         {
-            FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+            var response = FlowUtilities.WaitUntil(() => mainCasesPage.firstIdRowText.Contains(uniqueID), 
+                TimeSpan.FromSeconds(3), TimeSpan.FromMilliseconds(100));
+
+            Assert.True(response.Success, "The case is not displayed.");
         }
 
         [When(@"I create a new Case")]
@@ -167,10 +171,19 @@ namespace iDareUI
         {
             mainCasesPage.WaitUntilProgressBarIsShown(numberOfUploads);
         }
+
+        [Then(@"I should not see any upload progress bars")]
+        public void ThenIShouldNotSeeAnyProgressBars()
+        {
+            mainCasesPage.AssertThatNoProgressBarIsShown();
+        }
+
         [Then(@"the status gets updated as successful")]
         public void ThenTheStatusGetsUpdatedAsSuccessful()
         {
-            mainCasesPage.WaitUntilProgressBarShowsUpdatedStatusSuccess(300); ;
+            
+            FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
+            
         }
 
         [Then(@"the status gets updated as error")]

@@ -11,6 +11,7 @@ namespace iDareUI
     {
         private TestingEnvironment environment;
         private CaseMainPage mainCasesPage;
+        private LoginPage loginPage;
         public LoginSteps(TestingEnvironment environment)
         {
             this.environment = environment;
@@ -18,15 +19,13 @@ namespace iDareUI
             this.mainCasesPage = new CaseMainPage(environment.Driver);
         }
 
-
-        private LoginPage loginPage;
-
         [Given(@"I am in the Overview screen")]
         public void GivenIAmInTheOverviewScreen()
         {
             this.environment.Driver.Manage().Window.Maximize();
             this.loginPage.NavigateTo();
         }
+
         [Then(@"I should see the Cases screen for (.*)")]
         public void ThenIShouldSeeTheCasesScreenfor(string userName)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using Xunit;
 
 namespace iDareUI.PageInteractions
 {
@@ -20,10 +21,12 @@ namespace iDareUI.PageInteractions
         private IWebElement Customer => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCustomerInput']"));
         private IWebElement Country => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCountryInput']"));
         private IWebElement CancelButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCancelButton']"));
+        private IWebElement CloseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentCloseButton']"));
         public IWebElement SaveButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentSaveButton']"));
         public IWebElement uploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
         public IWebElement caseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
-        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']"));
+        public IWebElement timezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']")); 
+        public IWebElement caseCreationDialog => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDialog']")); 
         public IList<IWebElement> GetTimezoneOptions()
         {
             IList<IWebElement> timezoneOptions = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneOption']"));
@@ -71,18 +74,22 @@ namespace iDareUI.PageInteractions
 
         public void WaitForTheFilesToUpload(string fileName)
         {
-            FlowUtilities.WaitUntil(() =>
+            var response = FlowUtilities.WaitUntil(() =>
             {
-                IWebElement caseFileUploaded = driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
+                IWebElement caseFileUploaded =
+                    driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
                 return caseFileUploaded.Text.Contains(fileName);
-            }, TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
+            }, TimeSpan.FromSeconds(60), TimeSpan.FromMilliseconds(100));
+            
+            Assert.True(response.Success, response.ToString());
+            
         }
 
         public void SelectOptionInTimezoneDropdown(int optionIndex)
         {
             timezoneElement.Click();
             timezoneElement.SendKeys("U");
-            FlowUtilities.WaitUntil(() =>
+            var response = FlowUtilities.WaitUntil(() =>
             {
                 var optionsLoaded = GetTimezoneOptions().Count >= optionIndex - 1;
 
@@ -93,6 +100,8 @@ namespace iDareUI.PageInteractions
 
                 return optionsLoaded;
             }, TimeSpan.FromSeconds(4), TimeSpan.FromMilliseconds(100));
+
+            Assert.True(response.Success, response.ToString());
 
             IWebElement timezoneOption = GetTimezoneOptions().ToArray()[optionIndex - 1];
             timezoneOption.Click();

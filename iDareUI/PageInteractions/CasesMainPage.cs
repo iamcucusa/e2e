@@ -6,6 +6,7 @@ using iDareUI.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
+using Xunit;
 using static iDareUI.CasesOverviewSteps;
 
 namespace iDareUI.PageInteractions
@@ -21,12 +22,13 @@ namespace iDareUI.PageInteractions
         private IWebElement userLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IDareUserInfoUserName']")); 
         private IWebElement newCaseButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentAddCaseButton']"));
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
-        private IWebElement firstIdRow => driver.FindElements(By.CssSelector("mat-cell.mat-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"))[0];
+        private IWebElement firstIdRow => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseRow']"))[0]; 
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0]; 
         private IWebElement detailsButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='DetectedIssuesContainerViewButton']"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
         private IWebElement searchFilter => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-case-detected-issue/div/div[1]/div/mat-form-field/div/div[1]/div/input"));
+        private IEnumerable<IWebElement> caseRows => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseRow']"));
 
         public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
 
@@ -198,7 +200,7 @@ namespace iDareUI.PageInteractions
         public int ReadPageLabel()
         {
             int numberOfCases = -1;
-            FlowUtilities.WaitUntilWithoutException(
+            var response = FlowUtilities.WaitUntilWithoutException(
                 () =>
                 {
                     IWebElement componentPaginator = driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentPaginator']"));
@@ -214,19 +216,29 @@ namespace iDareUI.PageInteractions
                     numberOfCases = Int32.Parse(labelCut);
                     return numberOfCases > 0;
                 },TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(25));
+
+            Assert.True(response.Success, response.ToString());
+
             return numberOfCases;
+        }
+
+        public void AssertThatNoProgressBarIsShown()
+        {
+            //dont want a progress bar - if one appears we fail - so a timeout is good
+            var response = FlowUtilities.WaitUntil(() => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']")).Count >= 1, 
+                TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+            
+            Assert.True(response.TimedOut);
         }
 
         public void WaitUntilProgressBarIsShown(int numberOfUploads)
         {
             for (int i = 0; i < numberOfUploads; i++)
             {
-                FlowUtilities.WaitUntil(() =>
-                {
-                    return driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']")).Count == numberOfUploads;
-                }, TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
+                FlowUtilities.WaitUntil(
+                    () => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']")).Count == numberOfUploads, 
+                    TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100));
             }
-            
         }
 
         public void WaitUntilProgressBarShowsUpdatedStatusSuccess(int maxWaitSeconds)
