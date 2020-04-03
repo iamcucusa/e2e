@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using iDareUI.Common;
+﻿using iDareUI.Common;
 using iDareUI.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using static iDareUI.CasesOverviewSteps;
 
@@ -242,26 +242,35 @@ namespace iDareUI.PageInteractions
         }
         public void AssertThatAllProgressBarsAreRemoved()
         {
+            bool elementHasDisappear = false;
+
             var response = FlowUtilities.WaitUntil(() =>
-                {
-                    IEnumerable<IWebElement> progressBars;
-                    try
-                    {
-                        progressBars = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileProgressBar']"));
-                    }
-                    catch (Exception e)
-                    {
-                        return true;
-                    }
+            {
+                elementHasDisappear = !IsVisible("CaseUploadFileProgressBar");
+                return elementHasDisappear;
+            },
+                TimeSpan.FromSeconds(50), TimeSpan.FromMilliseconds(100));
 
-                    if (progressBars.ToList().Any())
-                        return false;
-
-                    return true;
-                },
-                TimeSpan.FromSeconds(30), TimeSpan.FromMilliseconds(100));
-
-            Assert.True(response.TimedOut);
+            Assert.True(response.Success, "The progress bar are not removed at the end of the upload");
+        }
+        private bool IsVisible(string id)
+        {
+            bool displayed;
+            try
+            {
+                displayed = driver.FindElement(By.XPath("//*[@attr.data-idare-id='" + id + "']")).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                // As the element is not present in DOM, it returns true.
+                displayed = false;
+            }
+            catch (StaleElementReferenceException)
+            {
+                // The stale element reference implies that element is no longer visible, hence returns true.
+                displayed = false;
+            }
+            return displayed;
         }
         public void WaitUntilProgressBarShowsUpdatedStatusSuccess(int maxWaitSeconds)
         {

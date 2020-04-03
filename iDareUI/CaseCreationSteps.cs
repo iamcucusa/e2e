@@ -127,7 +127,7 @@ namespace iDareUI
         public void ThenTheCaseWithTheUniqueIdAsRexisIDIsOnTheTopOfTheList()
         {
             var response = FlowUtilities.WaitUntil(() => mainCasesPage.firstIdRowText.Contains(uniqueID), 
-                TimeSpan.FromSeconds(3), TimeSpan.FromMilliseconds(100));
+                TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
 
             Assert.True(response.Success, "The case is not displayed.");
         }
