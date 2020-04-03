@@ -9,14 +9,24 @@ namespace iDareUI.Common
 {
    public class TestingEnvironment:IDisposable
     {
+        public bool IsIDE 
+        {
+            get { return System.Diagnostics.Debugger.IsAttached; }
+        }
         private RemoteWebDriver driver = null;
         public RemoteWebDriver Driver
         {
             get
             {
+                ChromeOptions chromeOptions = new ChromeOptions();
                 if (this.driver == null)
                 {
-                    this.driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    if (!IsIDE)
+                    {
+                        chromeOptions.AddArgument("headless");
+                    }
+
+                    this.driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),chromeOptions);
                     this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
                 }
                 return driver;
