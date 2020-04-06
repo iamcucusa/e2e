@@ -29,11 +29,24 @@ namespace iDareUI
             this.caseCreationSteps = new CaseCreationSteps(environment, featureContext);
             this.featureContext = featureContext;
         }
+
+        [Then(@"I enter to the details of a case")]
+        public void ThenIEnterToTheDetailsOfACase()
+        {
+            caseMainPage.PressDetailsButton();
+        }
+
+        [When(@"all files of the (.*) case have been processed")]
+        public void WhenAllFilesOfTheCASCaseHaveBeenProcessed(string caseId)
+        {
+            caseMainPage.WaitUntilCasesAreUpdated(caseId, "01.");
+        }
+
         [Then(@"the Instrument Information should be shown under the Instrument Information section")]
         public void ThenTheInstrumentInformationShouldBeShownUnderTheInstrumentInformationSection()
         {
-            string[] expectedInstrumentInformationTitles = new string[] { "Lab name", "Lab address", "Instrument type", "Instrument serial number", "Software version", "Instrument time zone" };
-            string[] expectedInstrumentInformationData = new string[] { "Customer", "Spain", "-", "12345", "01.03.08.1011", "(UTC-11:00) Coordinated Universal Time-11" };
+            string[] expectedInstrumentInformationTitles = new string[]{ "Lab name", "Lab address", "Instrument type", "Instrument serial number", "Software version", "Instrument time zone" };
+            string[] expectedInstrumentInformationData = new string[] { "ศูนย์บริการโลหิตแห่งชาติ สภากาชาดไทย", "Forrenstrasse 2, 6343 Rotkreuz", "cobas 6800 movable", "WSIM001234", "01.03.08.1011", "(UTC-11:00) Coordinated Universal Time-11" };
             var obtainedTitles = caseDetailsPage.GetInstrumentInformationTitles();
             var obtainedData = caseDetailsPage.GetInstrumentInformationData();
             Assert.True(expectedInstrumentInformationTitles.SequenceEqual(obtainedTitles),

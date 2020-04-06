@@ -23,10 +23,14 @@ Scenario: 635 Display Lab and instrument information
 		And I enter WSIM001234 as Serial number
 		And I enter ศูนย์บริการโลหิตแห่งชาติ สภากาชาดไทย as Customer
 		And I enter UNITED ARAB EMIRATES as Country
+		And I enter the option 2 of the dropdown as Timezone
+		And I upload a Problem Report with name ProblemReport_OnlySummary.zip
 		And I press the Save button
-		And I enter to the details of a case
+		And all files of the CAS-1122334455 case have been processed
+	Then I enter to the details of a case
 	Then the Instrument Information should be shown under the Instrument Information section
 	Then The user navigates to the investigation view
 		And the Instrument Information should be shown under the Instrument Information section
 
+Scenario: 1962 Display information about performed runs
 
