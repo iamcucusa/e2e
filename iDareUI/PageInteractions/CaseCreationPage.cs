@@ -54,25 +54,6 @@ namespace iDareUI.PageInteractions
         public void PressCancelButton() { CancelButton.Click(); }
         public void PressSaveButton() { SaveButton.Click(); }
         public void PressUploadFileButton() { UploadFileButton.Click(); }
-        public List<string> GetFileNameList(string fileNameDelimited)
-        {
-            List<string> fileNameList = new List<string>();
-            if (!fileNameDelimited.Contains(','))
-            {
-                fileNameList.Add(fileNameDelimited);
-                return fileNameList;
-            }
-            else
-            {
-                var fileNames = fileNameDelimited.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                for (var index = 0; index < fileNames.Length; index++)
-                {
-                    fileNames[index] = fileNames[index].Trim();
-                }
-
-                return fileNames.ToList();
-            }
-        }
         public void SimulateFileUploading(string filePath)
         {
             IWebElement inputFile = this.FileUploadInput;

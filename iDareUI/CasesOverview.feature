@@ -2,7 +2,7 @@
 	In order to keep the cases organized
 	As a user
 	I want to be shown the cases correctly sorted and with the correct information
-
+	
 @mytag
 Scenario: Cases overview: correct columns
 	Given I am in the Overview screen

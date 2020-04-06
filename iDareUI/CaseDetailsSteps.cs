@@ -32,5 +32,15 @@ namespace iDareUI
             Assert.True(expectedInstrumentInformationData.SequenceEqual(obtainedData),
                 $"The Information Titles are not the expected ones. \nExpected: {string.Join(", ", expectedInstrumentInformationData)}, \nActual: {string.Join(", ", obtainedData)}");
         }
+
+        [Then(@"the titles shown in the Details of the case are correct")]
+        public void ThenTheTitlesShownInTheDetailsOfTheCaseAreCorrect()
+        {
+            string[] expectedDetailsHeaders = new string[] { "Instrument states", "Detected issues", "Footprint", "Instrument information", "Recorded runs" };
+            var obtainedTitles = caseDetailsPage.GetDetailsCardHeaders();
+            Assert.True(expectedDetailsHeaders.SequenceEqual(obtainedTitles),
+               $"The Detail titles are not the expected ones. \nExpected: {string.Join(", ", expectedDetailsHeaders)}, \nActual: {string.Join(", ", obtainedTitles)}");
+        }
+
     }
 }
