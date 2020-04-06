@@ -33,15 +33,16 @@ Scenario Outline: Teacher does not enter required field when creating a new issu
 
     Examples:   
 
-    | title                 | category | system          |
+    | title                   | category | system      |
 
-    | Reagent storage error | HW       |                 |
+    | 'Reagent storage error' | 'HW'     | ''          |
 
-    | Reagent storage error |          | cobas 6800/8800 |
+    | 'Reagent storage error' | ''       | 'cobas 6800/8800' |
 
-    |                       | HW       | cobas 6800/8800 |
+    | ''                      | 'HW'     | 'cobas 6800/8800' |
 
-    |                       |          |                 |
+    | ''                      | ''       | ''          |
+
 
 
 
