@@ -22,7 +22,7 @@ Scenario Outline: Teacher does not enter required field when creating a new issu
 
     Given Issue Dialog is open
 
-    When enter <title> as Title
+    When I enter <title> as Title
 
         And I enter <category> as Category
 
@@ -52,7 +52,7 @@ Scenario: Save issue button is enabled when user enter all required fields
 
     Given Issue Dialog is open
 
-    When enter 'cobas 6800/8800' as System
+    When I enter 'cobas 6800/8800' as System
 
         And I enter 'HW' as Category
 

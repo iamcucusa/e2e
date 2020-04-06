@@ -53,12 +53,6 @@ namespace iDareUI
             Assert.True(true);
         }
         
-        [When(@"enter '(.*)' as Title")]
-        public void WhenEnterAsTitle(string p0)
-        {
-            Assert.True(true);
-        }
-        
         [When(@"I enter '(.*)' as Category")]
         public void WhenIEnterAsCategory(string p0)
         {
@@ -71,11 +65,6 @@ namespace iDareUI
             Assert.True(true);
         }
         
-        [When(@"enter '(.*)' as System")]
-        public void WhenEnterAsSystem(string p0)
-        {
-            Assert.True(true);
-        }
         
         [When(@"I enter '(.*)' as Title")]
         public void WhenIEnterAsTitle(string p0)
