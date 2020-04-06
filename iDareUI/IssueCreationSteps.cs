@@ -1,105 +1,122 @@
-﻿using System;
+﻿using iDareUI.Common;
+using System;
+using System.Collections.Generic;
+using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
+using Xunit;
 
 namespace iDareUI
 {
     [Binding]
     public class IssueCreationSteps
     {
+        private TestingEnvironment environment;
+        private TeachingMainPage mainTeachingPage;
+        private IssueCreationPage issueCreationPage;
+
+        public IssueCreationSteps(TestingEnvironment environment)
+        {
+            this.environment = environment;
+            this.mainTeachingPage = new TeachingMainPage(environment.Driver);
+            this.issueCreationPage = new IssueCreationPage(environment.Driver);
+        }
+
         [Given(@"I navigate successfully to the teaching module")]
         public void GivenINavigateSuccessfullyToTheTeachingModule()
         {
-            ScenarioContext.Current.Pending();
+            this.environment.Driver.Manage().Window.Maximize();
+            this.mainTeachingPage.NavigateToTeachingModule();
         }
         
         [Given(@"I am in the issue list in teaching module")]
         public void GivenIAmInTheIssueListInTeachingModule()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(this.mainTeachingPage.IssueListIsLoaded());
         }
         
         [Given(@"I click add issue button")]
         public void GivenIClickAddIssueButton()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(this.mainTeachingPage.NewIssue());
+           
         }
         
         [Given(@"Issue Dialog is open")]
         public void GivenIssueDialogIsOpen()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(this.issueCreationPage.NewIssueDialogIsOpen());
         }
         
         [Given(@"I enter the following fields")]
         public void GivenIEnterTheFollowingFields(Table table)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [When(@"enter '(.*)' as Title")]
         public void WhenEnterAsTitle(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [When(@"I enter '(.*)' as Category")]
         public void WhenIEnterAsCategory(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [When(@"I enter '(.*)' as System")]
         public void WhenIEnterAsSystem(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [When(@"enter '(.*)' as System")]
         public void WhenEnterAsSystem(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [When(@"I enter '(.*)' as Title")]
         public void WhenIEnterAsTitle(string p0)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [When(@"I click save button is enabled")]
         public void WhenIClickSaveButtonIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [Then(@"the save button must be disabled")]
         public void ThenTheSaveButtonMustBeDisabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [Then(@"the save button must be enabled")]
         public void ThenTheSaveButtonMustBeEnabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [Then(@"the issue list is updated successfully and includes the new created issue")]
         public void ThenTheIssueListIsUpdatedSuccessfullyAndIncludesTheNewCreatedIssue()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [Then(@"the the fiedls have the correct value")]
         public void ThenTheTheFiedlsHaveTheCorrectValue(Table table)
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
         
         [Then(@"the first issue edit button must be the last cell with the defined icon")]
         public void ThenTheFirstIssueEditButtonMustBeTheLastCellWithTheDefinedIcon()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(true);
         }
     }
 }
