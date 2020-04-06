@@ -15,10 +15,17 @@ namespace iDareUI
     {
         private TestingEnvironment environment;
         private CaseDetailsPage caseDetailsPage;
-        public CaseDetailsSteps(TestingEnvironment environment)
+        private CaseCreationSteps caseCreationSteps;
+        private FeatureContext featureContext;
+        private CaseMainPage caseMainPage;
+
+        public CaseDetailsSteps(TestingEnvironment environment, FeatureContext featureContext)
         {
             this.environment = environment;
             this.caseDetailsPage = new CaseDetailsPage(environment.Driver);
+            this.caseMainPage = new CaseMainPage(environment.Driver);
+            this.caseCreationSteps = new CaseCreationSteps(environment, featureContext);
+            this.featureContext = featureContext;
         }
         [Then(@"the Instrument Information should be shown under the Instrument Information section")]
         public void ThenTheInstrumentInformationShouldBeShownUnderTheInstrumentInformationSection()
@@ -31,6 +38,31 @@ namespace iDareUI
                 $"The Information Titles are not the expected ones. \nExpected: {string.Join(", ", expectedInstrumentInformationTitles)}, \nActual: {string.Join(", ", obtainedTitles)}");
             Assert.True(expectedInstrumentInformationData.SequenceEqual(obtainedData),
                 $"The Information Titles are not the expected ones. \nExpected: {string.Join(", ", expectedInstrumentInformationData)}, \nActual: {string.Join(", ", obtainedData)}");
+        }
+
+        [Then(@"the titles shown in the Details of the case are correct")]
+        public void ThenTheTitlesShownInTheDetailsOfTheCaseAreCorrect()
+        {
+            string[] expectedDetailsHeaders = new string[] { "Instrument states", "Detected issues", "Footprint", "Instrument information", "Recorded runs" };
+            var obtainedTitles = caseDetailsPage.GetDetailsCardHeaders();
+            Assert.True(expectedDetailsHeaders.SequenceEqual(obtainedTitles),
+               $"The Detail titles are not the expected ones. \nExpected: {string.Join(", ", expectedDetailsHeaders)}, \nActual: {string.Join(", ", obtainedTitles)}");
+        }
+
+        [Then(@"the system shall fill the case fields automatically")]
+        public void ThenTheSystemShallFillTheCaseFieldsAutomatically()
+        {
+            caseCreationSteps.ThenTheProgressOfTheUploadsShouldDisappear();
+            string SWVersion = null;
+            Case caseDetails = (Case)this.featureContext["caseDetails"];
+            caseMainPage.WaitUntilCasesAreUpdated(caseDetails.CaseID, "01.");
+            IEnumerable<Case> caseListComponent = caseMainPage.GetRowsElementsCases();
+            IEnumerable<Case> caseDetailsCreated = caseListComponent.Where(myCase => myCase.CaseID.Contains(caseDetails.CaseID));
+            if (caseDetailsCreated.Count() == 1)
+            {
+                SWVersion = caseDetailsCreated.ElementAt(0).SWVersion;
+            }
+            Assert.False(String.IsNullOrEmpty(SWVersion), "The fields were not automatically filled");
         }
     }
 }

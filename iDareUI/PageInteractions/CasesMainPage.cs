@@ -6,6 +6,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Xunit;
 using static iDareUI.CasesOverviewSteps;
 
@@ -24,6 +25,9 @@ namespace iDareUI.PageInteractions
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseRow']"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
+
+        private IWebElement caseEditFirstButton => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentEditCaseIcon']"))[0];
+
         private IWebElement detailsButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='DetectedIssuesContainerViewButton']"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
@@ -57,16 +61,18 @@ namespace iDareUI.PageInteractions
 
             foreach (var row in rows)
             {
-                IWebElement rowCaseID = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseIDValue']"));
-                IWebElement rowSerialNo = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentSerialNumberValue']"));
-                IWebElement rowCustomer = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCustomerValue']"));
-                IWebElement rowCountry = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCountryValue']"));
+                IWebElement rowCaseID = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"));
+                IWebElement rowSerialNo = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-serialNumber.mat-column-serialNumber.ng-star-inserted"));
+                IWebElement rowCustomer = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-customer.mat-column-customer.ng-star-inserted"));
+                IWebElement rowCountry = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-country.mat-column-country.ng-star-inserted"));
+                IWebElement rowSWV = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-softwareVersion.mat-column-softwareVersion.ng-star-inserted"));
 
                 var myCase = new Case();
                 myCase.CaseID = rowCaseID.Text;
                 myCase.SerialNo = rowSerialNo.Text;
                 myCase.Customer = rowCustomer.Text;
                 myCase.Country = rowCountry.Text;
+                myCase.SWVersion = rowSWV.Text;
 
                 ret.Add(myCase);
             }
@@ -120,6 +126,13 @@ namespace iDareUI.PageInteractions
             IWebElement previousPageClickableButton = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base")));
             previousPageClickableButton.Click();
         }
+
+        public void PressFirstCaseEditButton()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            this.caseEditFirstButton.Click();
+        }
+
         public void NewCase()
         {
             newCaseButton.Click();
@@ -150,15 +163,16 @@ namespace iDareUI.PageInteractions
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
-        internal void WaitUntilCasesAreCreated(string caseId)
+        public void WaitUntilCasesAreUpdated(string caseId, string fieldUpdated)
         {
             FlowUtilities.WaitUntil(
                 () =>
                 {
                     try
                     {
-                        var ret = GetRowsIds();
-                        return ret.Any(id => id.Text.Contains(caseId));
+                        var caseRows = GetRowsElements();
+                        var ret = caseRows.Where(row => row.Text.Contains(caseId));
+                        return ret.Any(row => row.Text.Contains(fieldUpdated));
                     }
                     catch
                     {
@@ -169,6 +183,7 @@ namespace iDareUI.PageInteractions
 
         public bool SelectCases(Case caseCreatedForSearch, CaseSearchProperty property)
         {
+            Thread.Sleep(TimeSpan.FromSeconds(5));
             var ret = GetRowsElementsCases();
             string caseProperty = null;
             bool value = false;
@@ -242,36 +257,18 @@ namespace iDareUI.PageInteractions
         }
         public void AssertThatAllProgressBarsAreRemoved()
         {
-            bool elementHasDisappear = false;
+            bool elementHasDisappeared = false;
 
             var response = FlowUtilities.WaitUntil(() =>
             {
-                elementHasDisappear = !IsVisible("CaseUploadFileProgressBar");
-                return elementHasDisappear;
+                elementHasDisappeared = !InteractionUtilities.IsVisible("CaseUploadFileProgressBar", this.driver);
+                return elementHasDisappeared;
             },
-                TimeSpan.FromSeconds(50), TimeSpan.FromMilliseconds(100));
+                TimeSpan.FromSeconds(300), TimeSpan.FromMilliseconds(500));
 
-            Assert.True(response.Success, "The progress bar are not removed at the end of the upload");
+            Assert.True(response.Success, "The progress bars were not removed at the end of the upload");
         }
-        private bool IsVisible(string id)
-        {
-            bool displayed;
-            try
-            {
-                displayed = driver.FindElement(By.XPath("//*[@attr.data-idare-id='" + id + "']")).Displayed;
-            }
-            catch (NoSuchElementException)
-            {
-                // As the element is not present in DOM, it returns true.
-                displayed = false;
-            }
-            catch (StaleElementReferenceException)
-            {
-                // The stale element reference implies that element is no longer visible, hence returns true.
-                displayed = false;
-            }
-            return displayed;
-        }
+        
         public void WaitUntilProgressBarShowsUpdatedStatusSuccess(int maxWaitSeconds)
         {
             FlowUtilities.WaitUntil(() =>

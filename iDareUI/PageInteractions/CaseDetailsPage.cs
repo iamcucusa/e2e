@@ -14,8 +14,26 @@ namespace iDareUI.PageInteractions
         {
             this.driver = driver;
         }
-        public IWebElement closeCaseDetailsButton => driver.FindElement(By.CssSelector("button.prv-context-info__close.mat-icon-button"));
+        public IWebElement closeCaseDetailsButton => driver.FindElement(By.CssSelector("button.prv-context-info__close.mat-icon-button")); 
+        private IWebElement DetailsTitleCaseId => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CasedDetailHeaderHeading1']"));
+        private IWebElement instrumentInformationCard => driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfo']"));
+        private IWebElement instrumentInformationHeader => driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoHeader']")); 
+        private IWebElement recordedRunsCard => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDetailRecordedRunsInfoContainer']"));
+        private IWebElement recordedRunsHeader => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDetailRecordedRunsInfoContainerTitle']"));
 
+
+        public void PressMatExpansionPanelInstrumentInformation() { instrumentInformationHeader.Click(); }
+        public void PressMatExpansionPanelRecordedRuns() { recordedRunsHeader.Click(); }
+        public IEnumerable<string> GetDetailsCardHeaders()
+        {
+            IList<IWebElement> detailsHeaders = driver.FindElements(By.CssSelector("span.section-title"));
+            List<string> detailsHeadersText = new List<string> (detailsHeaders.Select(element => element.Text));
+
+            detailsHeadersText.Add(instrumentInformationHeader.Text);
+            detailsHeadersText.Add(recordedRunsHeader.Text);
+
+            return detailsHeadersText;
+        }
 
         public IEnumerable<string> GetInstrumentInformationTitles()
         {

@@ -12,5 +12,25 @@ namespace iDareUI.Common
                 element.SendKeys(Char.ToString(keys[i]));
             }
         }
+
+        public static bool IsVisible(string id, IWebDriver webDriver)
+        {
+            bool displayed;
+            try
+            {
+                displayed = webDriver.FindElement(By.XPath("//*[@attr.data-idare-id='" + id + "']")).Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                // As the element is not present in DOM, it returns true.
+                displayed = false;
+            }
+            catch (StaleElementReferenceException)
+            {
+                // The stale element reference implies that element is no longer visible, hence returns true.
+                displayed = false;
+            }
+            return displayed;
+        }
     }
 }

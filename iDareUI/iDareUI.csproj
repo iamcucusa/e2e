@@ -8,14 +8,24 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="TestData\ProblemReport\IM.Backend.log" />
     <None Remove="TestData\ProblemReport\ProblemReport_OnlySummary.zip" />
     <None Remove="TestData\ProblemReport\RealDataSmall.zip" />
     <None Remove="TestData\ProblemReport\RealDataSmall2.zip" />
+    <None Remove="TestData\ProblemReport\RealDataSmall3.zip" />
     <None Remove="TestData\ProblemReport\RealDataSmallFail.zip" />
+    <None Remove="TestData\ProblemReport\settings.xml" />
+    <None Remove="TestData\ProblemReport\test.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestData\ProblemReport\IM.Backend.log">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\ProblemReport\ProblemReport_OnlySummary.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ProblemReport\RealDataSmall3.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\ProblemReport\RealDataSmall2.zip">
@@ -25,6 +35,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\ProblemReport\RealDataSmall.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ProblemReport\settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\ProblemReport\test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -17,8 +17,8 @@ namespace iDareUI
         private CaseMainPage mainCasesPage;
         private CaseDetailsPage casesDetailsPage;
         private CaseCreationSteps caseCreationSteps;
-        private CaseCreationPage caseCreationPage;
-        private Case caseCreatedForSearch;
+        private ScenarioContext scenarioContext;
+        private FeatureContext featureContext;
         public enum CaseSearchProperty
         {
             CaseId,
@@ -27,13 +27,14 @@ namespace iDareUI
             Country
         }
 
-        public CasesOverviewSteps(TestingEnvironment environment)
+        public CasesOverviewSteps(TestingEnvironment environment, ScenarioContext scenarioContext, FeatureContext featureContext)
         {
             this.environment = environment;
             this.mainCasesPage = new CaseMainPage(environment.Driver);
             this.casesDetailsPage = new CaseDetailsPage(environment.Driver);
-            this.caseCreationPage = new CaseCreationPage(environment.Driver);
-            this.caseCreationSteps = new CaseCreationSteps(environment);
+            this.caseCreationSteps = new CaseCreationSteps(environment, featureContext);
+            this.scenarioContext = scenarioContext;
+            this.featureContext = featureContext;
         }
 
         [When(@"I go to the Cases overview screen")]
@@ -104,12 +105,13 @@ namespace iDareUI
         [Given(@"I create two duplicate cases and a different case")]
         public void GivenICreateTwoDuplicateCasesAndADifferentCase()
         {
-            caseCreatedForSearch = Case.GetRandomCase();
+            Case caseCreatedForSearch = Case.GetRandomCase();
+            this.scenarioContext["caseCreatedForSearch"] = caseCreatedForSearch;
             this.CreateCase(caseCreatedForSearch);
             this.CreateCase(caseCreatedForSearch);
             var myCase2 = Case.GetRandomCase();
             this.CreateCase(myCase2);
-            mainCasesPage.WaitUntilCasesAreCreated(myCase2.CaseID);
+            mainCasesPage.WaitUntilCasesAreUpdated(myCase2.CaseID, myCase2.CaseID);
         }
 
         private void CreateCase(Case c)
@@ -127,6 +129,7 @@ namespace iDareUI
         [When(@"I search by (.*) of the duplicate cases")]
         public void WhenISearchByOfTheDuplicateCases(CaseSearchProperty property)
         {
+            Case caseCreatedForSearch = (Case)this.scenarioContext["caseCreatedForSearch"];
             switch (property)
             {
                 case CaseSearchProperty.CaseId:
@@ -152,6 +155,7 @@ namespace iDareUI
         [Then(@"the only two cases with the same (.*) I created are displayed")]
         public void ThenTheOnlyTwoCasesWithTheSameICreatedAreDisplayed(CaseSearchProperty property)
         {
+            Case caseCreatedForSearch = (Case)this.scenarioContext["caseCreatedForSearch"];
             FlowUtilities.WaitUntil(
                 () => (mainCasesPage.SelectCases(caseCreatedForSearch, property)), TimeSpan.FromSeconds(2000), TimeSpan.FromMilliseconds(25));
 

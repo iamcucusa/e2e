@@ -28,7 +28,11 @@ namespace iDareUI.PageInteractions
         public IWebElement UploadFileButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='FileUploadSubmitButton']"));
         public IWebElement CaseFilesToUploadList => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseFilesToUploadList']"));
         public IWebElement TimezoneElement => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneLabel']")); 
-        public IWebElement CaseCreationDialog => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDialog']")); 
+        public IWebElement CaseCreationDialog => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDialog']"));
+
+        public IList<IWebElement> FileSelectComponentDeleteButtons =>
+            driver.FindElements(By.XPath("//*[@attr.data-idare-id='FileSelectComponentDeleteIcon']")).ToList();
+
         public IList<IWebElement> GetTimezoneOptions()
         {
             IList<IWebElement> timezoneOptions = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseComponentTimezoneOption']"));
@@ -54,25 +58,6 @@ namespace iDareUI.PageInteractions
         public void PressCancelButton() { CancelButton.Click(); }
         public void PressSaveButton() { SaveButton.Click(); }
         public void PressUploadFileButton() { UploadFileButton.Click(); }
-        public List<string> GetFileNameList(string fileNameDelimited)
-        {
-            List<string> fileNameList = new List<string>();
-            if (!fileNameDelimited.Contains(','))
-            {
-                fileNameList.Add(fileNameDelimited);
-                return fileNameList;
-            }
-            else
-            {
-                var fileNames = fileNameDelimited.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                for (var index = 0; index < fileNames.Length; index++)
-                {
-                    fileNames[index] = fileNames[index].Trim();
-                }
-
-                return fileNames.ToList();
-            }
-        }
         public void SimulateFileUploading(string filePath)
         {
             IWebElement inputFile = this.FileUploadInput;
@@ -88,6 +73,18 @@ namespace iDareUI.PageInteractions
             
             Assert.True(response.Success, response.ToString());
         }
+
+        public void AssertFileUploadListFileIsRemoved(string fileName)
+        {
+            var response = FlowUtilities.WaitUntil(() =>
+            {
+                IWebElement caseFileUploaded = this.CaseFilesToUploadList;
+                return !caseFileUploaded.Text.Contains(fileName);
+            }, TimeSpan.FromSeconds(60), TimeSpan.FromMilliseconds(100));
+
+            Assert.True(response.Success, response.ToString());
+        }
+
         public void SelectOptionInTimezoneDropdown(int optionIndex)
         {
             TimezoneElement.Click();
@@ -109,5 +106,11 @@ namespace iDareUI.PageInteractions
             IWebElement timezoneOption = GetTimezoneOptions().ToArray()[optionIndex - 1];
             timezoneOption.Click();
         }
+
+        public void PressFirstFileSelectComponentDeleteButton()
+        {
+            FileSelectComponentDeleteButtons[0].Click();
+        }
+
     }
 }
