@@ -18,7 +18,7 @@ namespace iDareUI
         private CaseDetailsPage casesDetailsPage;
         private CaseCreationSteps caseCreationSteps;
         private ScenarioContext scenarioContext;
-        //private Case caseCreatedForSearch;
+        private FeatureContext featureContext;
         public enum CaseSearchProperty
         {
             CaseId,
@@ -27,13 +27,14 @@ namespace iDareUI
             Country
         }
 
-        public CasesOverviewSteps(TestingEnvironment environment, ScenarioContext scenarioContext)
+        public CasesOverviewSteps(TestingEnvironment environment, ScenarioContext scenarioContext, FeatureContext featureContext)
         {
             this.environment = environment;
             this.mainCasesPage = new CaseMainPage(environment.Driver);
             this.casesDetailsPage = new CaseDetailsPage(environment.Driver);
-            this.caseCreationSteps = new CaseCreationSteps(environment);
+            this.caseCreationSteps = new CaseCreationSteps(environment, featureContext);
             this.scenarioContext = scenarioContext;
+            this.featureContext = featureContext;
         }
 
         [When(@"I go to the Cases overview screen")]
@@ -110,7 +111,7 @@ namespace iDareUI
             this.CreateCase(caseCreatedForSearch);
             var myCase2 = Case.GetRandomCase();
             this.CreateCase(myCase2);
-            mainCasesPage.WaitUntilCasesAreCreated(myCase2.CaseID);
+            mainCasesPage.WaitUntilCasesAreUpdated(myCase2.CaseID, myCase2.CaseID);
         }
 
         private void CreateCase(Case c)

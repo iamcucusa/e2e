@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
 using Xunit;
+using iDareUI.Models;
 
 namespace iDareUI
 {
@@ -13,14 +14,16 @@ namespace iDareUI
         private TestingEnvironment environment;
         private CaseMainPage mainCasesPage;
         private CaseCreationPage caseCreationPage;
+        private FeatureContext featureContext;
 
         private string uniqueID;
 
-        public CaseCreationSteps(TestingEnvironment environment)
+        public CaseCreationSteps(TestingEnvironment environment, FeatureContext featureContext)
         {
             this.environment = environment;
             this.mainCasesPage = new CaseMainPage(environment.Driver);
             this.caseCreationPage = new CaseCreationPage(environment.Driver);
+            this.featureContext = featureContext;
         }
 
         [Given(@"I navigate to the next case page")]
@@ -125,11 +128,13 @@ namespace iDareUI
         [When(@"I create a new Case")]
         public void WhenICreateANewCase()
         {
+            Case caseDetails = Case.GetRandomCase();
+            this.featureContext["caseDetails"] = caseDetails;
             this.GivenIEnterToCreateANewCase();
-            this.WhenIEnterAsRexisID("CAS-0123");
-            this.WhenIEnterAsSerialNumber("12345");
-            this.WhenIEnterAsCountry("Spain");
-            this.WhenIEnterAsCustomer("Customer");
+            this.WhenIEnterAsRexisID(caseDetails.CaseID);
+            this.WhenIEnterAsSerialNumber(caseDetails.SerialNo);
+            this.WhenIEnterAsCountry(caseDetails.Country);
+            this.WhenIEnterAsCustomer(caseDetails.Customer);
             this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
             List<string> fileName = new List<string>();
             fileName.Add(Constants.ProblemReportOnlySummary);

@@ -57,16 +57,18 @@ namespace iDareUI.PageInteractions
 
             foreach (var row in rows)
             {
-                IWebElement rowCaseID = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseIDValue']"));
-                IWebElement rowSerialNo = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentSerialNumberValue']"));
-                IWebElement rowCustomer = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCustomerValue']"));
-                IWebElement rowCountry = row.FindElement(By.XPath("//*[@attr.data-idare-id='CaseListComponentCountryValue']"));
+                IWebElement rowCaseID = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-caseReference.mat-column-caseReference.ng-star-inserted"));
+                IWebElement rowSerialNo = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-serialNumber.mat-column-serialNumber.ng-star-inserted"));
+                IWebElement rowCustomer = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-customer.mat-column-customer.ng-star-inserted"));
+                IWebElement rowCountry = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-country.mat-column-country.ng-star-inserted"));
+                IWebElement rowSWV = row.FindElement(By.CssSelector("td.mat-cell.cdk-cell.cdk-column-softwareVersion.mat-column-softwareVersion.ng-star-inserted"));
 
                 var myCase = new Case();
                 myCase.CaseID = rowCaseID.Text;
                 myCase.SerialNo = rowSerialNo.Text;
                 myCase.Customer = rowCustomer.Text;
                 myCase.Country = rowCountry.Text;
+                myCase.SWVersion = rowSWV.Text;
 
                 ret.Add(myCase);
             }
@@ -150,15 +152,16 @@ namespace iDareUI.PageInteractions
         {
             FlowUtilities.WaitUntil(() => RangeLabelText.StartsWith("1 -"), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
-        internal void WaitUntilCasesAreCreated(string caseId)
+        public void WaitUntilCasesAreUpdated(string caseId, string fieldUpdated)
         {
             FlowUtilities.WaitUntil(
                 () =>
                 {
                     try
                     {
-                        var ret = GetRowsIds();
-                        return ret.Any(id => id.Text.Contains(caseId));
+                        var caseRows = GetRowsElements();
+                        var ret = caseRows.Where(row => row.Text.Contains(caseId));
+                        return ret.Any(row => row.Text.Contains(fieldUpdated));
                     }
                     catch
                     {
