@@ -34,15 +34,15 @@ Scenario Outline: Teacher does not enter required field when creating a new issu
 
     Examples:   
 
-    | title                   | category | system      |
+    | title                 | category | system          |
 
-    | 'Reagent storage error' | 'HW'     | ''          |
+    | Reagent storage error | HW       |                 |
 
-    | 'Reagent storage error' | ''       | 'cobas 6800/8800' |
+    | Reagent storage error |          | cobas 6800/8800 |
 
-    | ''                      | 'HW'     | 'cobas 6800/8800' |
+    |                       | HW       | cobas 6800/8800 |
 
-    | ''                      | ''       | ''          |
+    |                       |          |                 |
 
 
 
@@ -70,17 +70,17 @@ Scenario: New issue Reagent storage error is created successfully
 
         | field    | value                   |
 
-        | System   | 'cobas 6800/8800'       |
+        | System   | cobas 6800/8800       |
 
-        | Category | 'HW'                    |
+        | Category | HW                    |
 
-        | Title    | 'Reagent storage error' | 
+        | Title    | Reagent storage error | 
 
-        | Description              | 'Reagent storage error'      |
+        | Description              | Reagent storage error      |
 
-        | ObservedInInstrument     | 'Observed in instrument'     |
+        | ObservedInInstrument     | Observed in instrument     |
 
-        | ExcludedSoftwareVersions | 'Excluded software versions' |
+        | ExcludedSoftwareVersions | Excluded software versions |
 
     When I click save button is enabled
 
@@ -88,22 +88,22 @@ Scenario: New issue Reagent storage error is created successfully
 
         And the the fiedls have the correct value
 
-        | field    | value                   |
+        | field    | value                 |
 
-        | System   | 'cobas 6800/8800'       |
+        | System   | cobas 6800/8800       | 
 
-        | Category | 'HW'                    |
+        | Category | HW                    |
 
-        | Title    | 'Reagent storage error' | 
+        | Title    | Reagent storage error | 
 
-        | Description              | 'Reagent storage error'      |
+        | Description              | Reagent storage error      |
 
-        | ObservedInInstrument     | 'Observed in instrument'     |
+        | ObservedInInstrument     | Observed in instrument     |
 
-        | ExcludedSoftwareVersions | 'Excluded software versions' |
+        | ExcludedSoftwareVersions | Excluded software versions |
 
-        | Footprints               | 0                            |
+        | Footprints               | 0                          |
 
-        | ModifiedBy               | 'DebugUser'                  |
+        | ModifiedBy               | DebugUser                  |
 
         And the first issue edit button must be the last cell with the defined icon
