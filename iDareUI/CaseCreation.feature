@@ -44,7 +44,7 @@ Scenario: 204 Create a new case and manually select multiple files
 	Then The progress of the uploads should disappear
 	
 Scenario: 205 Create a new case and manually select a file and cancel the operation
-		Given I am in the Overview screen
+	Given I am in the Overview screen
 		And I enter to create a new case
 	When I enter Customer as Customer
 		And I enter a Rexis ID with a unique ID
@@ -54,6 +54,43 @@ Scenario: 205 Create a new case and manually select a file and cancel the operat
 		And I upload a Problem Report with name RealDataSmall.zip
 		And I press the Cancel button
 	Then I should not see any upload progress bars
+
+
+@filesUploadingCases
+Scenario: 746 Create a new case and manually select multiple files
+	Given I am in the Overview screen
+		And I enter to create a new case
+	When I enter Customer as Customer
+		And I enter a Rexis ID with a unique ID
+		And I enter A1234 as Serial number
+		And I enter Spain as Country
+		And I enter the option 1 of the dropdown as Timezone
+		And I press the Save button
+	Then The case creation dialog is closed
+	When I enter the RexisId in the filter
+	Then The case is displayed in the list with the RexisId
+	Then I click the edit case button for the first case
+		When I upload a Problem Report with name RealDataSmall.zip
+		And I press the Save button
+		Then The case creation dialog is closed
+	Then I should see the progress of the 1 uploads
+	Then The progress of the uploads should disappear
+		When I enter the RexisId in the filter
+		Then I click the edit case button for the first case
+		When I upload a Problem Report with name RealDataSmall2.zip,RealDataSmall3.zip
+		And I press the Save button
+		Then I should see the progress of the 2 uploads
+	Then The progress of the uploads should disappear
+		When I enter the RexisId in the filter
+		Then The case is displayed in the list with the RexisId
+		Then I click the edit case button for the first case
+		When I upload a Problem Report with name test.txt,settings.xml,IM.Backend.log
+		Then The files list shows the files I have added test.txt,settings.xml,IM.Backend.log
+		Then I remove a file test.txt
+		When I press the Save button
+		Then I should see the progress of the 2 uploads
+		Then The progress of the uploads should disappear
+		Then The Progress Shows Updated Status Success
 
 @ignore
 Scenario: New cases are placed on the top of the first page of the cases overview

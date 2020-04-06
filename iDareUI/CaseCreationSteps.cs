@@ -1,10 +1,11 @@
 ﻿using iDareUI.Common;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using iDareUI.Models;
 using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
 using Xunit;
-using iDareUI.Models;
 
 namespace iDareUI
 {
@@ -16,7 +17,7 @@ namespace iDareUI
         private CaseCreationPage caseCreationPage;
         private FeatureContext featureContext;
 
-        private string uniqueID;
+        private string rexisId;
 
         public CaseCreationSteps(TestingEnvironment environment, FeatureContext featureContext)
         {
@@ -42,7 +43,7 @@ namespace iDareUI
         [When(@"I enter a Rexis ID with a unique ID")]
         public void WhenIEnterARexisIDWithAUniqueID()
         {
-            uniqueID = caseCreationPage.SetUniqueRexisId();
+            rexisId = caseCreationPage.SetUniqueRexisId();
         }
 
         [When(@"I enter (.*) as Rexis ID")]
@@ -69,9 +70,9 @@ namespace iDareUI
         }
 
         [When(@"I enter the option (.*) of the dropdown as Timezone")]
-        public void WhenIEnterTheOptionOfTheDropdownAsTimezone(int p0)
+        public void WhenIEnterTheOptionOfTheDropdownAsTimezone(int optionNumber)
         {
-            caseCreationPage.SelectOptionInTimezoneDropdown(p0);
+            caseCreationPage.SelectOptionInTimezoneDropdown(optionNumber);
         }
 
         [When(@"I leave the ID field empty")]
@@ -79,6 +80,16 @@ namespace iDareUI
         {
             caseCreationPage.SetRexisId("");
         }
+       
+        [Then(@"The files list shows the files I have added (.*)")]
+        public void ThenTheFilesListShowsTheFilesIHaveAdded(List<string> fileNameList)
+        {
+            foreach (var fileName in fileNameList)
+            {
+                caseCreationPage.AssertFileUploadListFileIsDisplayed(fileName);
+            }
+        }
+
         [When(@"I upload a Problem Report with name (.*)")]
         public void WhenIUploadAProblemReportWithName(List<string> fileNameList)
         {
@@ -91,11 +102,42 @@ namespace iDareUI
             }
         }
 
+        [Then(@"The case creation dialog is closed")]
+        public void ThenTheCaseCreationDialogIsClosed()
+        {
+            var response =
+                FlowUtilities.WaitUntil(() => !InteractionUtilities.IsVisible("CaseDialog", this.environment.Driver),
+                    TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+            Assert.True(response.Success, "The case creation page should not be displayed.");
+        }
+
         [When(@"I press the Save button")]
         public void WhenIPressTheSaveButton()
         {
             caseCreationPage.PressSaveButton();
         }
+
+        [When(@"I enter the RexisId in the filter")]
+        public void ThenIEnterTheRexisIdInTheFilter()
+        {
+            mainCasesPage.SearchFilterCases(this.rexisId);
+            mainCasesPage.PressEnterToFilter();
+            //Not nice - but need to wait for the results to be updated.
+            Thread.Sleep(1000);
+        }
+
+        [Then(@"The case is displayed in the list with the RexisId")]
+        public void ThenTheCaseIsDisplayedInTheListWithTheRexisId()
+        {
+            mainCasesPage.SelectCases(new Case { CaseID = rexisId}, CasesOverviewSteps.CaseSearchProperty.CaseId);
+        }
+
+        [Then(@"I click the edit case button for the first case")]
+        public void ThenIClickTheEditCaseButtonForTheFirstCase()
+        {
+            mainCasesPage.PressFirstCaseEditButton();
+        }
+
         [When(@"I press the Cancel button")]
         public void WhenIPressTheCancelButton()
         {
@@ -119,7 +161,7 @@ namespace iDareUI
         [Then(@"the case with the unique ID as Rexis ID is on the top of the list")]
         public void ThenTheCaseWithTheUniqueIdAsRexisIDIsOnTheTopOfTheList()
         {
-            var response = FlowUtilities.WaitUntil(() => mainCasesPage.firstIdRowText.Contains(uniqueID), 
+            var response = FlowUtilities.WaitUntil(() => mainCasesPage.firstIdRowText.Contains(rexisId), 
                 TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
 
             Assert.True(response.Success, "The case is not displayed.");
@@ -171,6 +213,7 @@ namespace iDareUI
         {
             mainCasesPage.WaitUntilProgressBarIsShown(numberOfUploads);
         }
+
         [Then(@"The progress of the uploads should disappear")]
         public void ThenTheProgressOfTheUploadsShouldDisappear()
         {
@@ -186,15 +229,26 @@ namespace iDareUI
         [Then(@"the status gets updated as successful")]
         public void ThenTheStatusGetsUpdatedAsSuccessful()
         {
-            
-            FlowUtilities.WaitUntil(() => uniqueID.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
-            
+            FlowUtilities.WaitUntil(() => rexisId.Contains(mainCasesPage.firstIdRowText), TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(100));
         }
 
         [Then(@"the status gets updated as error")]
         public void ThenTheStatusGetsUpdatedAsError()
         {
             mainCasesPage.WaitUntilProgressBarShowsUpdatedStatusError(300);
+        }
+
+        [Then(@"I remove a file (.*)")]
+        public void ThenIRemoveAFile(string fileName)
+        {
+            caseCreationPage.PressFirstFileSelectComponentDeleteButton();
+            caseCreationPage.AssertFileUploadListFileIsRemoved(fileName);
+        }
+
+        [Then(@"The Progress Shows Updated Status Success")]
+        public void ThenTheProgressShowsUpdatedStatusSuccess()
+        {
+            mainCasesPage.WaitUntilProgressBarShowsUpdatedStatusSuccess(10);
         }
 
 
