@@ -19,7 +19,7 @@ namespace iDareUI.PageInteractions
         private IWebElement supportedIssuesNewNote => driver.FindElement(By.XPath("//*[@attr.data-idare-id='SupportedIssuesNewNote']"));
 
         public IssueFormPage issueFormPage;
-        
+
 
         private RemoteWebDriver driver;
         public IssueCreationPage(RemoteWebDriver driver)
@@ -41,9 +41,18 @@ namespace iDareUI.PageInteractions
             NewIssueDialogIsOpen = this.supportedIssuesNewCancelButton != null && NewIssueDialogIsOpen;
             NewIssueDialogIsOpen = this.supportedIssuesNewSaveButton != null && NewIssueDialogIsOpen;
             NewIssueDialogIsOpen = this.supportedIssuesNewNote != null && NewIssueDialogIsOpen;
-     
+
 
             return NewIssueDialogIsOpen && this.issueFormPage.AreIssueFormElementsLoaded();
+        }
+
+        public bool SaveIssueButtonIsEnabled() {
+            return supportedIssuesNewSaveButton.GetAttribute("disabled") == null;
+        }
+
+        public bool SaveIssueButtonIsDisabled()
+        {
+            return supportedIssuesNewSaveButton.GetAttribute("disabled") == "disabled";
         }
     }
 

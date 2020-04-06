@@ -62,38 +62,44 @@ namespace iDareUI
         [When(@"I enter '(.*)' as Category")]
         public void WhenIEnterAsCategory(string category)
         {
-            Assert.True(true);
+            issueCreationPage.issueFormPage.SetCategory(category);
+      
+            Assert.True(issueCreationPage.issueFormPage.validateIssueCategoryField(category));
         }
         
         [When(@"I enter '(.*)' as System")]
         public void WhenIEnterAsSystem(string system)
         {
-            Assert.True(true);
+            issueCreationPage.issueFormPage.SetSystem(system);
+
+            Assert.True(issueCreationPage.issueFormPage.validateIssueSystemField(system));
         }
         
         
         [When(@"I enter '(.*)' as Title")]
         public void WhenIEnterAsTitle(string title)
         {
-            Assert.True(true);
+            issueCreationPage.issueFormPage.SetTitle(title);
+
+            Assert.True(issueCreationPage.issueFormPage.validateIssueTitleField(title));
         }
         
         [When(@"I click save button is enabled")]
         public void WhenIClickSaveButtonIsEnabled()
         {
-            Assert.True(true);
+            Assert.True(issueCreationPage.SaveIssueButtonIsEnabled());
         }
         
         [Then(@"the save button must be disabled")]
         public void ThenTheSaveButtonMustBeDisabled()
         {
-            Assert.True(true);
+            Assert.True(issueCreationPage.SaveIssueButtonIsDisabled());
         }
         
         [Then(@"the save button must be enabled")]
         public void ThenTheSaveButtonMustBeEnabled()
         {
-            Assert.True(true);
+            Assert.True(issueCreationPage.SaveIssueButtonIsEnabled());
         }
         
         [Then(@"the issue list is updated successfully and includes the new created issue")]

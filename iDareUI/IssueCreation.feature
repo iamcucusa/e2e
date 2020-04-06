@@ -31,7 +31,6 @@ Scenario Outline: Teacher does not enter required field when creating a new issu
     Then the save button must be disabled
 
 
-
     Examples:   
 
     | title                 | category | system          |
