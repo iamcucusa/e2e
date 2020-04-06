@@ -77,26 +77,16 @@ namespace iDareUI
             caseCreationPage.SetRexisId("");
         }
         [When(@"I upload a Problem Report with name (.*)")]
-        public void WhenIUploadAProblemReportWithName(string fileName)
+        public void WhenIUploadAProblemReportWithName(List<string> fileNameList)
         {
-            string filePath = DataLocation.GetProblemReportFilePath(fileName);
-            caseCreationPage.SimulateFileUploading(filePath);
-            caseCreationPage.AssertFileUploadListFileIsDisplayed(fileName);
-        }
-        [When(@"I upload more than one Problem Report with name (.*)")]
-        public void WhenIUploadMoreThanOneProblemReportWithName(string fileNameDelimited)
-        {
-            List<string> fileNameList = caseCreationPage.GetFileNameList(fileNameDelimited);
+            List<string> uploadingFilesList = fileNameList;
             string filePath = DataLocation.GetProblemReportsDirectory(fileNameList);
             caseCreationPage.SimulateFileUploading(filePath);
-
-            foreach (string fileName in fileNameDelimited.Split(','))
+            foreach (string fileName in uploadingFilesList)
             {
                 caseCreationPage.AssertFileUploadListFileIsDisplayed(fileName);
             }
         }
-
-
 
         [When(@"I press the Save button")]
         public void WhenIPressTheSaveButton()
@@ -141,7 +131,9 @@ namespace iDareUI
             this.WhenIEnterAsCountry("Spain");
             this.WhenIEnterAsCustomer("Customer");
             this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
-            this.WhenIUploadAProblemReportWithName(Constants.ProblemReportOnlySummary);
+            List<string> fileName = new List<string>();
+            fileName.Add(Constants.ProblemReportOnlySummary);
+            this.WhenIUploadAProblemReportWithName(fileName);
             this.WhenIPressTheSaveButton();
         }
 
