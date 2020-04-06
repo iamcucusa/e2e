@@ -1,8 +1,10 @@
 ﻿using iDareUI.Common;
+using iDareUI.Models;
 using System;
 using System.Collections.Generic;
 using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using Xunit;
 
 namespace iDareUI
@@ -50,24 +52,28 @@ namespace iDareUI
         [Given(@"I enter the following fields")]
         public void GivenIEnterTheFollowingFields(Table table)
         {
-            Assert.True(true);
+            var issueFormFields = table.CreateInstance<IssueForm>();
+
+            issueCreationPage.issueFormPage.populateIssueForm(issueFormFields);
+
+            Assert.True(issueCreationPage.issueFormPage.validateIssueFormFields(issueFormFields));
         }
         
         [When(@"I enter '(.*)' as Category")]
-        public void WhenIEnterAsCategory(string p0)
+        public void WhenIEnterAsCategory(string category)
         {
             Assert.True(true);
         }
         
         [When(@"I enter '(.*)' as System")]
-        public void WhenIEnterAsSystem(string p0)
+        public void WhenIEnterAsSystem(string system)
         {
             Assert.True(true);
         }
         
         
         [When(@"I enter '(.*)' as Title")]
-        public void WhenIEnterAsTitle(string p0)
+        public void WhenIEnterAsTitle(string title)
         {
             Assert.True(true);
         }

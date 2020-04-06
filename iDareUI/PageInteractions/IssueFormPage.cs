@@ -1,0 +1,139 @@
+﻿using System;
+using System.Collections.Generic;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
+using iDareUI.Models;
+using OpenQA.Selenium.Support.UI;
+
+namespace iDareUI.PageInteractions
+{
+    public class IssueFormPage
+    {
+        private RemoteWebDriver driver;
+        public IssueFormPage(RemoteWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
+        private IWebElement supportedIssueForm => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueForm']"));
+        private IWebElement supportedIssueFormFieldTitle => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldTitle']"));
+        private IWebElement supportedIssueFormFieldTitleLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldTitleLable']"));
+        private IWebElement supportedIssueFormFieldTitleValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldValue']"));
+        private IWebElement supportedIssueFormFieldDescription => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldDescription']"));
+        private IWebElement supportedIssueFormFieldDescriptionLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldDescriptionLabel']"));
+        private IWebElement supportedIssueFormFieldDescriptionValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldDescriptionValue']"));
+        private IWebElement supportedIssueFormFieldInstrument => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldInstrument']"));
+        private IWebElement supportedIssueFormFieldInstrumentLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldInstrumentLabel']"));
+        private IWebElement supportedIssueFormFieldInstrumentValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldInstrumentValue']"));
+        private IWebElement supportedIssueFormFieldSystem => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystem']"));
+        private IWebElement supportedIssueFormFieldSystemLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemLabel']"));
+        // private SelectElement supportedIssueFormFieldSystemSelect => new SelectElement(driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemSelect']")));
+        private IList<IWebElement> supportedIssueFormSystems => driver.FindElements(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemSelectOption']"));
+        private IWebElement supportedIssueFormFieldCategory => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldCategory']"));
+        private IWebElement supportedIssueFormFieldCategoryLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldCategoryLabel']"));
+        private IWebElement supportedIssueFormFieldCategoryValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldCategoryValue']"));
+
+        private IWebElement supportedIssueFormFieldSWVersions => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSWVersions']"));
+        private IWebElement supportedIssueFormFieldSWVersionsLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSWVersionsLabel']"));
+        private IWebElement supportedIssueFormFieldSWVersionsValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSWVersionsValue']"));
+
+        public void SetTitle(string value) { supportedIssueFormFieldTitleValue.SendKeys(value); }
+        public void SetDescription(string value) { supportedIssueFormFieldDescriptionValue.SendKeys(value); }
+        public void SetInstrument(string value) { supportedIssueFormFieldInstrumentValue.SendKeys(value); }
+        public void SetSystem(string value) {
+            // supportedIssueFormFieldSystemSelect.SelectByText(value);
+        }
+        public void SetCategory(string value) { supportedIssueFormFieldCategoryValue.SendKeys(value); }
+        public void SetSWVersions(string value) { supportedIssueFormFieldSWVersionsValue.SendKeys(value); }
+
+        public IList<IWebElement> GetSystemOptions()
+        {
+            return supportedIssueFormSystems;
+        }
+
+        public bool AreIssueFormElementsLoaded() {
+
+            var IssueFormElementsLoaded = true;
+
+            IssueFormElementsLoaded = supportedIssueFormFieldTitle != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldTitleLabel != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldDescription != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldDescriptionLabel != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldDescriptionValue != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldInstrument != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldInstrumentLabel != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldInstrumentValue != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldSystem != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldSystemLabel != null && IssueFormElementsLoaded;
+            // IssueFormElementsLoaded = supportedIssueFormFieldSystemSelect != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldCategory != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldCategoryLabel != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldCategoryValue != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldSWVersions != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldSWVersionsLabel != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormFieldSWVersionsValue != null && IssueFormElementsLoaded;
+
+            return IssueFormElementsLoaded;
+        }
+
+        public void populateIssueForm(IssueForm issueFormFields) {
+            SetTitle(issueFormFields.Title);
+            SetCategory(issueFormFields.Category);
+            SetInstrument(issueFormFields.ObservedInInstrument);
+            SetSWVersions(issueFormFields.ExcludedSoftwareVersions);
+            // SetSystem(issueFormFields.System);
+            SetDescription(issueFormFields.Description);
+        }
+
+        public bool validateIssueTitleField(string title)
+        {
+
+            return supportedIssueFormFieldTitleValue.GetAttribute("value") == title; ;
+        }
+
+        public bool validateIssueDescriptionField(string description)
+        {
+
+            return supportedIssueFormFieldDescriptionValue.GetAttribute("value") == description;
+        }
+
+        public bool validateIssueInstrumentField(string instrument)
+        {
+
+            return supportedIssueFormFieldInstrumentValue.GetAttribute("value") == instrument;
+        }
+
+        public bool validateIssueSWVersionField(string swVersion)
+        {
+
+            return supportedIssueFormFieldSWVersionsValue.GetAttribute("value") == swVersion;
+        }
+
+        public bool validateIssueSystemField(string system)
+        {
+
+            // return supportedIssueFormFieldSystemSelect.SelectedOption.Text.Equals(system);
+            return true;
+        }
+
+        public bool validateIssueCategoryField(string category)
+        {
+
+            return supportedIssueFormFieldCategoryValue.GetAttribute("value") == category;
+        }
+
+        public bool validateIssueFormFields(IssueForm issueFormFields)
+        {
+            var issueFormValid = true;
+
+            issueFormValid = issueFormValid && validateIssueTitleField(issueFormFields.Title);
+            issueFormValid = issueFormValid && validateIssueDescriptionField(issueFormFields.Description);
+            issueFormValid = issueFormValid && validateIssueInstrumentField(issueFormFields.ObservedInInstrument);
+            issueFormValid = issueFormValid && validateIssueSWVersionField(issueFormFields.ExcludedSoftwareVersions);
+            issueFormValid = issueFormValid && validateIssueSystemField(issueFormFields.System);
+            issueFormValid = issueFormValid && validateIssueCategoryField(issueFormFields.Category);
+
+            return issueFormValid;
+        }
+    }
+}
