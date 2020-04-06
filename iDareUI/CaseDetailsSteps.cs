@@ -18,10 +18,12 @@ namespace iDareUI
         private CaseCreationSteps caseCreationSteps;
         private FeatureContext featureContext;
         private CaseMainPage caseMainPage;
+        private CaseInvestigationPage caseInvestigationPage;
 
         public CaseDetailsSteps(TestingEnvironment environment, FeatureContext featureContext)
         {
             this.environment = environment;
+            this.caseInvestigationPage = new CaseInvestigationPage(environment.Driver);
             this.caseDetailsPage = new CaseDetailsPage(environment.Driver);
             this.caseMainPage = new CaseMainPage(environment.Driver);
             this.caseCreationSteps = new CaseCreationSteps(environment, featureContext);
@@ -53,16 +55,27 @@ namespace iDareUI
         public void ThenTheSystemShallFillTheCaseFieldsAutomatically()
         {
             caseCreationSteps.ThenTheProgressOfTheUploadsShouldDisappear();
-            string SWVersion = null;
+            Case currentCaseCreated = new Case();
             Case caseDetails = (Case)this.featureContext["caseDetails"];
             caseMainPage.WaitUntilCasesAreUpdated(caseDetails.CaseID, "01.");
             IEnumerable<Case> caseListComponent = caseMainPage.GetRowsElementsCases();
             IEnumerable<Case> caseDetailsCreated = caseListComponent.Where(myCase => myCase.CaseID.Contains(caseDetails.CaseID));
             if (caseDetailsCreated.Count() == 1)
             {
-                SWVersion = caseDetailsCreated.ElementAt(0).SWVersion;
+                currentCaseCreated.SWVersion = caseDetailsCreated.ElementAt(0).SWVersion;
+                currentCaseCreated.SerialNo = caseDetailsCreated.ElementAt(0).SerialNo;
+                currentCaseCreated.Customer = caseDetailsCreated.ElementAt(0).Customer;
+                currentCaseCreated.Country = caseDetailsCreated.ElementAt(0).Country;
             }
-            Assert.False(String.IsNullOrEmpty(SWVersion), "The fields were not automatically filled");
+            Assert.False(String.IsNullOrEmpty(currentCaseCreated.SWVersion), "The fields were not automatically filled");
+            Assert.False(String.IsNullOrEmpty(currentCaseCreated.SerialNo), "The fields were not automatically filled");
+            Assert.False(String.IsNullOrEmpty(currentCaseCreated.Customer), "The fields were not automatically filled");
+            Assert.False(String.IsNullOrEmpty(currentCaseCreated.Country), "The fields were not automatically filled");
+        }
+        [Then(@"The user navigates to the investigation view")]
+        public void ThenTheUserNavigatesToTheInvestigationView()
+        {
+            caseInvestigationPage.PressInvestigateTab();
         }
     }
 }

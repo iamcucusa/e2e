@@ -19,6 +19,7 @@ namespace iDareUI
         private CaseCreationSteps caseCreationSteps;
         private ScenarioContext scenarioContext;
         private FeatureContext featureContext;
+        private Case caseCreatedForSearch;
         public enum CaseSearchProperty
         {
             CaseId,
@@ -105,8 +106,7 @@ namespace iDareUI
         [Given(@"I create two duplicate cases and a different case")]
         public void GivenICreateTwoDuplicateCasesAndADifferentCase()
         {
-            Case caseCreatedForSearch = Case.GetRandomCase();
-            this.scenarioContext["caseCreatedForSearch"] = caseCreatedForSearch;
+            caseCreatedForSearch = Case.GetRandomCase();
             this.CreateCase(caseCreatedForSearch);
             this.CreateCase(caseCreatedForSearch);
             var myCase2 = Case.GetRandomCase();
@@ -129,7 +129,6 @@ namespace iDareUI
         [When(@"I search by (.*) of the duplicate cases")]
         public void WhenISearchByOfTheDuplicateCases(CaseSearchProperty property)
         {
-            Case caseCreatedForSearch = (Case)this.scenarioContext["caseCreatedForSearch"];
             switch (property)
             {
                 case CaseSearchProperty.CaseId:
@@ -155,7 +154,6 @@ namespace iDareUI
         [Then(@"the only two cases with the same (.*) I created are displayed")]
         public void ThenTheOnlyTwoCasesWithTheSameICreatedAreDisplayed(CaseSearchProperty property)
         {
-            Case caseCreatedForSearch = (Case)this.scenarioContext["caseCreatedForSearch"];
             FlowUtilities.WaitUntil(
                 () => (mainCasesPage.SelectCases(caseCreatedForSearch, property)), TimeSpan.FromSeconds(2000), TimeSpan.FromMilliseconds(25));
 
