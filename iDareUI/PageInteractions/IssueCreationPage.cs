@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using iDareUI.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-
+using OpenQA.Selenium.Support.UI;
 
 namespace iDareUI.PageInteractions
 {
@@ -47,12 +47,16 @@ namespace iDareUI.PageInteractions
         }
 
         public bool SaveIssueButtonIsEnabled() {
+
+            SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(supportedIssuesNewSaveButton);
+
             return supportedIssuesNewSaveButton.GetAttribute("disabled") == null;
         }
 
         public bool SaveIssueButtonIsDisabled()
         {
-           return supportedIssuesNewSaveButton.GetAttribute("disabled") == "true";
+           
+            return supportedIssuesNewSaveButton.GetAttribute("disabled") == "true";
         }
     }
 

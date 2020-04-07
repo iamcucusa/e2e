@@ -27,7 +27,7 @@ namespace iDareUI.PageInteractions
         private IWebElement supportedIssueFormFieldInstrumentValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldInstrumentValue']"));
         private IWebElement supportedIssueFormFieldSystem => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystem']"));
         private IWebElement supportedIssueFormFieldSystemLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemLabel']"));
-        // private SelectElement supportedIssueFormFieldSystemSelect => new SelectElement(driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemSelect']")));
+        private IWebElement supportedIssueFormSystemsSelect => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemSelect']"));
         private IList<IWebElement> supportedIssueFormSystems => driver.FindElements(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSystemSelectOption']"));
         private IWebElement supportedIssueFormFieldCategory => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldCategory']"));
         private IWebElement supportedIssueFormFieldCategoryLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldCategoryLabel']"));
@@ -41,7 +41,16 @@ namespace iDareUI.PageInteractions
         public void SetDescription(string value) { supportedIssueFormFieldDescriptionValue.SendKeys(value); }
         public void SetInstrument(string value) { supportedIssueFormFieldInstrumentValue.SendKeys(value); }
         public void SetSystem(string value) {
-            // supportedIssueFormFieldSystemSelect.SelectByText(value);
+
+            if (value != "")
+            {
+                supportedIssueFormSystemsSelect.Click();
+                var SystemOption = driver.FindElement(By.XPath("//mat-option/span[contains(.,'" + " " + value + " " + "')]"));
+                WebDriverWait Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                Wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(SystemOption));
+                SystemOption.Click();
+            }
+            
         }
         public void SetCategory(string value) { supportedIssueFormFieldCategoryValue.SendKeys(value); }
         public void SetSWVersions(string value) { supportedIssueFormFieldSWVersionsValue.SendKeys(value); }
@@ -65,7 +74,7 @@ namespace iDareUI.PageInteractions
             IssueFormElementsLoaded = supportedIssueFormFieldInstrumentValue != null && IssueFormElementsLoaded;
             IssueFormElementsLoaded = supportedIssueFormFieldSystem != null && IssueFormElementsLoaded;
             IssueFormElementsLoaded = supportedIssueFormFieldSystemLabel != null && IssueFormElementsLoaded;
-            // IssueFormElementsLoaded = supportedIssueFormFieldSystemSelect != null && IssueFormElementsLoaded;
+            IssueFormElementsLoaded = supportedIssueFormSystemsSelect != null && IssueFormElementsLoaded;
             IssueFormElementsLoaded = supportedIssueFormFieldCategory != null && IssueFormElementsLoaded;
             IssueFormElementsLoaded = supportedIssueFormFieldCategoryLabel != null && IssueFormElementsLoaded;
             IssueFormElementsLoaded = supportedIssueFormFieldCategoryValue != null && IssueFormElementsLoaded;
@@ -81,7 +90,7 @@ namespace iDareUI.PageInteractions
             SetCategory(issueFormFields.Category);
             SetInstrument(issueFormFields.ObservedInInstrument);
             SetSWVersions(issueFormFields.ExcludedSoftwareVersions);
-            // SetSystem(issueFormFields.System);
+            SetSystem(issueFormFields.System);
             SetDescription(issueFormFields.Description);
         }
 
@@ -111,9 +120,14 @@ namespace iDareUI.PageInteractions
 
         public bool validateIssueSystemField(string system)
         {
+            if (system != "")
+            {
+                var SystemOptionValueSpan = driver.FindElement(By.XPath("//*[@id='mat-select-1']/div/div[1]/span/span"));
 
-            // return supportedIssueFormFieldSystemSelect.SelectedOption.Text.Equals(system);
+                return SystemOptionValueSpan.Text == system;
+            }
             return true;
+            
         }
 
         public bool validateIssueCategoryField(string category)
