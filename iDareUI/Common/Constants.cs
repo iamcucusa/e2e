@@ -19,6 +19,15 @@ namespace iDareUI.Common
             }
         }
 
+        private const string pageTeachingUri = @"https://idare-qa-teaching-webapp.azurewebsites.net";
+        public static string PageTeachingUri
+        {
+            get
+            {
+                return pageTeachingUri;
+            }
+        }
+
         public const string TeacherUserName = "teacher";
         public const string TeacherPassword = "whatever";
 
