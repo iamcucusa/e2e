@@ -129,5 +129,15 @@ namespace iDareUI
         {
             Assert.True(mainTeachingPage.issuesRulesPage.IssueEditButtonIsCorrect(0));
         }
+
+        [Then(@"I cancel the issue creation and no new issue is created in the list")]
+        public void ICancelTheIssueCreationAndNoNewIssueIsCreatedInTheList()
+        {
+            var issueListTotal = mainTeachingPage.issuesRulesPage.numberOfIssuesInTheList();
+
+            issueCreationPage.CancelNewIssue();
+
+            Assert.Equal(issueListTotal, mainTeachingPage.issuesRulesPage.numberOfIssuesInTheList());
+        }
     }
 }

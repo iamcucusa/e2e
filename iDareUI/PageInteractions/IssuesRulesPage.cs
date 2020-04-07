@@ -122,6 +122,10 @@ namespace iDareUI.PageInteractions
                 supportedIssuesListEditCellButtons[index].TagName == "button" &&
                 supportedIssuesListEditCellIcons[index] != null;
         }
+
+        public int numberOfIssuesInTheList() {
+            return supportedIssuesListCellRows.Count;
+        }
     }
 
 

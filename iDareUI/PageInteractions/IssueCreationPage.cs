@@ -64,6 +64,10 @@ namespace iDareUI.PageInteractions
 
             supportedIssuesNewSaveButton.Click();
         }
+
+        public void CancelNewIssue() {
+            supportedIssuesNewCancelButton.Click();
+        }
     }
 
     

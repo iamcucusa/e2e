@@ -1,4 +1,4 @@
-﻿Feature: IssueCreation
+﻿Feature:1261IssueCreation
 
 	In order to create a new issue in teaching module
 
@@ -20,7 +20,7 @@ Background:
 
 
 
-Scenario Outline: Teacher does not enter required field when creating a new issue
+Scenario Outline: 1261 Teacher does not enter required field when creating a new issue
 
     Given Issue Dialog is open
 
@@ -50,7 +50,7 @@ Scenario Outline: Teacher does not enter required field when creating a new issu
 
 
 
-Scenario: Save issue button is enabled when user enter all required fields
+Scenario: 1261 Save issue button is enabled when user enter all required fields
 
     Given Issue Dialog is open
 
@@ -64,7 +64,17 @@ Scenario: Save issue button is enabled when user enter all required fields
 
 
 
-Scenario: New issue Reagent storage error is created successfully
+Scenario: 1261 User cancel the issue creation
+
+    Given Issue Dialog is open
+
+    When I enter 'HW' as Category
+
+    Then I cancel the issue creation and no new issue is created in the list
+
+
+
+Scenario: 1261 New issue Reagent storage error is created successfully
 
     Given Issue Dialog is open
 
