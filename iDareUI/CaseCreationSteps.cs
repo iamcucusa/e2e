@@ -167,16 +167,13 @@ namespace iDareUI
             Assert.True(response.Success, "The case is not displayed.");
         }
 
-        [When(@"I create a new Case")]
-        public void WhenICreateANewCase()
+        [When(@"I create a new Case for details")]
+        public void WhenICreateANewCaseForDetails()
         {
             Case caseDetails = Case.GetRandomCase();
             this.featureContext["caseDetails"] = caseDetails;
             this.GivenIEnterToCreateANewCase();
             this.WhenIEnterAsRexisID(caseDetails.CaseID);
-            this.WhenIEnterAsSerialNumber(caseDetails.SerialNo);
-            this.WhenIEnterAsCountry(caseDetails.Country);
-            this.WhenIEnterAsCustomer(caseDetails.Customer);
             this.WhenIEnterTheOptionOfTheDropdownAsTimezone(2);
             List<string> fileName = new List<string>();
             fileName.Add(Constants.ProblemReportOnlySummary);

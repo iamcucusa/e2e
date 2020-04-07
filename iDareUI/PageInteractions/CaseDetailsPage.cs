@@ -20,8 +20,7 @@ namespace iDareUI.PageInteractions
         private IWebElement instrumentInformationHeader => driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoHeader']")); 
         private IWebElement recordedRunsCard => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDetailRecordedRunsInfoContainer']"));
         private IWebElement recordedRunsHeader => driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseDetailRecordedRunsInfoContainerTitle']"));
-
-
+       
         public void PressMatExpansionPanelInstrumentInformation() { instrumentInformationHeader.Click(); }
         public void PressMatExpansionPanelRecordedRuns() { recordedRunsHeader.Click(); }
         public IEnumerable<string> GetDetailsCardHeaders()
@@ -37,14 +36,26 @@ namespace iDareUI.PageInteractions
 
         public IEnumerable<string> GetInstrumentInformationTitles()
         {
-            IList<IWebElement> instrumentInformationFieldsElements = driver.FindElements(By.CssSelector("p.prv-instrument__title"));
+            IList<IWebElement> instrumentInformationFieldsElements = new List<IWebElement>();
+            instrumentInformationFieldsElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoLabNameLabel']")));
+            instrumentInformationFieldsElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoLabAddressLabel']")));
+            instrumentInformationFieldsElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoInstrumentTypeLabel']")));
+            instrumentInformationFieldsElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoSerialNumberLabel']")));
+            instrumentInformationFieldsElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoSfVersionLabel']")));
+            instrumentInformationFieldsElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoTimeZoneLabel']")));
             var instrumentInformationFieldsText = instrumentInformationFieldsElements.Select(element => element.Text);
             return instrumentInformationFieldsText;
         }
 
         public IEnumerable<string> GetInstrumentInformationData()
         {
-            IList<IWebElement> instrumentInformationDataElements = driver.FindElements(By.CssSelector("p.prv-instrument__instrument-data"));
+            IList<IWebElement> instrumentInformationDataElements = new List<IWebElement>();
+            instrumentInformationDataElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoLabNameValue']")));
+            instrumentInformationDataElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoLabAddressValue']")));
+            instrumentInformationDataElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoInstrumentTypeValue']")));
+            instrumentInformationDataElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoSerialNumberValue']")));
+            instrumentInformationDataElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoSfVersionValue']")));
+            instrumentInformationDataElements.Add(driver.FindElement(By.XPath("//*[@attr.data-idare-id='InstrumentInfoTimeZoneValue']")));
             var instrumentInformationDataText = instrumentInformationDataElements.Select(element => element.Text);
             return instrumentInformationDataText;
         }
