@@ -24,7 +24,7 @@ Scenario: 635 Display Lab and instrument information
 		And I enter ศูนย์บริการโลหิตแห่งชาติ สภากาชาดไทย as Customer
 		And I enter UNITED ARAB EMIRATES as Country
 		And I enter the option 2 of the dropdown as Timezone
-		And I upload a Problem Report with name ProblemReport_OnlySummary.zip
+		And I upload a Problem Report with name ProblemReport-caseDetails-TC635-2 , ProblemReport-caseDetails-TC635-1
 		And I press the Save button
 		And all files of the CAS-1122334455 case have been processed
 	Then I enter to the details of a case
