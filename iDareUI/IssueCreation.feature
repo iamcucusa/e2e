@@ -12,6 +12,8 @@ Background:
 
     Given I navigate successfully to the teaching module
 
+    And I am logged in as teacher user
+
     And I am in the issue list in teaching module
 
     And I click add issue button
@@ -35,9 +37,9 @@ Scenario Outline: Teacher does not enter required field when creating a new issu
 
     | title                   | category | system      |
 
-    | 'Reagent storage error' | 'HW'     | ''          |
+    | 'Automated Reagent storage error' | 'HW'     | ''          |
 
-    | 'Reagent storage error' | ''       | 'cobas 6800/8800' |
+    | 'Automated Reagent storage error' | ''       | 'cobas 6800/8800' |
 
     | ''                      | 'HW'     | 'cobas 6800/8800' |
 
@@ -56,7 +58,7 @@ Scenario: Save issue button is enabled when user enter all required fields
 
         And I enter 'HW' as Category
 
-        And I enter 'Reagent storage error' as Title
+        And I enter 'Automated Reagent storage error' as Title
 
     Then the save button must be enabled
 
@@ -74,7 +76,7 @@ Scenario: New issue Reagent storage error is created successfully
 
         | Category | HW                    |
 
-        | Title    | Reagent storage error | 
+        | Title    | Automated Reagent storage error | 
 
         | Description              | Reagent storage error      |
 
@@ -86,24 +88,20 @@ Scenario: New issue Reagent storage error is created successfully
 
     Then the issue list is updated successfully and includes the new created issue
 
-        And the the fiedls have the correct value
+        | field      | value                 |
 
-        | field    | value                 |
+        | RuleInWork | false                 | 
 
-        | System   | cobas 6800/8800       | 
+        | System     | cobas 6800/8800       | 
 
-        | Category | HW                    |
+        | Category   | HW                    |
 
-        | Title    | Reagent storage error | 
-
-        | Description              | Reagent storage error      |
-
-        | ObservedInInstrument     | Observed in instrument     |
-
-        | ExcludedSoftwareVersions | Excluded software versions |
+        | Title      | Automated Reagent storage error | 
 
         | Footprints               | 0                          |
 
         | ModifiedBy               | DebugUser                  |
+
+        | Modified                 |                            |
 
         And the first issue edit button must be the last cell with the defined icon

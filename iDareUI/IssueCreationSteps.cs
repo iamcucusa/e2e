@@ -26,20 +26,29 @@ namespace iDareUI
         [Given(@"I navigate successfully to the teaching module")]
         public void GivenINavigateSuccessfullyToTheTeachingModule()
         {
-            this.environment.Driver.Manage().Window.Maximize();
-            this.mainTeachingPage.NavigateToTeachingModule();
+            environment.Driver.Manage().Window.Maximize();
+            mainTeachingPage.NavigateToTeachingModule();
         }
         
         [Given(@"I am in the issue list in teaching module")]
         public void GivenIAmInTheIssueListInTeachingModule()
         {
-            Assert.True(this.mainTeachingPage.IssueListIsLoaded());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListIsLoaded());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableHeaderIsCorrect());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableIsPopulatedWithAtLeastOneRow());
         }
-        
+
+        [Given(@"I am logged in as teacher user")]
+        public void IAmLoggedInAsTeacherUser()
+        {
+            Assert.True(mainTeachingPage.userIsLoggedInAs("Teacher", "DebugUser"));
+            
+        }
+
         [Given(@"I click add issue button")]
         public void GivenIClickAddIssueButton()
         {
-            Assert.True(this.mainTeachingPage.NewIssue());
+            Assert.True(this.mainTeachingPage.issuesRulesPage.NewIssue());
            
         }
         
@@ -88,6 +97,8 @@ namespace iDareUI
         public void WhenIClickSaveButtonIsEnabled()
         {
             Assert.True(issueCreationPage.SaveIssueButtonIsEnabled());
+            issueCreationPage.SaveNewIssue();
+
         }
         
         [Then(@"the save button must be disabled")]
@@ -103,21 +114,20 @@ namespace iDareUI
         }
         
         [Then(@"the issue list is updated successfully and includes the new created issue")]
-        public void ThenTheIssueListIsUpdatedSuccessfullyAndIncludesTheNewCreatedIssue()
+        public void ThenTheIssueListIsUpdatedSuccessfullyAndIncludesTheNewCreatedIssue(Table table)
         {
-            Assert.True(true);
-        }
-        
-        [Then(@"the the fiedls have the correct value")]
-        public void ThenTheTheFiedlsHaveTheCorrectValue(Table table)
-        {
-            Assert.True(true);
+            var issueRowFields = table.CreateInstance<IssueRow>();
+
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListIsLoaded());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableHeaderIsCorrect());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableIsPopulatedWithAtLeastOneRow());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueIsAddedOnTopOfTheList(issueRowFields));
         }
         
         [Then(@"the first issue edit button must be the last cell with the defined icon")]
         public void ThenTheFirstIssueEditButtonMustBeTheLastCellWithTheDefinedIcon()
         {
-            Assert.True(true);
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueEditButtonIsCorrect(0));
         }
     }
 }

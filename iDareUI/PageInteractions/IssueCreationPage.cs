@@ -58,6 +58,12 @@ namespace iDareUI.PageInteractions
            
             return supportedIssuesNewSaveButton.GetAttribute("disabled") == "true";
         }
+
+        public void SaveNewIssue()
+        {
+
+            supportedIssuesNewSaveButton.Click();
+        }
     }
 
     
