@@ -1,27 +1,48 @@
 ﻿using System;
+using iDareUI.Common;
+using iDareUI.PageInteractions;
 using TechTalk.SpecFlow;
+using Xunit;
 
 namespace iDareUI
 {
     [Binding]
     public class IssueUpdateSteps
     {
+        private TestingEnvironment environment;
+        private TeachingMainPage mainTeachingPage;
+        private IssueUpdatePage issueUpdatePage;
+
+
+        public IssueUpdateSteps(TestingEnvironment environment)
+        {
+            this.environment = environment;
+            this.mainTeachingPage = new TeachingMainPage(environment.Driver);
+            this.issueUpdatePage = new IssueUpdatePage(environment.Driver);
+
+        
+        }
+
+
         [Given(@"Issue list is displayed")]
         public void GivenIssueListIsDisplayed()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListIsLoaded());
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableHeaderIsCorrect());
+           
         }
         
         [Given(@"The issue list has at least one issue")]
         public void GivenTheIssueListHasAtLeastOneIssue()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableIsPopulatedWithAtLeastOneRow());
         }
         
         [Given(@"I click in the edit button for the first issue in the list")]
         public void GivenIClickInTheEditButtonForTheFirstIssueInTheList()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(mainTeachingPage.issuesRulesPage.editIssue(0));
+            Assert.True(issueUpdatePage.EditIssueDialogIsOpenAndCorrectlyLoaded());
         }
         
         [Given(@"I enter '(.*)' as Category")]
