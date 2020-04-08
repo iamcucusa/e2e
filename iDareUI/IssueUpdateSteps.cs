@@ -37,7 +37,7 @@ namespace iDareUI
         {
             Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableIsPopulatedWithAtLeastOneRow());
         }
-        
+
         [Given(@"I click in the edit button for the first issue in the list")]
         public void GivenIClickInTheEditButtonForTheFirstIssueInTheList()
         {
@@ -45,11 +45,6 @@ namespace iDareUI
             Assert.True(issueUpdatePage.EditIssueDialogIsOpenAndCorrectlyLoaded());
         }
         
-        [Given(@"I enter '(.*)' as Category")]
-        public void GivenIEnterAsCategory(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
         
         [Then(@"I cancel the first issue update and the issue remaings unchanged")]
         public void ThenICancelTheFirstIssueUpdateAndTheIssueRemaingsUnchanged()
