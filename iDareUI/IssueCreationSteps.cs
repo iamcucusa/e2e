@@ -90,7 +90,9 @@ namespace iDareUI
         {
             issueCreationPage.issueFormPage.SetTitle(title);
 
-            Assert.True(issueCreationPage.issueFormPage.validateIssueTitleField(title));
+            var result = issueCreationPage.issueFormPage.validateIssueTitleField(title);
+
+            Assert.True(result);
         }
         
         [When(@"I click save button is enabled")]
@@ -98,7 +100,6 @@ namespace iDareUI
         {
             Assert.True(issueCreationPage.SaveIssueButtonIsEnabled());
             issueCreationPage.SaveNewIssue();
-
         }
         
         [Then(@"the save button must be disabled")]

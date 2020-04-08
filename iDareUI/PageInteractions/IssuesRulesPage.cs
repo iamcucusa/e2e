@@ -136,6 +136,22 @@ namespace iDareUI.PageInteractions
 
             return editButtonValid;
         }
+
+        public IssueRow getIssueRowDataByRowIndex(int index)
+        {
+            var issueRow = new IssueRow();
+
+            issueRow.Title = supportedIssuesListTitleCells[index].Text;
+            issueRow.Category = supportedIssuesListCategoryCells[index].Text;
+            issueRow.System = supportedIssuesListSystemCells[index].Text;
+            issueRow.Footprints = supportedIssuesListFootprintsCells[index].Text;
+            issueRow.ModifiedBy = supportedIssuesListModifiedByCells[index].Text;
+            issueRow.Modified = supportedIssuesListModifiedCells[index].Text;
+
+
+            return issueRow;
+
+        }
     }
 
 

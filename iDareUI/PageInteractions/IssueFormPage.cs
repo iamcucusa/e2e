@@ -37,9 +37,32 @@ namespace iDareUI.PageInteractions
         private IWebElement supportedIssueFormFieldSWVersionsLabel => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSWVersionsLabel']"));
         private IWebElement supportedIssueFormFieldSWVersionsValue => driver.FindElement(By.XPath("//*[@attr.data-idare-id='IssueFormFieldSWVersionsValue']"));
 
-        public void SetTitle(string value) { supportedIssueFormFieldTitleValue.SendKeys(value); }
-        public void SetDescription(string value) { supportedIssueFormFieldDescriptionValue.SendKeys(value); }
-        public void SetInstrument(string value) { supportedIssueFormFieldInstrumentValue.SendKeys(value); }
+        public void SetTitle(string value) {
+            supportedIssueFormFieldTitleValue.Clear();
+            if (value != "")
+            {
+                supportedIssueFormFieldTitleValue.SendKeys(value);
+            }
+            else {
+                var len = supportedIssueFormFieldTitleValue.Text.Length + 1;
+                for (int i = 0; i < len; i++) {
+                    supportedIssueFormFieldTitleValue.SendKeys(Keys.Backspace);
+                }
+            }
+       
+            
+        }
+        public void SetDescription(string value) {
+            supportedIssueFormFieldDescriptionValue.Clear();
+
+            if (value != "")
+                supportedIssueFormFieldDescriptionValue.SendKeys(value);
+        }
+        public void SetInstrument(string value) {
+            supportedIssueFormFieldDescriptionValue.Clear();
+            if (value != "")
+                supportedIssueFormFieldInstrumentValue.SendKeys(value);
+        }
         public void SetSystem(string value) {
 
             if (value != "")
@@ -52,8 +75,26 @@ namespace iDareUI.PageInteractions
             }
             
         }
-        public void SetCategory(string value) { supportedIssueFormFieldCategoryValue.SendKeys(value); }
-        public void SetSWVersions(string value) { supportedIssueFormFieldSWVersionsValue.SendKeys(value); }
+        public void SetCategory(string value) {
+            supportedIssueFormFieldCategoryValue.Clear();
+            if (value != "")
+            {
+                supportedIssueFormFieldCategoryValue.SendKeys(value);
+            }
+            else {
+                var len = supportedIssueFormFieldTitleValue.Text.Length + 1;
+                for (int i = 0; i < len; i++)
+                {
+                    supportedIssueFormFieldTitleValue.SendKeys(Keys.Backspace);
+                }
+            }
+            
+        }
+        public void SetSWVersions(string value) {
+            supportedIssueFormFieldSWVersionsValue.Clear();
+            if (value != "")
+                supportedIssueFormFieldSWVersionsValue.SendKeys(value);
+        }
 
         public IList<IWebElement> GetSystemOptions()
         {
@@ -96,8 +137,9 @@ namespace iDareUI.PageInteractions
 
         public bool validateIssueTitleField(string title)
         {
+            var value = supportedIssueFormFieldTitleValue.GetAttribute("value");
 
-            return supportedIssueFormFieldTitleValue.GetAttribute("value") == title; ;
+            return value == title; ;
         }
 
         public bool validateIssueDescriptionField(string description)
@@ -138,16 +180,24 @@ namespace iDareUI.PageInteractions
 
         public bool validateIssueFormFields(IssueForm issueFormFields)
         {
-            var issueFormValid = true;
 
-            issueFormValid = issueFormValid && validateIssueTitleField(issueFormFields.Title);
-            issueFormValid = issueFormValid && validateIssueDescriptionField(issueFormFields.Description);
-            issueFormValid = issueFormValid && validateIssueInstrumentField(issueFormFields.ObservedInInstrument);
-            issueFormValid = issueFormValid && validateIssueSWVersionField(issueFormFields.ExcludedSoftwareVersions);
-            issueFormValid = issueFormValid && validateIssueSystemField(issueFormFields.System);
-            issueFormValid = issueFormValid && validateIssueCategoryField(issueFormFields.Category);
-
-            return issueFormValid;
+            return validateIssueTitleField(issueFormFields.Title)
+                && validateIssueDescriptionField(issueFormFields.Description)
+                && validateIssueInstrumentField(issueFormFields.ObservedInInstrument)
+                && validateIssueSWVersionField(issueFormFields.ExcludedSoftwareVersions)
+                && validateIssueSystemField(issueFormFields.System)
+                && validateIssueCategoryField(issueFormFields.Category);
         }
+
+        public void clearIssueForm() {
+
+            supportedIssueFormFieldTitleValue.Clear();
+            supportedIssueFormFieldDescriptionValue.Clear();
+            supportedIssueFormFieldInstrumentValue.Clear();
+            supportedIssueFormFieldCategoryValue.Clear();
+            supportedIssueFormFieldSWVersionsValue.Clear();
+        }
+
+        
     }
 }

@@ -31,7 +31,6 @@ namespace iDareUI.PageInteractions
 
         public IssueFormPage issueFormPage;
 
-
         private RemoteWebDriver driver;
         public IssueUpdatePage(RemoteWebDriver driver)
         {

@@ -49,19 +49,19 @@ namespace iDareUI
         [Then(@"the edit issue save button must be disabled")]
         public void ThenTheEditIssueSaveButtonMustBeDisabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(issueUpdatePage.SaveIssueButtonIsDisabled());
         }
 
         [Then(@"the edit save button must be enabled")]
         public void ThenTheEditSaveButtonMustBeEnabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(issueUpdatePage.SaveIssueButtonIsEnabled());
         }
 
         [When(@"I click edit save button is enabled")]
         public void WhenIClickEditSaveButtonIsEnabled()
         {
-            ScenarioContext.Current.Pending();
+            Assert.True(issueUpdatePage.SaveIssueButtonIsEnabled());
         }
 
 
@@ -69,7 +69,15 @@ namespace iDareUI
         [Then(@"I cancel the first issue update and the issue remaings unchanged")]
         public void ThenICancelTheFirstIssueUpdateAndTheIssueRemaingsUnchanged()
         {
-            ScenarioContext.Current.Pending();
+            var firstIssue = mainTeachingPage.issuesRulesPage.getIssueRowDataByRowIndex(0);
+            issueUpdatePage.CancelUpdateIssue();
+            var firstIssueAfterCancel = mainTeachingPage.issuesRulesPage.getIssueRowDataByRowIndex(0);
+            Assert.Equal(firstIssue.Title, firstIssueAfterCancel.Title);
+            Assert.Equal(firstIssue.Category, firstIssueAfterCancel.Category);
+            Assert.Equal(firstIssue.Footprints, firstIssueAfterCancel.Footprints);
+            Assert.Equal(firstIssue.Modified, firstIssueAfterCancel.Modified);
+            Assert.Equal(firstIssue.ModifiedBy, firstIssueAfterCancel.ModifiedBy);
+            Assert.Equal(firstIssue.RuleInWork, firstIssueAfterCancel.RuleInWork);
         }
         
         [Then(@"the updated issue is the first in the list of issues")]

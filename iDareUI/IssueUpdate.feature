@@ -20,7 +20,7 @@ Background:
     And The issue list has at least one issue
 
 
-
+@ingnored
 Scenario Outline: 1262 Teacher does not enter required field when updating first issue in the list
 
     Given I click in the edit button for the first issue in the list
@@ -36,15 +36,15 @@ Scenario Outline: 1262 Teacher does not enter required field when updating first
 
     Examples:   
 
-    | title                             | category | system            |
+    | title                                     | category | system            |
 
-    | 'Automated Reagent storage error' | 'HW'     | ''                |
+    | 'Updated Automated Reagent storage error' | 'HW'     | ''                |
 
-    | 'Automated Reagent storage error' | ''       | 'cobas 6800/8800' |
+    | 'Updated Automated Reagent storage error' | ''       | 'cobas 6800/8800' |
 
-    | ''                                | 'HW'     | 'cobas 6800/8800' |
+    | ''                                        | 'HW'     | 'cobas 6800/8800' |
 
-    | ''                                | ''       | ''                |
+    | ''                                        | ''       | ''                |
 
 
 
@@ -57,7 +57,7 @@ Scenario: 1262 Save issue button is enabled when user enter all required fields
 
         And I enter 'CAT' as Category
 
-        And I enter 'Automated Reagent storage error' as Title
+        And I enter 'Updated Reagent storage error' as Title
 
     Then the edit save button must be enabled
 
