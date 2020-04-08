@@ -36,15 +36,15 @@ Scenario Outline: 1261 Teacher does not enter required field when creating a new
 
     Examples:   
 
-    | title                   | category | system      |
+    | title                             | category | system            |
 
-    | 'Automated Reagent storage error' | 'HW'     | ''          |
+    | 'Automated Reagent storage error' | 'HW'     | ''                |
 
     | 'Automated Reagent storage error' | ''       | 'cobas 6800/8800' |
 
-    | ''                      | 'HW'     | 'cobas 6800/8800' |
+    | ''                                | 'HW'     | 'cobas 6800/8800' |
 
-    | ''                      | ''       | ''          |
+    | ''                                | ''       | ''                |
 
 
 
