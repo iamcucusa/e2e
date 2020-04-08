@@ -1,4 +1,5 @@
-﻿Feature:1261IssueCreation
+﻿@issueCreation
+Feature:1261 IssueCreation
 
 	In order to create a new issue in teaching module
 
