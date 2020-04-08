@@ -92,6 +92,71 @@ Scenario: 746 Create a new case and manually select multiple files
 		Then The progress of the uploads should disappear
 		Then The Progress Shows Updated Status Success
 
+@filesUploadingCases
+Scenario: 745 File Upload After Saving Changes failed during processing
+	Given I am in the Overview screen
+		And I enter to create a new case
+	When I enter Customer as Customer
+		And I enter a Rexis ID with a unique ID
+		And I enter A1234 as Serial number
+		And I enter Spain as Country
+		And I enter the option 1 of the dropdown as Timezone
+		And I press the Save button
+	Then The case creation dialog is closed
+	When I enter the RexisId in the filter
+	Then The case is displayed in the list with the RexisId
+	Then I click the edit case button for the first case
+		When I upload a Problem Report with name RealDataSmallPasswordProtected.zip
+		And I press the Save button
+		Then The case creation dialog is closed
+	Then I should see the progress of the 1 uploads
+		And the status gets updated as error
+	When I enter the RexisId in the filter
+	Then The case is displayed in the list with the RexisId
+	Then I click the edit case button for the first case
+		When I upload a Problem Report with name RealDataSmall.zip
+		And I press the Save button
+		Then The case creation dialog is closed
+	Then I should see the progress of the 2 uploads
+		And the status gets updated as error
+		Then The progress of the uploads should disappear
+		And the status gets updated as error
+
+@filesUploadingCases
+Scenario: 747 File Upload After Saving Changes in a case partly failed during upload
+	Given I am in the Overview screen
+		And I enter to create a new case
+	When I enter FailDuringUpload as Customer
+		And I enter a Rexis ID with a unique ID
+		And I enter A1234 as Serial number
+		And I enter Spain as Country
+		And I enter the option 1 of the dropdown as Timezone
+		And I press the Save button
+	Then The case creation dialog is closed
+	When I enter the RexisId in the filter
+	Then The case is displayed in the list with the RexisId
+	Then I click the edit case button for the first case
+		When I upload a Problem Report with name test.avi
+		And I press the Save button
+		Then The case creation dialog is closed
+	Then I should see the progress of the 1 uploads
+		Then The progress of the uploads should disappear
+	When I enter the RexisId in the filter
+	Then The case is displayed in the list with the RexisId
+	Then I click the edit case button for the first case
+		When I upload a Problem Report with name RealDataSmall.zip,RealDataSmall2.zip,RealDataSmall3.zip
+		And I press the Save button
+		Then The connection is slowed
+		Then The case creation dialog is closed
+		Then I should see the progress of the 3 uploads
+		Then The connection is broken for 100 seconds
+	Then I should see the progress of the 3 uploads
+		Then The progress of the uploads should be Upload Failed
+	When I enter the RexisId in the filter
+		Then The case is displayed in the list with the RexisId
+		Then I click the edit case button for the first case
+		Then The files list shows the files I have added test.avi,RealDataSmall.zip,RealDataSmall2.zip,RealDataSmall3.zip
+
 @ignore
 Scenario: New cases are placed on the top of the first page of the cases overview
 		Given I am in the Overview screen

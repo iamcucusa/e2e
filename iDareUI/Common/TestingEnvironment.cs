@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
 using System;
 using System.IO;
 using System.Reflection;
@@ -7,14 +6,14 @@ using Xunit.Abstractions;
 
 namespace iDareUI.Common
 {
-   public class TestingEnvironment:IDisposable
+   public class TestingEnvironment : IDisposable
     {
         public bool IsIDE 
         {
             get { return System.Diagnostics.Debugger.IsAttached; }
         }
-        private RemoteWebDriver driver = null;
-        public RemoteWebDriver Driver
+        private ChromeDriver driver = null;
+        public ChromeDriver Driver
         {
             get
             {

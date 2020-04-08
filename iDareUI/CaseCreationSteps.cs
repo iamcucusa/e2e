@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using iDareUI.Models;
 using iDareUI.PageInteractions;
+using OpenQA.Selenium.Chrome;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -215,6 +216,23 @@ namespace iDareUI
         public void ThenTheProgressOfTheUploadsShouldDisappear()
         {
             mainCasesPage.AssertThatAllProgressBarsAreRemoved();
+        }
+        [Then(@"The connection is broken for (.*) seconds")]
+        public void ThenTheConnectionIsBrokenForSeconds(int seconds)
+        {
+            FlowUtilities.SimulateInterruptedConnection(environment.Driver, TimeSpan.FromSeconds(seconds));
+        }
+
+        [Then(@"The progress of the uploads should be Upload Failed")]
+        public void ThenTheProgressOfTheUploadsShouldBeUploadFailed()
+        {
+            mainCasesPage.WaitUntilProgressBarShowsUpdatedStatusFailed(30, 3);
+        }
+
+        [Then(@"The connection is slowed")]
+        public void ThenTheConnectionIsSlowed()
+        {
+            FlowUtilities.SimulateSlowConnection(environment.Driver);
         }
 
         [Then(@"I should not see any upload progress bars")]

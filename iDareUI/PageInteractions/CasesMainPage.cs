@@ -25,9 +25,7 @@ namespace iDareUI.PageInteractions
         private IWebElement rangeLabel => driver.FindElement(By.ClassName("mat-paginator-range-label"));
         private IWebElement firstIdRow => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseRow']"))[0];
         private IWebElement casesButton => driver.FindElements(By.CssSelector("span.prv-sidebar__title"))[0];
-
         private IWebElement caseEditFirstButton => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentEditCaseIcon']"))[0];
-
         private IWebElement detailsButton => driver.FindElement(By.XPath("//*[@attr.data-idare-id='DetectedIssuesContainerViewButton']"));
         private IWebElement firstCaseSWVersion => driver.FindElement(By.XPath("/html/body/prv-root/prv-layout/prv-template/div/section[2]/mat-drawer-container/mat-drawer-content/prv-list-cases/div/div[2]/section/div[1]/mat-table/mat-row[1]/mat-cell[4]"));
         public IWebElement nextPageClickableButton => driver.FindElement(By.CssSelector("button.mat-paginator-navigation-next.mat-icon-button"));
@@ -35,7 +33,6 @@ namespace iDareUI.PageInteractions
         private IEnumerable<IWebElement> caseRows => driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseListComponentCaseRow']"));
 
         public string[] caseCreationValues = new string[] { "CAS-0123", "1234", "Spain", "Customer" };
-
         private IWebElement searchButton => driver.FindElements(By.CssSelector("button.mat-icon-button"))[1];
 
         public IEnumerable<string> GetGridHeaderNames()
@@ -276,7 +273,26 @@ namespace iDareUI.PageInteractions
                 return driver.FindElement(By.XPath("//*[@attr.data-idare-id='CaseUploadFileSuccess']")) != null;
             }, TimeSpan.FromSeconds(maxWaitSeconds), TimeSpan.FromMilliseconds(100));
         }
+        public void WaitUntilProgressBarShowsUpdatedStatusFailed(int maxWaitSeconds, int numberOfFailures)
+        {
+            FlowUtilities.WaitUntil(() =>
+            {
+                var elements = driver.FindElements(By.XPath("//*[@attr.data-idare-id='CaseUploadFileError']"));
+                if (elements != null)
+                {
+                    if (elements.Count == numberOfFailures)
+                    {
+                        foreach (var webElement in elements)
+                        {
+                            if (webElement.Text != "Upload failed")
+                                return false;
+                        }
+                    }
+                }
 
+                return false;
+            }, TimeSpan.FromSeconds(maxWaitSeconds), TimeSpan.FromMilliseconds(20));
+        }
         public void WaitUntilProgressBarShowsUpdatedStatusError(int maxWaitSeconds)
         {
             FlowUtilities.WaitUntil(() =>
