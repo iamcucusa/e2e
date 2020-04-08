@@ -45,23 +45,6 @@ namespace iDareUI
             Assert.True(issueUpdatePage.EditIssueDialogIsOpenAndCorrectlyLoaded());
         }
 
-        [When(@"I edit the issue title with '(.*)' as Title")]
-        public void WhenIEditTheIssueTitleWithAsTitle(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I edit the issue title with '(.*)' as Category")]
-        public void WhenIEditTheIssueTitleWithAsCategory(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I edit the issue title with '(.*)' as System")]
-        public void WhenIEditTheIssueTitleWithAsSystem(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [Then(@"the edit issue save button must be disabled")]
         public void ThenTheEditIssueSaveButtonMustBeDisabled()
@@ -69,32 +52,8 @@ namespace iDareUI
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"I edit '(.*)' as System")]
-        public void WhenIEditAsSystem(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I edit '(.*)' as Category")]
-        public void WhenIEditAsCategory(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I edit '(.*)' as Title")]
-        public void WhenIEditAsTitle(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [Then(@"the edit save button must be enabled")]
         public void ThenTheEditSaveButtonMustBeEnabled()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [Given(@"I edit '(.*)' as Category")]
-        public void GivenIEditAsCategory(string p0)
         {
             ScenarioContext.Current.Pending();
         }

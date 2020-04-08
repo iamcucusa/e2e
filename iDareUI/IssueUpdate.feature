@@ -25,11 +25,11 @@ Scenario Outline: 1262 Teacher does not enter required field when updating first
 
     Given I click in the edit button for the first issue in the list
     
-    When I edit the issue title with <title> as Title
-         
-         And I edit the issue title with <category> as Category
-         
-         And I edit the issue title with <system> as System
+    When I enter <title> as Title
+
+        And I enter <category> as Category
+
+        And I enter <system> as System
 
     Then the edit issue save button must be disabled
 
@@ -53,11 +53,11 @@ Scenario: 1262 Save issue button is enabled when user enter all required fields
 
     Given I click in the edit button for the first issue in the list
 
-    When I edit 'cobas 6800/8800' as System
+    When I enter 'cobas 6800/8800' as System
 
-        And I edit 'CAT' as Category
+        And I enter 'CAT' as Category
 
-        And I edit 'Automated Reagent storage error' as Title
+        And I enter 'Automated Reagent storage error' as Title
 
     Then the edit save button must be enabled
 
@@ -67,7 +67,7 @@ Scenario: 1262 User cancel the update of the first issue in the list
 
     Given I click in the edit button for the first issue in the list
 
-    When I edit 'CAT' as Category
+    When I enter 'CAT' as Category
 
     Then I cancel the first issue update and the issue remaings unchanged
 
@@ -76,7 +76,7 @@ Scenario: 1262 Issue Reagent storage error is updated successfully
 
     Given I click in the edit button for the first issue in the list
 
-        And I edit 'CAT' as Category
+        And I enter 'CAT' as Category
 
      When I click edit save button is enabled
 
