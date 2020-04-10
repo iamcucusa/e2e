@@ -15,34 +15,13 @@ namespace iDareUI
         private TestingEnvironment environment;
         private TeachingMainPage mainTeachingPage;
         private IssueCreationPage issueCreationPage;
+        private NavigationPage navigationPage;
 
         public IssueCreationSteps(TestingEnvironment environment)
         {
             this.environment = environment;
             this.mainTeachingPage = new TeachingMainPage(environment.Driver);
             this.issueCreationPage = new IssueCreationPage(environment.Driver);
-        }
-
-        [Given(@"I navigate successfully to the teaching module")]
-        public void GivenINavigateSuccessfullyToTheTeachingModule()
-        {
-            environment.Driver.Manage().Window.Maximize();
-            mainTeachingPage.NavigateToTeachingModule();
-        }
-        
-        [Given(@"I am in the issue list in teaching module")]
-        public void GivenIAmInTheIssueListInTeachingModule()
-        {
-            Assert.True(mainTeachingPage.issuesRulesPage.IssueListIsLoaded());
-            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableHeaderIsCorrect());
-            Assert.True(mainTeachingPage.issuesRulesPage.IssueListTableIsPopulatedWithAtLeastOneRow());
-        }
-
-        [Given(@"I am logged in as teacher user")]
-        public void IAmLoggedInAsTeacherUser()
-        {
-            Assert.True(mainTeachingPage.userIsLoggedInAs("Teacher", "DebugUser"));
-            
         }
 
         [Given(@"I click add issue button")]
