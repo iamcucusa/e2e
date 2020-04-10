@@ -62,6 +62,7 @@ namespace iDareUI
         public void WhenIClickEditSaveButtonIsEnabled()
         {
             Assert.True(issueUpdatePage.SaveIssueButtonIsEnabled());
+            issueUpdatePage.SaveIssue();
         }
 
 
@@ -79,29 +80,48 @@ namespace iDareUI
             Assert.Equal(firstIssue.ModifiedBy, firstIssueAfterCancel.ModifiedBy);
             Assert.Equal(firstIssue.RuleInWork, firstIssueAfterCancel.RuleInWork);
         }
-        
-        [Then(@"the updated issue is the first in the list of issues")]
-        public void ThenTheUpdatedIssueIsTheFirstInTheListOfIssues()
+
+
+        [Then(@"The Category field of the edited issue is equal to '(.*)'")]
+        public void ThenTheCategoryFieldOfTheEditedIssueIsEqualTo(string category)
         {
-            ScenarioContext.Current.Pending();
+            mainTeachingPage.issuesRulesPage.refreshIssueList();
+
+            var firstIssue = mainTeachingPage.issuesRulesPage.getIssueRowDataByRowIndex(0);
+            Assert.Equal(firstIssue.Category, category);
         }
         
-        [Then(@"the Category field of the edited issue is equal to '(.*)'")]
-        public void ThenTheCategoryFieldOfTheEditedIssueIsEqualTo(string p0)
+        [Then(@"the ModifiedBy field of the edited issue is equal to the logged username")]
+        public void ThenTheModifiedByFieldOfTheEditedIssueIsEqualToTheLoggedUsername()
         {
-            ScenarioContext.Current.Pending();
+            mainTeachingPage.issuesRulesPage.refreshIssueList();
+
+            var firstIssue = mainTeachingPage.issuesRulesPage.getIssueRowDataByRowIndex(0);
+            Assert.Equal(firstIssue.ModifiedBy, mainTeachingPage.loggedUserName());
+
         }
         
-        [Then(@"the ModifiedBy field of the edited issue is equal to DebugUser")]
-        public void ThenTheModifiedByFieldOfTheEditedIssueIsEqualToDebugUser()
+        [Then(@"The Modified field of the edited issue is equal to '(.*)' when I save")]
+        public void ThenTheModifiedFieldOfTheEditedIssueIsEqualTo(string modified)
         {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"the Modified field of the edited issue is equal to '(.*)'")]
-        public void ThenTheModifiedFieldOfTheEditedIssueIsEqualTo(string p0)
-        {
-            ScenarioContext.Current.Pending();
+
+            Assert.True(issueUpdatePage.SaveIssueButtonIsEnabled());
+
+            var currentDate = DateTime.Now.ToUniversalTime();
+
+            issueUpdatePage.SaveIssue();
+            mainTeachingPage.issuesRulesPage.refreshIssueList();
+
+            var firstIssue = mainTeachingPage.issuesRulesPage.getIssueRowDataByRowIndex(0);
+
+            DateTime modifiedDateTime;
+            Assert.True(DateTime.TryParse(firstIssue.Modified, out modifiedDateTime));
+
+            TimeSpan difference = currentDate.Subtract(modifiedDateTime);
+
+            
+            Assert.True(difference.TotalSeconds <= 10);
+
         }
     }
 }

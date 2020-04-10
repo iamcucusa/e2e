@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using iDareUI.Models;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Chrome;
 
 namespace iDareUI.PageInteractions
 {

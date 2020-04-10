@@ -76,14 +76,21 @@ Scenario: 1262 Issue Reagent storage error is updated successfully
 
     Given I click in the edit button for the first issue in the list
 
-        And I enter 'CAT' as Category
+     When I enter 'EDIT9' as Category
 
-     When I click edit save button is enabled
+        And I click edit save button is enabled
 
-    Then the updated issue is the first in the list of issues
+    Then The Category field of the edited issue is equal to 'EDIT9'
 
-        And the Category field of the edited issue is equal to 'CAT'
+        And the ModifiedBy field of the edited issue is equal to the logged username
 
-        And the ModifiedBy field of the edited issue is equal to DebugUser
+ 
 
-        And the Modified field of the edited issue is equal to ''
+
+Scenario: 1262 Issue Reagent storage error modified time is updated successfully
+
+    Given I click in the edit button for the first issue in the list
+
+     When I enter 'MyCat' as Category
+
+    Then The Modified field of the edited issue is equal to '' when I save

@@ -1,9 +1,8 @@
 ﻿using iDareUI.Common;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace iDareUI.PageInteractions
 {
@@ -53,6 +52,10 @@ namespace iDareUI.PageInteractions
                 teachingHeadlineComponentRole.Text == role &&
                 teachingHeadlineComponentName.Text == username;
 
+        }
+
+        public string loggedUserName() {
+            return teachingHeadlineComponentName.Text;
         }
         
 

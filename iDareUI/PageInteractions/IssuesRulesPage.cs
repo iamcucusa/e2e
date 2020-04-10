@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using iDareUI.Models;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
 
 namespace iDareUI.PageInteractions
 {
@@ -37,14 +39,23 @@ namespace iDareUI.PageInteractions
         private IWebElement supportedIssuesListModifiedHeader => driver.FindElement(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListModifiedHeader']"));
         private IWebElement supportedIssuesListEditHeader => driver.FindElement(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListEditHeader']"));
 
+
+        private string supportedIssuesListCategoryCellXPath = "//*[@attr.data-idare-id='SupportedIssuesListCategoryCell']";
+        private string supportedIssuesListTitleCellXPath = "//*[@attr.data-idare-id='SupportedIssuesListTitleCell']";
+        private string supportedIssuesListSystemCellXPath = "//*[@attr.data-idare-id='SupportedIssuesListSystemCell']";
+        private string supportedIssuesListFootprintsCellXPath = "//*[@attr.data-idare-id='SupportedIssuesListFootprintsCell']";
+        private string supportedIssuesListModifiedByCellPath = "//*[@attr.data-idare-id='SupportedIssuesListModifiedByCell']";
+        private string supportedIssuesListModifiedCellPath = "//*[@attr.data-idare-id='SupportedIssuesListModifiedCell']";
+
+
         private IList<IWebElement> supportedIssuesListCellRows => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListCellRows']"));
         private IList<IWebElement> supportedIssuesListRuleInWorkCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListRuleInWorkCell']"));
-        private IList<IWebElement> supportedIssuesListTitleCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListTitleCell']"));
-        private IList<IWebElement> supportedIssuesListCategoryCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListCategoryCell']"));
-        private IList<IWebElement> supportedIssuesListSystemCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListSystemCell']"));
-        private IList<IWebElement> supportedIssuesListFootprintsCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListFootprintsCell']"));
-        private IList<IWebElement> supportedIssuesListModifiedByCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListModifiedByCell']"));
-        private IList<IWebElement> supportedIssuesListModifiedCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListModifiedCell']"));
+        private IList<IWebElement> supportedIssuesListTitleCells => driver.FindElements(By.XPath(supportedIssuesListTitleCellXPath));
+        private IList<IWebElement> supportedIssuesListCategoryCells => driver.FindElements(By.XPath(supportedIssuesListCategoryCellXPath));
+        private IList<IWebElement> supportedIssuesListSystemCells => driver.FindElements(By.XPath(supportedIssuesListSystemCellXPath));
+        private IList<IWebElement> supportedIssuesListFootprintsCells => driver.FindElements(By.XPath(supportedIssuesListFootprintsCellXPath));
+        private IList<IWebElement> supportedIssuesListModifiedByCells => driver.FindElements(By.XPath(supportedIssuesListModifiedByCellPath));
+        private IList<IWebElement> supportedIssuesListModifiedCells => driver.FindElements(By.XPath(supportedIssuesListModifiedCellPath));
         private IList<IWebElement> supportedIssuesListEditCells => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListEditCell']"));
         private IList<IWebElement> supportedIssuesListEditCellButtons => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListEditCellButton']"));
         private IList<IWebElement> supportedIssuesListEditCellIcons => driver.FindElements(By.XPath("//*[@attr.data-idare-id='SupportedIssuesListEditCellIcon']"));
@@ -140,7 +151,7 @@ namespace iDareUI.PageInteractions
         public IssueRow getIssueRowDataByRowIndex(int index)
         {
             var issueRow = new IssueRow();
-
+       
             issueRow.Title = supportedIssuesListTitleCells[index].Text;
             issueRow.Category = supportedIssuesListCategoryCells[index].Text;
             issueRow.System = supportedIssuesListSystemCells[index].Text;
@@ -151,6 +162,13 @@ namespace iDareUI.PageInteractions
 
             return issueRow;
 
+        }
+
+        public void refreshIssueList() {
+
+            driver.Navigate().Refresh();
+
+            
         }
     }
 
